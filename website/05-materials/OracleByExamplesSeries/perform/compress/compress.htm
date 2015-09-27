@@ -1,0 +1,213 @@
+<html>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+.style4 {font-family: "Courier New", Courier, mono}
+.style7 {font-size: 12px}
+-->
+</style>
+<title>Using Table Compression to Save Storage Costs</title>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style8 {color: #FF0000}
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<h3 align="left" class="topstoryhead"><span class="bodylink"> </span>Using Table Compression to Save Storage Costs</h3>
+<h4 class=Purpose><span class="navheader">Purpose</span></h4>
+<p class="bodycopy"> This tutorial  shows you how to realize the storage benefits of table compression. In addition, you  contrast performance differences between compressed tables and standard, uncompressed tables. </p>
+<p class="navheader">Time to Complete</p>
+<p class="bodycopy">Approximately 20 minutes</p>
+<h4 class=Topic><span class="navheader"><a name="t"></a>Topics</span></h4>
+<p class="bodycopy">This tutorial discusses the following:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#o">Overview</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#p">Prerequisites</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t0" class="bodylink">Granting Privileges to the SH User </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t1" class="bodylink">Comparing Storage Requirements </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t3" class="bodylink">Cleanup</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#s">Summary</a></td>
+  </tr>
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" name="print" width=24
+height=24 border=0 onMouseOver="showAllImages()"><font  color="#FF0000"><b></b></font><b><span class="style7"><font color="#ff0000" face="Arial, Helvetica, sans-serif"> Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. (Caution: This action loads all screenshots simultaneously, so, depending on your Internet connection, may result in a slow response time.) </font><font color="#ff0000"></font></span></b></p>
+<p><span class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over an individual icon in the following steps to load and view only the screenshot associated with that step. You can hide an individual screenshot by clicking it. </span></p>
+<h3 class="navheader"><a name="o" id="o"></a>Overview</h3>
+<p class="bodycopy">The cost of disk systems can be a very large portion of building and maintaining large data warehouses. Oracle Database 11<em>g</em> helps reduce this cost by compressing the data and it does so without the typical trade-offs of space savings versus access time to data for normal query operations. The overhead incurred by compression is generally related to the initial compression of the data and operations that modify or change the data (DML). </p>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before starting this tutorial, you should first complete the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="590">
+  <tbody>
+    <tr valign="top">
+      <td width="15" class="bodycopy"><b>1.</b></td>
+      <td colspan="2" class="bodylink"><p>Install Oracle Database 11<i>g</i>. </p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>2.</b></td>
+      <td colspan="2" class="bodylink"><p>Download and unzip the<font face="Courier New, Courier, mono"> <a href="files/compress.zip">compress.zip</a></font> file into a working directory.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t0" id="t0"></a>Granting Privileges to the SH User </h3>
+<p class="bodycopy"> This tutorial requires that the  SH user be unlocked and the  necessary privileges be granted to the SH user. Perform the following: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="590">
+  <tbody>
+    <tr valign="top">
+      <td width="15" class="bodycopy"><b>1.</b></td>
+      <td colspan="2" class="bodylink"><p>Open SQL*Plus. Login as the sys user and execute the <a href="files/setup.sql" class="style4">setup.sql</a> script. </p>
+        <pre class="style4 bodycopy"><strong>sqlplus / as sysdba
+@setup</strong></pre>
+        <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="setup" border="1" class="imgborder_off" id="setup" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p><br> 
+        </p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t1" id="t1"></a> <strong> Comparing Storage Requirements </strong> </h3>
+<p class="bodycopy style8">NOTE: Your timings maybe slightly different than the timings in these screenshots. </p>
+<p class="bodycopy">You can compare the storage requirements between a compressed table and an ucompressed table. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy"> You  first create two copies of the SALES table, the first being compressed and the second being uncompressed. From your SQL*Plus session, execute the <a href="files/create_sales_tbls.sql" class="style4">create_sales_tbls.sql</a> script: </p>
+      <pre class="style4"><strong>@create_sales_tbls </strong></pre>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="create_sales_tbls01" border="1" class="imgborder_off" id="create_sales_tbls01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="create_sales_tbls02" border="1" class="imgborder_off" id="create_sales_tbls02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="create_sales_tbls03" border="1" class="imgborder_off" id="create_sales_tbls03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="create_sales_tbls04" border="1" class="imgborder_off" id="create_sales_tbls04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy"> Now you can compare the storage requirements between the two tables you just created. From your SQL*Plus session, execute the <a href="files/examine_storage.sql" class="style4">examine_storage.sql</a> script: </p>
+      <p class="bodycopy"><span class="style4"><strong>@examine_storage</strong></span></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="examine_storage" border="1" class="imgborder_off" id="examine_storage" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td><p class="bodycopy"> Even though you would expect that modifying a compressed table's data to be significantly slower than the same modification on an uncompressed table, there is a minimal difference. From your SQL*Plus session, execute the <a href="files/dml_perf.sql">dml_perf.sql</a> script:</p>
+      <p class="bodycopy"><span class="style4"><strong>@dml_perf</strong></span></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="dml_perf" border="1" class="imgborder_off" id="dml_perf" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="t3" id="t3"></a> <strong class="navheader"> Cleanup </strong> </h3>
+<p class="bodycopy"> To clean up your environment, perform the following step:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">From your SQL*Plus session, execute the <a href="files/cleanup.sql">cleanup.sql</a> script:</p>
+      <p class="bodycopy"><span class="style4"><strong>@cleanup</strong></span></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  </tbody>
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List </a></span></p>
+<h3 class="navheader"><a name="s" id="s"></a>Summary</h3>
+<p><span class=bodycopy>In this tutorial, you've learned how to compare storage requirements of compressed versus uncompressed tables.</span></p>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<p><span class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="noscreenshots" width=24
+height=24 border=0 onMouseOver="hideAllImages()"></span></span><b class="bodycopy"><font color="#FF0000">Move your mouse over this icon to hide all screenshot</font></b></p>
+<h3>&nbsp;</h3>
+<h4>&nbsp;</h4>
+<h4>&nbsp;</h4>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>
+</html>

@@ -1,0 +1,9 @@
+# Site settings
+title: oracledba.net
+
+description: Website about Oracle DataBase Administration and Weblogic Application Server
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://oracledba.net" # the base hostname & protocol for your site
+
+# Build settings
+markdown: kramdown

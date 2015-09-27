@@ -1,0 +1,34 @@
+SQL> CONNECT / AS SYSDBA
+Connected.
+SQL>
+SQL> set echo on
+SQL> set serveroutput on
+SQL> -- set verify on
+SQL> set term on
+SQL> set lines 200
+SQL> set pages 44
+SQL> set pause on
+SQL>
+SQL> /*== Create another tablespace ==*/
+SQL>
+SQL> DROP TABLESPACE fla_tbs2 INCLUDING CONTENTS
+  2  /
+DROP TABLESPACE fla_tbs2 INCLUDING CONTENTS
+*
+ERROR at line 1:
+ORA-00959: tablespace 'FLA_TBS2' does not exist
+
+
+SQL>
+SQL> CREATE SMALLFILE TABLESPACE fla_tbs2
+  2  DATAFILE '/u01/app/oracle/oradata/orcl/fla_tbs02.dbf'
+  3  SIZE 10M REUSE AUTOEXTEND ON NEXT 640K MAXSIZE 32767M
+  4  NOLOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO
+  5  /
+
+Tablespace created.
+
+SQL> pause Press [Enter] to continue...
+Press [Enter] to continue...
+
+SQL>

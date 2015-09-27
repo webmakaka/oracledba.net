@@ -1,0 +1,530 @@
+<html>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+.style4 {font-family: "Courier New", Courier, mono}
+.style7 {font-size: 12px}
+-->
+</style>
+<title>Assessing Impact of Change on Workload Using SQL Performance Analyzer</title>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style11 {color: #000000}
+.style12 {
+	color: #FF0000;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<h3 align="left" class="topstoryhead"><span class="bodylink"> </span>Assessing Impact of Change on Workload Using SQL Performance Analyzer</h3>
+<h4 class=Purpose><span class="navheader">Purpose</span></h4>
+<p class="bodycopy">This tutorial describes how you can proactively tune your SQL using the SQL Performance Analyzer.</p>
+<p class="navheader">Time to Complete</p>
+<p class="bodycopy">Approximately 30 minutes</p>
+<h4 class=Topic><span class="navheader"><a name="t"></a>Topics</span></h4>
+<p class="bodycopy">This tutorial discusses the following:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#o">Overview</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#p">Prerequisites</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t1" class="bodylink">Setting Up the Environment </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t2" class="bodylink">Performing a Guided Workflow </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t3" class="bodylink">Running the SQL Tuning Advisor</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t4" class="bodylink">Comparing Replay Trial Against Tuned SQL </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t5" class="bodylink">Cleanup</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#s">Summary</a></td>
+  </tr>
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" name="print" width=24
+height=24 border=0 onMouseOver="showAllImages()"><font  color="#FF0000"><b></b></font><b><span class="style7"><font color="#ff0000" face="Arial, Helvetica, sans-serif"> Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. (Caution: This action loads all screenshots simultaneously, so, depending on your Internet connection, may result in a slow response time.) </font><font color="#ff0000"></font></span></b></p>
+<p><span class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over an individual icon in the following steps to load and view only the screenshot associated with that step. You can hide an individual screenshot by clicking it. </span></p>
+<h3 class="navheader"><a name="o" id="o"></a>Overview</h3>
+<p class="NORMAL"> <span class="bodycopy">SQL Performance Analyzer can be used to predict and prevent potential performance problems for any database environment change that affects the structure of SQL execution plans. 
+The changes can include any of the following (but not limited to):</span></p>
+<ul class="LISTBULLET">
+  <li class="bodycopy"> Database upgrades </li>
+  <li class="bodycopy"> Implementation of tuning recommendations </li>
+  <li class="bodycopy"> Schema changes </li>
+  <li class="bodycopy"> Statistics gathering </li>
+  <li class="bodycopy"> Database parameter changes </li>
+  <li class="bodycopy"> OS/ hardware changes </li>
+</ul>
+<p class="bodycopy"> DBAs can use SQL Performance Analyzer to foresee SQL performance changes (execution plans, statistics) induced through above changes, for even the most complex environments. As applications evolve through the development lifecycle, database application developers can test changes to schemas, database objects, rewritten applications for example, to mitigate any potential performance impact.</p>
+<p class="bodycopy"> SQL Performance Analyzer also allows for the comparison of SQL performance statistics.</p>
+<p class=bodycopy>In this tutorial, you create a task that compares the performance of a SQL workload before and after applying a patch. Any SQL regression as a result of patch application are tuned using the SQL Tuning Advisor to make sure that there is net improvement for the SQL workload on the system. </p>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before starting this tutorial, you should first complete the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="590">
+  <tbody>
+    <tr valign="top">
+      <td width="15" class="bodycopy"><b>1.</b></td>
+      <td colspan="2" class="bodylink"><p>Install Oracle Database 11<i>g</i>. </p>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>2.</b></td>
+      <td colspan="2" class="bodylink"><p>Download and unzip the <a href="files/sql_replay_100q.zip">spa.zip</a> into your working directory. </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"></h3>
+<h3 class="navheader"><a name="t1" id="t1"></a>Setting Up the Environment </h3>
+<p class="bodycopy">You first need to setup the environment that the SQL Performance Analyzer will use. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">Open a terminal window and execute the following commands from the directory where the SQL files are contained. The setup_demo.sh script creates the appropriate database objects and loads the data that will be used throughout this tutorial. This script may take a few minutes. </p>
+        <pre class="bodycopy style4"><b>cd /home/oracle/spa/sql_replay_100q
+./setup_demo.sh</b></pre>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa01" border="1" class="imgborder_off" id="nspa01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">Now you can run the run_workload_50q.sh script to generate some workload against the data you just loaded. Execute the following script: </p>
+        <pre class="bodycopy style4"><b>./run_workload_50q.sh 2</b></pre>
+        <p class="bodycopy">Note: The '2' indicates the number of times the queries in the script will be executed. This script may take a few minutes. </p>
+        
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa02a" border="1" class="imgborder_off" id="nspa02a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td><p class="bodycopy">You also need to create a SQL Tuning Set for the workload you just ran by running the create_sts.sql script.. Execute the following commands: </p>
+        <pre class="bodycopy style4"><b>cd other_scripts
+sqlplus apps/apps
+@create_sts</b></pre>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa03" border="1" class="imgborder_off" id="nspa03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"></h3>
+<h3 class="navheader"><a name="t2" id="t2"></a>Performing a Guided Workflow </h3>
+<p class="bodycopy"><span class="bodycopy">A Guided Workflow creates a SQL Performance Analyzer Task and executes some custom experiments using manually created replay trials. In this case, you have just installed a new patchset and you want to see whether any of the SQL has regressed. Perform the following steps:</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">Open a browser and enter the following URL:</p>
+        <pre class="bodycopy"><b>http://&lt;hostname&gt;:1158/em</b></pre>
+        <p class="bodycopy">Enter <b>system</b> as the username, specify the password <strong>oracle</strong>,  and then click <b>Login</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa04" border="1" class="imgborder_off" id="nspa04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">Click the <strong>Software and Support</strong> tab. </p>
+        <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa05" border="1" class="imgborder_off" id="nspa05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tbody> 
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      3.</b></td>
+    <td> 
+      <p class="bodycopy"> Under Real Application Testing, select <strong>SQL Performance Analyzer</strong>. </p>
+      <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa06" border="1" class="imgborder_off" id="nspa06" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td><p class="bodycopy"> Under SQL Performance Analyzer Workflows, select <strong>Guided Workflow</strong>. </p>
+        <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa07" border="1" class="imgborder_off" id="nspa07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      5.</b></td>
+    <td> 
+      <p class="bodycopy">The first task you want to perform is to create a SQL Performance Analyzer task based on a SQL Tuning Set. Click the Execute icon for this task. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa08" border="1" class="imgborder_off" id="nspa08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td><p class="bodycopy">Enter <strong>OBE1</strong> for the Name and click the flashlight for the SQL Tuning Set. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa09" border="1" class="imgborder_off" id="nspa09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      7.</b></td>
+    <td> 
+      <p class="bodycopy">Select the <strong>HR_WORKLOAD</strong> SQL Tuning Set and click <strong>Select</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa10" border="1" class="imgborder_off" id="nspa10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      8.</b></td>
+    <td> 
+      <p class="bodycopy">Click <strong>Create</strong> to create the SQL Performance Analyzer task. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa11" border="1" class="imgborder_off" id="nspa11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>9.</b></td>
+    <td><p class="bodycopy">Now you can create the replay the SQL tuning set for the initial environment which will create a baseline from which to compare after you make your changes. Click the Execute icon for the second step in the guided workflow. 
+When you replay the STS, the SQL in the STS is test-executed one at a
+time against the environment without needing to re-run the application.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa12" border="1" class="imgborder_off" id="nspa12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 10.</b></td>
+    <td><p class="bodycopy">Enter <strong>OBE_BEFORE_CHANGE</strong> for the Name, check the checkbox for <strong>Trial environment established</strong> and click <strong>Submit</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa13" border="1" class="imgborder_off" id="nspa13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      11.</b></td>
+    <td> 
+      <p class="bodycopy">The job is running. Click <strong>Refresh</strong> a few times until the job completes. The job may take a minute or two to run. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa14" border="1" class="imgborder_off" id="nspa14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 12.</b></td>
+    <td><p class="bodycopy">When the green check appears, your job is complete. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa15" border="1" class="imgborder_off" id="nspa15" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 13.</b></td>
+    <td><p class="bodycopy">Now you need to make a change. This is where in our scenario, you will apply a patchset. Switch to your terminal window and execute the the <span class="style4">make_changes.sh</span> script:</p>
+      <pre class="style4 bodycopy"><strong>cd ..
+./make_changes.sh</strong></pre>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa16" border="1" class="imgborder_off" id="nspa16" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 14.</b></td>
+    <td><p class="bodycopy">Now you can replay the SQL tuning set with the applied patchset so that you can perform the comparison. Click the Execute icon for the third step in the guided workflow.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa17" border="1" class="imgborder_off" id="nspa17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>15.</b></td>
+    <td><p class="bodycopy">Enter <strong>OBE_AFTER_CHANGE</strong> for the Name, check the checkbox for <strong>Trial environment established</strong> and click <strong>Submit</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa18" border="1" class="imgborder_off" id="nspa18" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>16.</b></td>
+    <td><p class="bodycopy">The job is running. Click <strong>Refresh</strong> a few times until the job completes. You are now ready to compare the two replay jobs. Click the Execute icon for the fourth step in the Guided Workflow.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa20" border="1" class="imgborder_off" id="nspa20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><b>17</b><b>.</b></p>
+      </td>
+    <td><p class="bodycopy">Make sure Trial Name 1 is set to<strong> OBE_BEFORE_CHANGE</strong> and Trial Name 2 is set to <strong>OBE_AFTER_CHANGE</strong>. Accept the default <strong>Buffer Gets </strong> for Comparison Metric and click <strong>Submit</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa21" border="1" class="imgborder_off" id="nspa21" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><b>18</b><b>.</b></p></td>
+    <td><p class="bodycopy">When task four completes, click the Execute icon for step five to view the comparison report. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa23" border="1" class="imgborder_off" id="nspa23" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><strong>19</strong><b>.</b></p>
+      </td>
+    <td><p class="bodycopy">By applying the patchset, there is an improvement with most of the SQL however you have a slight regression. Click the bar chart for the Regression.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa25a" border="1" class="imgborder_off" id="nspa25a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><strong>20</strong><b>.</b></p></td>
+    <td><p class="bodycopy">There are four SQL statements that needs to be examined further. Click the breadcrumb to go back to the previous window. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa25b" border="1" class="imgborder_off" id="nspa25b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><strong>21</strong><b>.</b></p></td>
+    <td><p class="bodycopy">You can now run the SQL Tuning Advisor to tune the SQL to see if you can resolve the regressions found. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa25c" border="1" class="imgborder_off" id="nspa25c" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  
+  </tbody> 
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="t3" id="t3"></a>Running the SQL Tuning Advisor </h3>
+<p class="bodycopy"><span class="bodycopy">You can run the SQL Tuning Advisor for any SQL that is found to have regressed during the Guided Workflow. Perform the following steps: </span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tbody>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 1.</b></td>
+      <td><p class="bodycopy">From the SQL Performance Analyzer Task Result page, click <strong>Schedule SQL Tuning Advisor</strong>.</p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa25c" border="1" class="imgborder_off" id="nspa25c" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 2.</b></td>
+      <td width="597"><p class="bodycopy">Enter <strong>OBE_TUNE_REGRESSED_SQL</strong> for the Tuning Task Name and click <strong>OK</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa27" border="1" class="imgborder_off" id="nspa27" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 3.</b></td>
+      <td width="597"><p class="bodycopy">Your tuning task was created successfully. Click the <strong>Advisor Central</strong> breadcrumb. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa28a" border="1" class="imgborder_off" id="nspa28a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 4.</b></td>
+      <td width="597"><p class="bodycopy">Click <strong>Refresh</strong> until the job has completed. This may take a few minutes to complete.  When the job has completed, click the <strong>OBE_TUNE_REGRESSED_SQL</strong> link. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa29a" border="1" class="imgborder_off" id="nspa29a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">&nbsp;</p>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 5.</b></td>
+      <td><p class="bodycopy">You see that a SQL Profile was recommended for each SQL statement. Click  <strong>Implement All Profiles</strong>.</p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa29b" border="1" class="imgborder_off" id="nspa29b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 6.</b></td>
+      <td><p class="bodycopy">To confirm implementation, click <strong>Yes</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa29c" border="1" class="imgborder_off" id="nspa29c" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 7.</b></td>
+      <td><p class="bodycopy">The SQL Profile was created. Click the <strong>Advisor Central</strong> breadcrumb. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa29d" border="1" class="imgborder_off" id="nspa29d" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="t4" id="t4"></a>Comparing Replay Trial Against Tuned SQL </h3>
+<p class="bodycopy">You can now compare the replay trial against the tuned SQL to see if there are still any regressions. Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">Select the <strong>SQL Performance Analyzer</strong> link.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa29e" border="1" class="imgborder_off" id="nspa29e" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tbody>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 2.</b></td>
+      <td><p class="bodycopy">Under SQL Performance Analyzer Tasks, select the <strong>OBE1</strong> link. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa31a" border="1" class="imgborder_off" id="nspa31a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 3.</b></td>
+      <td><p class="bodycopy">Under Replay Trials, click <strong>Create Replay Trial</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa31b" border="1" class="imgborder_off" id="nspa31b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 4.</b></td>
+      <td><p class="bodycopy">Enter <strong>OBE_AFTER_TUNE_REGRESSED_SQL</strong> for the Name, click the<strong> Trial environment established</strong> checkbox and click <strong>Submit</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa31b1" border="1" class="imgborder_off" id="nspa31b1" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 5.</b></td>
+      <td><p class="bodycopy  style11">The SQL replay job was created successfully. Click <strong>Refresh</strong> until the job completes. You can now run a comparison report between the OBE_BEFORE_CHANGE replay and the OBE_AFTER_TUNE_REGRESSED_SQL replay. Click <strong>Run Replay Trial Comparison</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa31d" border="1" class="imgborder_off" id="nspa31d" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 6.</b></td>
+      <td><p class="bodycopy  style11">Select <strong>OBE_BEFORE_CHANGE</strong> for Trial Name 1 and <strong>OBE_AFTER_TUNE_REGRESSED_SQL</strong> for Trial Name 2. Select <strong>Buffer Gets</strong> for the Comparison Metric and click <strong>Submit</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa31e" border="1" class="imgborder_off" id="nspa31e" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 7.</b></td>
+      <td><p class="bodycopy  style11">The comparison was created. Click the eyeglasses for the Comparison Report you just created. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa31f" border="1" class="imgborder_off" id="nspa31f" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 8.</b></td>
+      <td><p class="bodycopy  style11">Notice that there are no regressions at this point. So using the tuned SQL it is safe to apply the patchset because there will be a 87% performance improvement. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="nspa31g" border="1" class="imgborder_off" id="nspa31g" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="t5" id="t5"></a>Cleanup</h3>
+<p class="bodycopy">Perform the following steps to cleanup your environment: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">Switch back to your terminal window and execute the <a href="files/sql_replay_100q/reset_demo.sh">reset_demo.sh</a> script. </p>
+      <pre class="style4 bodycopy"><strong>./reset_demo.sh</strong></pre>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tbody>
+    <tr valign="top">
+      <td class="bodycopy"><b> 2.</b></td>
+      <td><p class="bodycopy">Flush the shared_pool and buffer cache by executing the following commands</p>
+        <pre class="style4 bodycopy"><strong>sqlplus / as sysdba
+alter system flush shared_pool;
+alter system flush buffer_cache;</strong></pre>
+        <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 3.</b></td>
+      <td width="597"><p class="bodycopy">At this point you can perform this OBE tutorial again. This time, however, you do not need to perform step one in the Setting Up the Environment topic. You can start with step two when you run the workload. </p>
+          <p>&nbsp;</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="s" id="s"></a>Summary</h3>
+<p><span class=bodycopy>In this tutorial, you've learned how to:<span class="style12"> </span></span></p>
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Perform a guided workflow</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Replay a SQL Tuning Set using the initial environment </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Apply a patch and then replay the SQL Tuning Set using the changed environment </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Compare the replays to see any regressions </td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Run the SQL Tuning advisor to tune the SQL that is causing a regression </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Compare the replay trial against the tuned SQL to show that no regressions remain </td>
+  </tr>
+  <tbody>
+  </tbody>
+</table>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<p><span class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="noscreenshots" width=24
+height=24 border=0 onMouseOver="hideAllImages()"></span></span><b class="bodycopy"><font color="#FF0000">Move your mouse over this icon to hide all screenshot</font></b></p>
+<h3>&nbsp;</h3>
+<h4>&nbsp;</h4>
+<h4>&nbsp;</h4>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>
+</html>

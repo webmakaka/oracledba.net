@@ -1,0 +1,386 @@
+<html>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+.style1 {font-weight: bold}
+-->
+</style>
+<title>Improving Application Performance with Result Cache</title>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<link href="../library/otn_new.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style2 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style4 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style6 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style7 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style8 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style9 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style10 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style11 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style12 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style13 {font-family: "Courier New", Courier, mono}
+.style14 {font-family: Arial, Helvetica, sans-serif}
+.style15 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style16 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style17 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+-->
+</style><body bgcolor="#ffffff" text="#000000">
+<h3 class="topstoryhead">Improving Application Performance with Result Cache</h3>
+<h4 class="navheader">Purpose</h4>
+<p class="bodycopy">This tutorial describes how Result Cache improves query execution time and application performance in Oracle Database 11g. </p>
+<p class="navheader">Time to Complete</p>
+<p class="bodycopy">Approximately 40 minutes </p>
+<h3 class="Overview"><a name="t"></a><span class="navheader">Topics</span></h3>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table width="270" border="0" cellpadding="1" cellspacing="0">
+  <tbody> 
+    <tr valign="top">
+      <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+      <td width="218" class="bodylink"><a href="#o">Overview</a></td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodylink"><a href="#p">Prerequisites</a></td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+     <td class="boldbodylink"> <a href="#imp" class="bodylink">Implementing SQL Query Result Cache </a> </td>
+ 	</tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="boldbodylink"> <a href="#func" class="bodylink">Using PL/SQL Function Result Cache </a> </td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodylink"><a href="#s">Summary</a></td>
+    </tr>
+  </tbody> 
+</table>
+ <h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"></a></a> 
+  <b><span class="style1"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. 
+
+
+
+<strong> (Caution: This action loads all screenshots simultaneously, so response time may be slow depending on your Internet connection.)</strong> </font><font color="#ff0000"></font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor 
+  over an individual icon in the following steps to load and view only the screenshot 
+  associated with that step. You can hide an individual  screenshot by clicking it. </p>
+<h3 class="Overview"><a name="o"></a><span class="navheader">Overview</span></h3>
+<p class="boldbodycopy">What Is Result Cache?</p>
+<p class="bodycopy">Result Cache enables caching SQL query and PL/SQL function results
+to be stored in memory. Subsequent executions of the same query or
+function can be served directly out of the cache, improving response
+times. This technique can be especially effective for SQL queries and
+PL/SQL functions that are executed frequently.</p>
+<p class="bodycopy">By default the server-side Result Cache is configured to use a very small portion of the shared pool. You can manually set the result cache memory size using the<span class="style13"> RESULT_CACHE_MAX_SIZE</span><span class="style13"> i</span>nitialization parameter. Setting <FONT FACE="Courier New, Courier, mono">RESULT_CACHE_MAX_SIZE</FONT> to 0 disables the server-side Result Cache.</p>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class=navheader><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before you perform this tutorial, you should: </p>
+<table border="0" cellpadding="1" cellspacing="0" width="650">
+  <tbody>
+    <tr valign="top">
+      <td class="bodycopy" width="25"><b> 1.</b></td>
+      <td colspan="2"><p class="bodycopy">Install Oracle Database 11g </p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 2.</b></td>
+      <td colspan="2"><p class="bodycopy">Download and unzip the <a href="files/res_cache.zip" class="style1">res_cache.zip </a> file into your working directory (that is, wkdir ) and navigate into your working directory. </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h3 class="Install"></h3>
+<h3 class="Install"><a name="imp" id="t1"></a><SPAN class=navheader>Implementing SQL Query Result Cache</SPAN></h3>
+<P class="bodycopy style14">The new SQL Query Result Cache enables explicit caching of queries and query fragments in an area of the shared pool called Result Cache Memory. When a query is executed the result cache is built up and the result is returned. The database can then use the cached results for subsequent query executions, resulting in faster response times. Cached query results become invalid when data in the database object(s) being accessed by the query is (are) modified. </P>
+<P class="bodycopy style14">You can enable Query Result Cache at the database level using the <span class="style13">RESULT_CACHE_MODE</span> initialization parameter in the database initialization parameter file. The same parameter can also be used at the session level using the <span class="style13">ALTER SESSION</span> command. <span class="style13">RESULT_CACHE_MODE</span> can be set to:</P>
+<UL class="style14">
+  <LI>
+    <P class="bodycopy"><span class="style13">AUTO</span> – the optimizer will decide based on a number of factors whether or not to cache the result. Decision factors include the frequency of query execution, the cost of building the result and the frequency of changes against the underlying database objects.</P>
+  <LI>
+    <P class="bodycopy"><span class="style13">MANUAL</span> – (default) you have to add the RESULT_CACHE hint to your queries in order for results to be cached or to be served out of the cache. The RESULT_CACHE hint can also be added in sub queries and in-line views.</P>
+  <LI>
+    <P class="bodycopy"><span class="style13">FORCE </span>– results are always stored in the Result Cache Memory if possible.</P>
+</UL>
+<P class="bodycopy">The use of the SQL Query Result Cache introduces the ResultCache operator in the query execution plan. </P>
+<p class="bodycopy style14">&nbsp;</p>
+<p class="bodycopy style14"> Perform the following steps to understand the use of Query Result Cache </p>
+
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Open a terminal window and log on to SQL*Plus. Connect to the database as <span class="style13">SYS</span>. (In this OBE the password was set as oracle). </p>
+      <p class="bodycopy"><strong>$ sqlplus sys /oracle </strong><strong>as sysdba</strong></p>
+      <p class="bodycopy">&nbsp;      </p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="621"> 
+      <p><span class="bodycopy">Clear the Shared Pool and the Result Cache</span> <span class="bodycopy">by running </span>the <span class="style6"><strong><a href="files/flush.sql"><font face="Courier New, Courier, mono">flush.sql</font></a></strong></span> <span class="bodycopy">script</span> .</p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">flush</font></b></span></p>
+      <p><img src="images/view_image.gif" name="flush" border="1" class="imgborder_off" id="flush" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><img src="images/view_image.gif" name="flush_result" border="1" class="imgborder_off" id="flush_result" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+	  <p>&nbsp;</p>    </td>
+      <p class="bodycopy">&nbsp;</p>    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Examine the memory cache by running  the  <span class="style15"><strong><a href="files/baseline.sql"><font face="Courier New, Courier, mono">baseline.sql</font></a></strong></span> script. Cache Memory is 0 bytes because nothing has yet been cached. </p>
+      <p class="bodycopy"><strong>SQL&gt;@baseline.sql</strong></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="Qbaseline" border="1" class="imgborder_off" id="Qbaseline" onClick="hideImage(this)" onMouseOver="showImage(this)"> </p>
+      <p><img src="images/view_image.gif" name="baseline" border="1" class="imgborder_off" id="baseline" onClick="hideImage(this)" onMouseOver="showImage(this)"> </p>
+	  <p>&nbsp;</p>    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td>
+      <p class="bodycopy">Run the <span class="style2"><strong><a href="files/plan_query1.sql"><font face="Courier New, Courier, mono">plan_query1.sql</font></a></strong></span> 
+        script and examine the execution plan. The query uses the <span class="style13">RESULT_CACHE</span> optimizer hint. </p>
+      <p class="bodycopy"><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@plan_</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">query1</font></b></span></p>
+      <p><img src="images/view_image.gif" name="plan_query1" border="1" class="imgborder_off" id="plan_query1" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><img src="images/view_image.gif" name="q1plan" border="1" class="imgborder_off" id="q1plan" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp;</p>  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 5.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Run the <span class="style16"><strong><a href="files/plan_query2.sql"><font face="Courier New, Courier, mono">plan_query2.sql</font></a></strong></span> script and examine the execution plan. This query also uses the <span class="style13">RESULT_CACHE</span> optimizer hint.</p>
+      <p class="bodycopy"><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">plan_query2</font></b></span></p>
+      <p><img src="images/view_image.gif" name="plan_query2" border="1" class="imgborder_off" id="plan_query2" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p><img src="images/view_image.gif" name="q2planA" border="1" class="imgborder_off" id="q2planA" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>         
+	<p><img src="images/view_image.gif" name="q2planB" border="1" class="imgborder_off" id="q2planB" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>      
+    <p class="bodycopy">&nbsp;</p>	</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td colspan="2"><p class="bodycopy">Now execute both queries by running the <span class="style4"><strong><a href="files/query3.sql"><font face="Courier New, Courier, mono">query3.sql</font></a></strong></span> script. </p>
+      <p class="bodycopy"><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">query3</font></b></span></p>
+      <p><img src="images/view_image.gif" name="query3" border="1" class="imgborder_off" id="query3" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  
+  <tr valign="top">
+    <td class="bodycopy"><b>7.</b></td>
+    <td colspan="2"><p class="bodycopy">Query<span class="style13"> V$RESULT_CACHE_STATISTICS</span> to view memory allocation and usage statistics. Run the <span class="style12"><strong><a href="files/v_stat.sql"><font face="Courier New, Courier, mono">v_stat.sql</font></a></strong></span> script. Note that <span class="style13"><span class="style14">the </span>CREATE COUNT SUCCESS</span> column has  a value of 2. This is the number of cache results successfully created (one for each query statement). </p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@v_stat.sql</font></b></span></p>
+      <p><img src="images/view_image.gif" name="v_stat" border="1" class="imgborder_off" id="v_stat" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p><img src="images/view_image.gif" name="v_stat_q3_1" border="1" class="imgborder_off" id="v_stat_q3_1" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>    </td>
+  </tr>
+   <tr valign="top">
+    <td class="bodycopy"><b> 8.</b></td>
+    <td colspan="2"><p class="bodycopy">Now run the <span class="style4"><strong><a href="files/query3.sql"><font face="Courier New, Courier, mono">query3.sql</font></a></strong></span> script again, re-executing both queries it contains. </p>
+      <p class="bodycopy"><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">query3</font></b></span></p>
+      <p><img src="images/view_image.gif" name="query3" border="1" class="imgborder_off" id="query3" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>9.</b></td>
+    <td colspan="2"><p class="bodycopy">Query<span class="style13"> V$RESULT_CACHE_STATISTICS</span> again to view memory allocation and usage statistics. Run the <span class="style17"><strong><a href="files/v_stat.sql"><font face="Courier New, Courier, mono">v_stat.sql</font></a></strong></span> script. Note that<span class="style14"> the </span><span class="style13">FIND COUNT <span class="style14">column</span> </span> now has a value of 2. This is the number of cache results that were successfully found (one for each query statement). </p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@v_stat.sql</font></b></span></p>
+      <p><img src="images/view_image.gif" name="v_stat" border="1" class="imgborder_off" id="v_stat" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p><img src="images/view_image.gif" name="v_stat_q3_2" border="1" class="imgborder_off" id="v_stat_q3_2" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>    </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic Lis</a><a href="#t" class="bodylink">t</a></p>
+<p align="left">&nbsp;</p>
+<p align="left"><a name="func" id="t2"></a><span class="navheader">Using PL/SQL Function Cache</span></p>
+</h3> 
+<p class="bodycopy">Oracle Database 11g provides the ability to mark a PL/SQL Function to indicate that its result should be cached. This allows lookup rather than recalculation the next time the function is called with the same parameter value. The cache is system-wide so that all sessions invoking the function can benefit from the cached return value.  </p>
+<p class="bodycopy">You can activate the PL/SQL Function Cache by using the <span class="style13">RESULT_CACHE</span> option in the function declaration. In addition you can indicate you want the cache to be purged when a dependent table experiences a DML operation by using the<span class="style13"> RELIES_ON</span> clause.</p>
+<p class="bodycopy">Perform the following steps to understand the use of the PL/SQL Function Cache. </p>
+
+<p align="right"><a href="#t" class="bodylink"> Back to Topic List</a></p>
+<h4>&nbsp;</h4>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="25" height="87"><b> 1.</b></td>
+    <td> 
+      <p>Clear the Shared Pool and the Result Cache by running the <span class="style6"><strong><a href="files/flush.sql"><font face="Courier New, Courier, mono">flush.sql</font></a></strong></span> script .</p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">flush</font></b></span></p>
+      <p><img src="images/view_image.gif" name="flush" border="1" class="imgborder_off" id="flush" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><img src="images/view_image.gif" name="flush_result" border="1" class="imgborder_off" id="flush_result" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+	  <p>&nbsp;</p>    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 2.</b></td>
+    <td> 
+      <p>Create a PL/SQL function by running the  <span class="style7"><strong><a href="files/cre_func.sql"><font face="Courier New, Courier, mono">cre_func.sql</font></a></strong></span> script . The function uses the<span class="style13"> RESULT_CACHE</span> clause, indicating that its results should be cached. It also uses the <span class="style13">RELIES_ON</span> clause, specifying the table or view the function result depends on.</p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">cre_func</font></b></span></p>
+      <p><img src="images/view_image.gif" name="cre_func" border="1" class="imgborder_off" id="cre_func" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 3.</b></td>
+    <td> 
+      <p>Call the PL/SQL function inside a query by running the <span class="style8"><strong><a href="files/call_func.sql"><font face="Courier New, Courier, mono">call_func.sql</font></a></strong></span> script .</p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">call_func</font></b></span></p>
+      <p><img src="images/view_image.gif" name="call_func" border="1" class="imgborder_off" id="call_func" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><img src="images/view_image.gif" name="call_func_res" border="1" class="imgborder_off" id="call_func_res" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b> 4.</b></td>
+    <td> 
+      <p> Verify memory allocation by running the  <span class="style9"><strong><a href="files/baseline.sql"><font face="Courier New, Courier, mono">baseline.sql</font></a></strong></span> script. Notice the Result Cache has been built for a PL/SQL block. </p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">baseline</font></b></span></p>
+      <p><img src="images/view_image.gif" name="mem_alloc" border="1" class="imgborder_off" id="mem_alloc" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>5.</b></td>
+    <td> 
+      <p>Query  <span class="style13">V$RESULT_CACHE_STATISTICS</span> to view memory allocation and usage statistics. Run the <span class="style10"><strong><a href="files/v_stat.sql"><font face="Courier New, Courier, mono">v_stat.sql</font></a></strong></span> script.  Note that the <span class="style13">CREATE COUNT SUCCESS</span> column has a value of 1. This is the number of cache results successfully created.</p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">v_stat</font></b></span></p>      <p><img src="images/view_image.gif" name="v_stat" border="1" class="imgborder_off" id="v_stat" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><img src="images/view_image.gif" name="v_stat_res1" border="1" class="imgborder_off" id="v_stat_res1" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 6.</b></td>
+    <td> 
+      <p>Call the PL/SQL function again by running the <span class="style8"><strong><a href="files/call_func.sql"><font face="Courier New, Courier, mono">call_func.sql</font></a></strong></span> script .</p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">call_func</font></b></span></p>
+      <p><img src="images/view_image.gif" name="call_func" border="1" class="imgborder_off" id="call_func" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><img src="images/view_image.gif" name="call_func_res" border="1" class="imgborder_off" id="call_func_res" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>7.</b></td>
+    <td> 
+      <p>Query  <span class="style13">V$RESULT_CACHE_STATISTICS</span> to view memory allocation and usage statistics. Run the <span class="style10"><strong><a href="files/v_stat.sql"><font face="Courier New, Courier, mono">v_stat.sql</font></a></strong></span> script.  Note that the <span class="style13">FIND COUNT SUCCESS</span> column has a value of 1. This is the number of cache results that were successfully found. </p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">v_stat</font></b></span></p>      <p><img src="images/view_image.gif" name="v_stat" border="1" class="imgborder_off" id="v_stat" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><img src="images/view_image.gif" name="v_stat_res2" border="1" class="imgborder_off" id="v_stat_res2" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>8.</b></td>
+    <td> 
+      <p>Query  <span class="style13">V$RESULT_CACHE_OBJECTS</span> to view memory allocation and usage statistics. Run the <span class="style11"><strong><a href="files/v_obj.sql"><font face="Courier New, Courier, mono">v_obj.sql</font></a></strong></span> script. Notice the <span class="style13">SCAN_COUNT</span> column has a value of 1, meaning the cached result has been used. </p>
+      <p><span class="bodycopy style2"><b><font face="Courier New, Courier, mono">SQL&gt;@</font></b></span><span class="style2 style2"><b><font face="Courier New, Courier, mono">v_obj</font></b></span></p>      
+	  <p><img src="images/view_image.gif" name="v_obj" border="1" class="imgborder_off" id="v_obj" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><img src="images/view_image.gif" name="v_obj_res" border="1" class="imgborder_off" id="v_obj_res" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>    </td>
+  </tr>
+  </tbody> 
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List </a></p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tbody> 
+  </tbody> 
+</table>
+<h4>
+  <p class="navheader"><a name="s"></a>Summary</p>
+</H4>
+<p class="bodycopy">In this tutorial, you learned how to: </p>
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr valign="top">
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="297" colspan="2" class="bodycopy">use the SQL Query Result Cache</td>
+  </tr>
+  <tr valign="top">
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">use PL/SQL Function Result Cache</td>
+  </tr>
+  <tbody>
+  </tbody>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="hideAllImages()">  <b><font color="#ff0000">Place the cursor over this icon to hide all screenshots.</font></b>
+</h3>
+<h4 align="left">
+  <p align="left"> 
+  </p>
+</h4>
+<div align="right"></div>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+preLoadImages();
+//-->
+</script>
+
+<h4 align="left">
+  <p align="left"> 
+  </p>
+</h4>
+<div align="right"></div>
+<h4>
+  <p></p>
+  <h3>&nbsp;</h3>
+  <h4>&nbsp;</h4>
+  <h4>&nbsp;</h4>
+</h4>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+preLoadImages();
+//-->
+</script>
+</html>

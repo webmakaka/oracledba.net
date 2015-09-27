@@ -1,0 +1,890 @@
+<html>
+<head>
+<title>Installing and Configuring Spatial Web Service in OC4J</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+<title>Building .NET Applications Using Oracle Developer Tools For Visual Studio .NET</title>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style3 {font-weight: bold}
+.style5 {color: #FF0000}
+.style16 {font-family: Arial, Helvetica, sans-serif; }
+-->
+</style>
+<link rel="stylesheet" href="library/otn_new.css" type="text/css">
+<style type="text/css">
+<!--
+.style18 {font-size: 12px}
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<h3 align="left"><span class="topstoryhead">Installing and Configuring Spatial 
+  Web Service in OC4J</span></h3>
+<h4 class="navheader">Purpose</h4>
+<p class="bodycopy">This tutorial describes how to publish a web service that uses spatial data. </p>
+<h4 class="navheader">Time to Complete </h4>
+<p class="bodycopy">Approximately 1 hour </p>
+<h4 class="navheader"><b><a name="t"></a>Topics</b></h4>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#o"> Overview</a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#p"> Prerequisites</a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="boldbodylink"><a href="#t2" class="bodylink">Configuring 
+      OC4J </a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="boldbodylink"><a href="#t3" class="bodylink">Starting 
+      OC4J </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t3a" class="bodylink">Deploying 
+      Your EAR File </a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t4" class="bodylink">Configuring 
+      Your Data Sources </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t4a" class="bodylink">Verifying 
+      Your Data Sources </a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t5" class="bodylink">Configuring 
+      and Running the Client </a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#s"> Summary </a></td>
+  </tr>
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"> <b><span class="style3"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. 
+
+
+<strong> (Caution: This action loads all screenshots simultaneously, so response time may be slow depending on your Internet connection.)</strong> </font><font color="#ff0000"></font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over an individual icon in the following steps to load and view only the screenshot associated with that step. You can hide an individual screenshot by clicking it.</p>
+<h3 class="navheader"><a name="o"></a>Overview</h3>
+<p class="bodycopy"> <span class="bodycopy">This tutorial introduces the Oracle 
+  Spatial support for spatial Web services. Oracle Spatial provides the following 
+  types of Web services: </span></p>
+<table border="0" cellpadding="1" cellspacing="0" width="650">
+  <tbody> 
+  <tr valign="top"> 
+    <td class="bodycopy" width="25" height="43"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td colspan="2" height="43"> 
+      <p class="bodycopy"><b>Web Feature Services (WFS)</b> enables users to find/update 
+        features (e.g. roads, rivers, and so on) based on their relationship to 
+        a location, and other non-spatial attributes. This web service is Oracle 
+        Spatial implementation of the Open GIS Consortium (OGC) specification 
+        of WFS 1.0.0.</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="25" height="42"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td colspan="2" height="42"> 
+      <p class="bodycopy"><b>Catalogue services for Web (CSW)</b> supports the 
+        ability to publish and search collections of descriptive information (metadata) 
+        for data, services, and related information objects. This web service 
+        is Oracle Spatial implementation of the OGC specification of CSW 2.0.0.</p>
+      </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td colspan="2"> 
+      <p class="bodycopy"><b>Open Location Services (OpenLS)</b> provides location-based 
+        services like geocoding, mapping, routing, and yellow pages. Geocoding 
+        enables users to associate spatial locations (longitude and latitude coordinates) 
+        with postal addresses. </p>
+      <p class="bodycopy">Mapping enables users to generate maps based on spatial 
+        location information. Yellow Pages enables users to find businesses by 
+        name or category based on their relationship to a location. Routing provides 
+        driving information and instructions for individual or multiple routes.</p>
+      <p class="bodycopy">This web service provides access to the different existing 
+        capabilities in Oracle Spatial, e.g. routing, geocoding, mapping, directory 
+        functionality conforming to OpenLS 1.1 specification defined by OGC.</p>
+    </td>
+  </tr>
+  </tbody> 
+</table>
+<p class="bodycopy"><span class="bodycopy">In this tutorial, you learn how to 
+  install and configure Spatial web service in OC4J (Oracle Containers for Java). 
+  </span></p>
+<p class="bodycopy"><span class="bodycopy">You will learn how to run web service 
+  client demos for the different web services discussed above (WFS, CSW and OpenLS) 
+  <font color="#000000">in the tutorial titled, &quot;</font></span>Running the 
+  Oracle Spatial Web Services&quot;<font color="#000000">.</font><br>
+</p>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before you perform this tutorial, you should: </p>
+<table border="0" cellpadding="1" cellspacing="0" width="650">
+  <tbody> 
+  <tr valign="top"> 
+    <td class="bodycopy" width="25"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td colspan="2">
+      <p class="bodycopy">Install Oracle Database 11g software and create a database. </p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td colspan="2"><p class="bodycopy">Install the Oracle Database 11g companion CD. </p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="25"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td colspan="2">
+      <p class="bodycopy">Download Oracle JDeveloper from <a href="javascript:;" onClick="MM_openBrWindow('http://www.oracle.com/technology/software/products/jdev/index.html','jdeveloper','status=yes,scrollbars=yes,resizable=yes,width=800,height=600')">OTN</a> 
+        and unzip it into any directory. </p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td colspan="2">
+      <p class="bodycopy">Download the latest J2SE from <a href="javascript:;" onClick="MM_openBrWindow('http://java.sun.com/javase/downloads/index.jsp','javasoft','status=yes,scrollbars=yes,resizable=yes,width=800,height=600')">Javasoft</a> 
+        and install. </p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="boldbodycopy"><span class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></span></td>
+    <td colspan="2" class="bodycopy"> 
+      <p> Create a working directory and copy the <span class="style1">wsclient.jar</span> from the <span class="style1">$ORACLE_HOME/md/demo/ws/client </span>directory into your working directory. </p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><span class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></span></td>
+    <td colspan="2" class="bodycopy">Download the <a href="files/xsds.jar">xsds.jar</a> 
+      file into your working directory.</td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td colspan="2">
+      <p class="bodycopy">Make sure the following users are unlocked: <span class="style1">mdsys, 
+        spatial_csw_admin_usr and spatial_wfs_admin_usr</span> Open SQL*Plus and 
+        execute the following commands:</p>
+      <pre class="style10 bodycopy"><strong>connect sys/oracle as sysdba
+alter user mdsys identified by oracle account unlock;
+<strong>alter user spatial_csw_admin_usr identified by oracle account unlock;</strong>
+<strong>alter user spatial_wfs_admin_usr identified by oracle account unlock;</strong>
+</strong></pre>
+    </td>
+  </tr>
+  </tbody> 
+</table>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h3 class="navheader"><a name="t2" id="t2"></a>Configuring OC4J </h3>
+<p class="bodycopy">This section describes the steps needed to configure the oc4j 
+  to install Spatial Web service and the Spatial Web service demo users. Perform 
+  the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t2a"> Configuring example users 
+      </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t2b"> Configuring the OC4J path 
+      settings </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t2c"> Creating and registering 
+      shared libraries </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t2d"> Copy files into shared library 
+      directory </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t2e"> Patching xmlparserv2.xdk 
+      file </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t2f">Extracting the wsclient.jar 
+      file</a></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<p class="boldbodycopy"><a name="t2a"></a>Configuring example users </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">From your terminal window, enter the following commands:</p>
+      <pre class="style1 bodycopy"><strong>cd &lt;jdevhome directory&gt;/j2ee/home/config
+gedit system-jazn-data.xml</strong></pre>
+      <p class="bodycopy">where <span class="style1">&lt;jdevhome directory&gt;</span> 
+        is the directory location where JDeveloper was unzipped. </p>
+      <p><img src="images/view_image.gif" name="t10101" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">Open the exampleusers.txt file from <a href="files/exampleusers.txt">here</a>. 
+        Select all the text and then press <b>Ctrl + C</b> to copy. Switch to 
+        the gedit window on your Linux desktop. Press <b>Ctrl + V</b> to add the 
+        following statements after the last &lt;user&gt; section in the system-jazn-data.xml 
+        file. </p>
+      <pre class="bodycopy"><strong>                  <span class="style1">&lt;user&gt;<br>          &lt;name&gt;SpatialWsUser0&lt;/name&gt;<br>          &lt;display-name&gt;Spatial WS user 0&lt;/display-name&gt;<br>          &lt;description&gt;Used for SpatialWs&lt;/description&gt;<br>          &lt;credentials&gt;!welcome&lt;/credentials&gt;<br>        &lt;/user&gt;<br>        &lt;user&gt;<br>          &lt;name&gt;SpatialWsUser1&lt;/name&gt;<br>          &lt;display-name&gt;Spatial WS user 1&lt;/display-name&gt;<br>          &lt;description&gt;Used for SpatialWs&lt;/description&gt;<br>          &lt;credentials&gt;!welcome&lt;/credentials&gt;<br>        &lt;/user&gt;<br>        &lt;user&gt;<br>          &lt;name&gt;SpatialWsUser2&lt;/name&gt;<br>          &lt;display-name&gt;Spatial WS user 2&lt;/display-name&gt;<br>          &lt;description&gt;Used for SpatialWs&lt;/description&gt;<br>          &lt;credentials&gt;!welcome&lt;/credentials&gt;<br>        &lt;/user&gt;<br>        &lt;user&gt;<br>          &lt;name&gt;SpatialWsUser3&lt;/name&gt;<br>          &lt;display-name&gt;Spatial WS user 3&lt;/display-name&gt;<br>          &lt;description&gt;Used for SpatialWs&lt;/description&gt;<br>          &lt;credentials&gt;!welcome&lt;/credentials&gt;<br>        &lt;/user&gt;<br>	    &lt;user&gt;<br>          &lt;name&gt;wfs_rel_user&lt;/name&gt;<br>          &lt;display-name&gt;wfs_rel_user&lt;/display-name&gt;<br>          &lt;description&gt;Spatial WFS user &lt;/description&gt;<br>          &lt;credentials&gt;!wfs_rel_user&lt;/credentials&gt;<br>        &lt;/user&gt;</span><br>                  <span class="style1">&lt;user&gt;<br>          &lt;name&gt;wfs_doc_user&lt;/name&gt;<br>          &lt;display-name&gt;wfs_doc_user&lt;/display-name&gt;<br>          &lt;description&gt;Spatial WFS user &lt;/description&gt;<br>          &lt;credentials&gt;!wfs_doc_user&lt;/credentials&gt;<br>        &lt;/user&gt;<br>        &lt;user&gt;<br>          &lt;name&gt;csw_user&lt;/name&gt;<br>          &lt;display-name&gt;csw_user&lt;/display-name&gt;<br>          &lt;description&gt;Spatial CSW  user &lt;/description&gt;<br>          &lt;credentials&gt;!csw_user&lt;/credentials&gt;<br>        &lt;/user&gt;<br>   
+<img src="images/view_image.gif" name="t10102" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)">     </span></strong></pre>
+      <p class="bodycopy">In the gedit window, from the File menu, select <b>Save</b> 
+        to save the change or click the Save icon on the toolbar. From the File 
+        menu, select Quit to exit the editor.</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t2b"></a>Configuring the OC4J path settings </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">From your terminal window, enter the following commands:</p>
+      <pre class="style1 bodycopy"><strong>cd &lt;jdevhome directory&gt;/bin
+gedit oc4j</strong></pre>
+      <p class="bodycopy">where <span class="style1">&lt;jdevhome directory&gt;</span> 
+        is the directory location where JDeveloper was unzipped. </p>
+      <p><img src="images/view_image.gif" name="t10201" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">Note: If the file opens in a read-only mode, exit the 
+        editor. In the terminal window, log-in as <b>root</b> and use the chmod 
+        command to change the access to read-write and executable. Then re-open 
+        the file in gedit. The command to change the access mode is as follows:</p>
+      <pre><font face="Courier New, Courier, mono"><b>chmod 777 oc4j</b></font></pre>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">Add the following statements in the beginning of the 
+        file. </p>
+      <pre class="bodycopy"><strong><span class="style1">ORACLE_HOME=&lt;jdevhome directory&gt;<br>JAVA_HOME=&lt;jdk home directory&gt;</span></strong></pre>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t10202" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"> 
+      </p>
+      <p class="bodycopy">Save the file and exit the editor.(could not save the 
+        file as oracle user;when logged in as su, was able to save the file)</p>
+      <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t2c" id="t2c"></a>Creating and registering shared libraries </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"><p class="bodycopy">From your terminal window, enter the following commands to create the shared library directories:</p>
+        
+      <pre class="bodycopy style1"><strong>mkdir &lt;jdevhome directory&gt;/j2ee/home/shared-lib/sdows<br>mkdir &lt;jdevhome directory&gt;/j2ee/home/shared-lib/sdows/1.0</strong></pre>
+        <p class="bodycopy">where <span class="style1">&lt;jdevhome directory&gt;</span> is the directory location where JDeveloper was unzipped. </p>
+        
+      <p><img src="images/view_image.gif" name="t10301" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><img src="images/view_image.gif" name="t10301a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="602"><p class="bodycopy">To register the library in the <span class="style1">server.xml</span> file, enter the following commands: </p>
+        
+      <pre class="bodycopy"><strong><span class="style1 bodycopy"><strong>cd &lt;jdevhome directory&gt;/j2ee/home/config
+gedit server.xml
+
+<img src="images/view_image.gif" name="t10302" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></strong></span></strong></pre>
+        
+      <p class="bodycopy">Then add the following statements right before the <span class="style1">rmi-config</span> 
+        statement. </p>
+        <pre class="bodycopy"><strong>&lt;shared-library name=&quot;sdows&quot; version=&quot;1.0&quot;&gt;<br>         &lt;code-source path=&quot;*&quot;/&gt;<br>     	&lt;import-shared-library name=&quot;oracle.xml&quot;/&gt;<br>	        &lt;import-shared-library name=&quot;oracle.jdbc&quot;/&gt;<br>&lt;/shared-library&gt;</strong></pre>
+      <p><img src="images/view_image.gif" name="t10302a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"> 
+      </p>
+      <p class="bodycopy">Save the file and exit the editor.</p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Ensure that the present working directory is <strong><span class="style1 bodycopy"><strong><strong>&lt;jdevhome 
+        directory&gt;/j2ee/home/config. </strong></strong></span></strong>To register 
+        the library in the <span class="style1">application.xml</span> file, enter 
+        the following commands: </p>
+        
+      <pre class="bodycopy"><strong><span class="style1 bodycopy"><strong><strong>gedit application.xml
+
+<img src="images/view_image.gif" name="t10303" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></strong></strong></span></strong></pre>
+        
+      <p class="bodycopy">Then add the following statements right before the <span class="style1">&lt;/imported-shared-libraries&gt;</span> 
+        statement.</p>
+        <pre class="bodycopy style1"><strong>&lt;import-shared-library name=&quot;sdows&quot;/&gt;</strong></pre>
+      <p><img src="images/view_image.gif" name="t10303a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"> 
+      </p>
+      <p class="bodycopy">Save the file and exit the editor.</p>
+      <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t2d" id="t2d"></a>Copy files into shared library directory </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">From your terminal window, enter the following commands 
+        to copy the files from $ORACLE_HOME/md/jlib and $ORACLE_HOME/rdbms/jlib 
+        into the shared library directories you just created.</p>
+        
+      <pre class="style1 bodycopy"><strong>cd &lt;jdevhome directory&gt;/j2ee/home/shared-lib/sdows/1.0</strong>
+<b>
+cp $ORACLE_HOME/md/jlib/sdowfscs.jar .<br>cp $ORACLE_HOME/md/jlib/sdoutl.jar .<br>cp $ORACLE_HOME/md/jlib/sdotype.jar .
+cp $ORACLE_HOME/md/jlib/sdoapi.jar .<br>cp $ORACLE_HOME/md/jlib/sdowshandlers.jar .<br>cp $ORACLE_HOME/md/jlib/sdowspool.jar .<br>cp $ORACLE_HOME/md/jlib/sdowshandlerols.jar .
+cp $ORACLE_HOME/rdbms/jlib/xdb.jar .</b></pre>
+      <p><span class="bodycopy">where &lt;jdevhome directory&gt; is the directory 
+        location where JDeveloper was unzipped and $ORACLE_HOME is your Oracle 
+      Database Home directory.</span></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t10401" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy"><font color="#FF0000"></font></p>
+        
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t2e" id="t2e"></a>Patching xmlparserv2.xdk file </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">From your terminal window, enter the following commands 
+        to copy the <span class="style1">xmlparserv2.jar</span> file from $ORACLE_HOME/lib 
+        into the <span class="style1">&lt;jdevhome directory&gt;/lib</span> directory.      </p>
+      <pre class="style1 bodycopy"><strong>cd &lt;jdevhome directory&gt;/lib</strong><br><b>cp $ORACLE_HOME/lib/xmlparserv2.jar .</b></pre>
+      <p class="bodycopy">,<span class="bodycopy">where &lt;jdevhome directory&gt; 
+        is the directory location where JDeveloper was unzipped and $ORACLE_HOME 
+        is your Oracle Database Home directory.</span></p>
+        
+      <p><img src="images/view_image.gif" name="t10501" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><font color="#FF0000"></font></p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t2f" id="t2e"></a>Extracting the wsclient.jar 
+  file </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">From your terminal window, enter the following commands 
+        to extract the wsclient<span class="style1">.jar</span> file supplied 
+        by this tutorial.</p>
+      <p class="bodycopy">From your terminal window, enter the following commands: 
+      </p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>cd $CLIENT_HOME
+</b></font><b><font face="Courier New, Courier, mono"><span class="style1 bodycopy"><strong>jar -xvf wsclient.jar</strong></span></font></b></pre>
+      <p><span class="bodycopy">where <span class="style1">$CLIENT_HOME </span> 
+        is the directory location where you want to extract the wsclient.jar file. 
+        You can extract the wsclient.jar file in anyone of your directory.</span></p>
+      <pre class="style1 bodycopy"><font color="#FF0000"></font></pre>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<h3 class="navheader"><a name="t3" id="t3"></a>Starting OC4J </h3>
+<p class="bodycopy"><span class="style5"><font color="#000000">This section describes 
+  how to start the oc4j instance. </font></span>Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"><p class="bodycopy">From your terminal window, enter the following commands: </p>
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong>cd &lt;jdevhome directory&gt;/bin</strong><br><strong>./oc4j -start</strong></span></pre>
+      <p><span class="bodycopy">where <span class="style1">&lt;jdevhome directory&gt;</span> is the directory location where JDeveloper was unzipped </span></p>
+      <p class="bodycopy"> Note: You are asked to specify an admin password, enter 
+        <span class="style1"><strong>admin</strong></span>. Enter admin again 
+        to confrm the password. You should see the message, &quot;Oracle Containers 
+        for J2EE 10g (10.1.3.1.1) initialized&quot;, indicating that the OC4J 
+      server is started.</p>
+      <p><img src="images/view_image.gif" name="t20101" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List</a></p>
+<p class="navheader"><a name="t3a" id="t3a"></a>Deploying Your EAR File </p>
+<p class="bodycopy"> <span class="style5"><font color="#000000">This section describes 
+  how to deploy Spatial Web service in the oc4j instance started in the previous 
+  step.</font></span> Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">Open another terminal window and enter the following 
+        commands to set <span class="style1">$JAVA_HOME</span> variables. Ensure 
+        that the ORACLE_HOME variable is set. If not, set ORACLE_HOME variable 
+        to your Oracle Database home directory using the export command.</p>
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong>export JAVA_HOME=/usr/java/&lt;jdk dir&gt;/</strong></span></pre>
+        
+      <p><img src="images/view_image.gif" name="t30101" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy">Now you can deploy your EAR file. From your terminal window, enter the following command:</p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><span class="style1">$JAVA_HOME/bin/java -jar &lt;jdev_home&gt;/j2ee/home/admin.jar ormi://localhost oc4jadmin admin
+ -deploy -file $ORACLE_HOME/md/jlib/sdows.ear -deploymentName sdows -bindWebApp 
+default-web-site</span></strong></span></pre>
+        
+      <p class="bodycopy">where <span class="style1">$ORACLE_HOME </span>is your 
+        Oracle Database home directory. </p>
+        
+      <p><img src="images/view_image.gif" name="t30102" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List</a></p>
+<p class="navheader"><a name="t4" id="t4"></a>Configuring Your Data Sources</p>
+<p class="bodycopy">This section describes how to configure the data sources that 
+  will be used by our Spatial Web service. Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Before you can configure your data sources, you should 
+        stop the oc4j. From your terminal window, enter the following commands:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>cd &lt;jdevhome directory&gt;\bin</b></font></pre>
+      <pre class="bodycopy"><span class="bodycopy style1"><strong><span class="style16">./oc4j -shutdown -port 23791 -password admin</span></strong></span></pre>
+      <p><span class="bodycopy">Note: The port number can be found in the <span class="style1">&lt;jdevhome 
+        directory&gt;/j2ee/home/config/rmi.xml</span> file. </span></p>
+      <p><img src="images/view_image.gif" name="t40101" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="25"><b> 2.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">From your terminal window, enter the following command:</p>
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><span class="style1"><font face="Courier New, Courier, mono">cd &lt;jdevhome directory&gt;/j2ee/home/applications/sdows/META-INF
+gedit data-sources.xml</font></span></strong></span></pre>
+      <p class="bodycopy">where <span class="style1">&lt;jdevhome directory&gt;</span> 
+        is the directory location where JDeveloper was unzipped.</p>
+      <p class="bodycopy">Configure each of the native data sources url, user 
+        and passwords parameters. </p>
+      <p class="style5 bodycopy"><span class="bodycopy">For the following native-data-sources, 
+        </span></p>
+      <table border="0" cellspacing="0" cellpadding="1">
+        <tr valign="top"> 
+          <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink" width="304"><span class="bodycopy"><b>jdev-connection-WfsProxyConnection</b></span> 
+          </td>
+        </tr>
+        <tr valign="top"> 
+          <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink" width="304"><span class="bodycopy"><b>jdev-connection-NdmProxyConnection</b></span> 
+          </td>
+        </tr>
+        <tr valign="top"> 
+          <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink" width="304"><span class="bodycopy"><b>jdev-connection-CatalogProxyConnection</b></span> 
+          </td>
+        </tr>
+        <tr valign="top"> 
+          <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink" width="304"><span class="bodycopy"><b>jdev-connection-OpenLsProxyConnection</b></span> 
+          </td>
+        </tr>
+        <tr valign="top"> 
+          <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink" width="304"><span class="bodycopy"><b>jdev-connection-ConferenceProxyConnection</b></span> 
+          </td>
+        </tr>
+      </table>
+      <p class="style5 bodycopy"><span class="bodycopy">Change each occurrence 
+        of url, user, and password parameters to following: </span> </p>
+      <pre class="style5 bodycopy"><span class="bodycopy"><strong><font face="Courier New, Courier, mono">url=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;
+</font></strong></span><span class="bodycopy"><strong><font face="Courier New, Courier, mono">user=&quot;mdsys&quot;
+password=&quot;oracle&quot;</font></strong></span></pre>
+      <p class="style5 bodycopy"><span class="bodycopy"><strong> <img src="images/view_image.gif" name="t40104" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></strong></span></p>
+      <p class="bodycopy"><span class="bodycopy">For native-data-sources, <b>jdev-connection-CSW_ADMIN_CONN_NAME</b> 
+        and <b>jev-connection-WFS_ADMIN_CONN_NAME</b>, change only the url and 
+        the password parameters to the following:</span></p>
+      <pre class="bodycopy"><span class="bodycopy"><strong><font face="Courier New, Courier, mono">url=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;
+</font></strong></span><font face="Courier New, Courier, mono"><span class="bodycopy"><strong>password=&quot;oracle&quot;</strong></span></font></pre>
+      <p><img src="images/view_image.gif" name="t40104a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">When done, save the file and close.</p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy" width="25"><b><font color="#000000">3.</font></b></td>
+    <td colspan="2" class="bodycopy">
+      <p class="bodycopy">Load OGC WFS XSDs in any URL location. Extract the xsds.jar 
+        file into the &lt;jdevhome directory/j2ee/home/default-web-app/examples/servlets/ 
+        directory. Note, this location is the location where the extracted files 
+        from the xsds.jar file will be stored.</p>
+      <p class="bodycopy">To change to the directory location where you extract 
+        the xsds.jar file, enter the following commands:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>cd &lt;jdevhome directory/j2ee/home/default-web-app/examples/servlets/
+</b></font></pre>
+      <p class="bodycopy">You must have downloaded the xsds.jar file (from the 
+        link in the Prerequisites section) in one of your directory locations. 
+      To extract the files from the xsds.jar file, enter the following command:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>jar -xvf &lt;directorylocation where you downloaded the xsds.jar file&gt;/xsds.jar </b></font></pre>
+      <p class="bodycopy"><font face="Courier New, Courier, mono"></font></p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" height="266" width="25"><b><font color="#000000">4.</font></b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Edit the WSConfig.xml file to specify the xsd files 
+        location url. From your terminal window, enter the following commands:</p>
+      <pre class="bodycopy"><span class="bodycopy style1"><strong><span class="style1">cd &lt;jdevhome directory&gt;/j2ee/home/applications/sdows/sdows/WEB-INF/conf
+gedit WSConfig.xml</span></strong></span></pre>
+      <p><span class="bodycopy">where <span class="style1">&lt;jdevhome directory&gt;</span> 
+        is the directory location where JDeveloper was unzipped.</span></p>
+      <p class="bodycopy">In the WSConfig.xml file,change the wfs-xsd-loc-url 
+      to the path where the XSDS are saved, as mentioned below: </p>
+      <p class="bodycopy"><font face="Courier New, Courier, mono"><b>&lt;wfs_xsd_loc_url&gt;http://&lt;machine_name&gt;:8888/examples/servlets/xsds/&lt;/wfs_xsd_loc_url&gt;</b></font></p>
+      <p class="bodycopy">Remember to remove the comments tag.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t40105" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">Save the file and exit the editor.</p>
+    <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" height="266" width="25"><b><font color="#000000">5.</font></b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Edit wfsrelmd.sql, wfsdocmd.sql, and cswmd.sql to change 
+        the $DATA_DIR_PATH to the directory where <b>src</b> directory is. The 
+        src directory was created when you extracted the wsclient.jar file.</p>
+      <p class="bodycopy"> <span class="style5"></span> From your terminal window, 
+        enter the following commands:</p>
+      <pre class="bodycopy"><span class="bodycopy style1"><strong><span class="style1">cd $CLIENT_HOME/src/sql
+gedit wfsrelmd.sql</span></strong></span>
+
+where $CLIENT_HOME is the directory location where you extracted the wsclient.jar file.
+
+Replace the $DATA_DIR_PATH with the path of the src directory, as shown in the screenshot below.
+
+<strong><img src="images/view_image.gif" name="t40106" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></strong>
+
+Save the change.
+</pre>
+      <p><span class="bodycopy">Similarly, edit the <strong>wfsdocmd.sql</strong>(in the same folder) 
+        and change the $DATA_DIR_PATH to the path of the src directory, as shown 
+        in the screenshot below. Save the file.</span></p>
+      <p><img src="images/view_image.gif" name="t40106a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"><br>
+      </p>
+      <p class="bodycopy">Edit <strong>cswmd.sql</strong> as shown in the screenshot: (You will find the $DATA_DIR_PATH variable almost towards the end of the file, therefore scroll down)</p>
+      <p class="bodycopy"><b><br>
+      </b><img src="images/view_image.gif" name="t40106b" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <pre class="bodycopy">
+Save the files and exit the editor.</pre>
+    <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="25"><b><font color="#000000">6.</font></b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Change the connection string (database machine name, 
+        port number, Oracle SID, and so on) to reflect your actual information 
+        in the following:</p>
+      <p class="bodycopy">- For WFS: oracle.spatial.ws.admindemo.WFSAdminDemo.java 
+        file <br>
+        - For CSW: oracle.spatial.ws.admindemo.CSWAdminDemo.java file</p>
+      <p class="bodycopy">From your terminal window, enter the following commands:</p>
+      <pre class="bodycopy"><span class="bodycopy style1"><span class="style1"><b>cd $CLIENT_HOME/src/oracle/spatial/ws/admindemo
+gedit WFSAdminDemo.java</b>
+
+where $CLIENT_HOME is the directory location where you extracted the wsclient.jar file.<br>
+</span></span><span class="bodycopy">Edit the following statement as follows:</span><span class="bodycopy style1"><strong><span class="style1"><br>
+OracleConnection conn =<br>      (OracleConnection) DriverManager.getConnection 
+      (&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;,&quot;WFS_ADMIN_USR&quot;,&quot;WFS_ADMIN_USR&quot;);
+
+</span><img src="images/view_image.gif" name="t40107" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></strong></span><span class="bodycopy style1"><strong></strong></span></pre>
+      <pre class="bodycopy">Save the file.</pre>
+      <pre class="bodycopy">Similarly, edit the CSWAdminDemo.java file.<strong>
+
+OracleConnection conn=<br>               	(OracleConnection) DriverManager.getConnection 
+                  (&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;,&quot;csw_admin_usr&quot;,&quot;csw_admin_usr&quot;);<br></strong><strong>
+<img src="images/view_image.gif" name="t40107a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></strong></pre>
+      <p><span class="bodycopy">Save the file and exit the editor.</span></p>
+      <p class="bodycopy style1"><strong><span class="style1"></span></strong></p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="25"><b><font color="#000000">7.</font></b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">In the TestWfsCsBase.java file, change myPort.setEndpoint(&quot;http://localhost:8888/SpatialWS-SpatialWS-context-root/SpatialWSSoapHttpPort&quot;); 
+        to reflect your OC4J server machine name and port number<font color="#FF0000">.<font color="#000000"> 
+        For this tutorial, you can enter the machine name as localhost and port 
+        number as 8888.</font></font></p>
+      <p class="bodycopy">From your terminal window, enter the following commands:</p>
+      <pre class="bodycopy"><span class="bodycopy style1"><span class="style1"><b>cd $CLIENT_HOME/src/oracle/spatial/ws/svrproxy
+gedit TestWfsCsBase.java</b></span></span></pre>
+      <p class="bodycopy"><span class="bodycopy style1"><span class="style1">        </span><span class="bodycopy style1"><span class="style1">where $CLIENT_HOME is the directory location where you extracted the wsclient.jar file.</span></span></span><span class="bodycopy style1"></span></p>
+      <pre class="bodycopy">Ch<span class="bodycopy">ange to</span></pre>
+      <pre class="bodycopy"><strong><span class="bodycopy style1"> myPort.setEndpoint
+  </span></strong><strong><span class="bodycopy style1">(&quot;http://localhost:8888/SpatialWS-SpatialWS-context-root/SpatialWSSoapHttpPort&quot;);</span></strong></pre>
+      <span class="bodycopy style1"><strong><span class="style1"></span></strong></span> 
+      <pre class="bodycopy"><span class="bodycopy style1"><strong><span class="bodycopy style1"><strong><span class="style1"><img src="images/view_image.gif" name="t40108" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)">
+</span></strong></span></strong></span></pre>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="25"><b> 8.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">You now need to restart the oc4j. From your terminal 
+        window, enter the following commands: </p>
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong>cd &lt;jdevhome directory&gt;/bin</strong><br><strong>./oc4j -start</strong></span></pre>
+      <p><span class="bodycopy">where <span class="style1">&lt;jdevhome directory&gt;</span> 
+        is the directory location where JDeveloper was unzipped </span></p>
+      <p class="bodycopy"> <img src="images/view_image.gif" name="t40109" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List </a></p>
+<h4>
+  <p class="navheader"><a name="t4a" id="t4a"></a>Verifying Your Data Sources</p>
+</H4>
+<p class="bodycopy">The following steps help you to verify the datasource parameters 
+  needed for the demos have been configured properly. Perform the following steps: 
+</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 1.</b></td>
+    <td> 
+      <p class="bodycopy">Open a browser window, and enter the following URL:</p>
+      <pre class="style1 bodycopy"><strong>http://&lt;hostname&gt;:8888/em 
+</strong></pre>
+      <p><strong class="bodycopy">For the tutorial environment you can use localhost 
+        for the hostname.</strong> <span class="bodycopy">Login as oc4jadmin with 
+        the password, <b>admin.</b> This is the password you created when you 
+        started the oc4j. Then click <strong>Login</strong>.</span></p>
+      <p><span class="bodycopy"> <img src="images/view_image.gif" name="t50101" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"><strong class="bodycopy"></strong></span> 
+        <strong></strong><strong class="bodycopy"></strong> </p>
+      <strong></strong><strong class="bodycopy"></strong> 
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b>2.</b></td>
+    <td class="bodycopy">
+      <p>In the Supply Administration Credentials page, enter the credentials 
+        for a user in the oc4j-administrators group. These credentials are needed 
+        by Application Server Control to maintain proxy connections. Enter <b>admin</b> 
+        as the password.</p>
+      <p><span class="bodycopy"><img src="images/view_image.gif" name="t50102" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td> 
+      <p class="bodycopy">Click <strong>Administration</strong> tab. </p>
+      <p><img src="images/view_image.gif" name="t50103" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 4.</b></td>
+    <td> 
+      <p class="bodycopy">Click the <strong>Go to Task</strong> icon for the <strong>Services: 
+        JDBC Resources</strong> task. </p>
+      <p><img src="images/view_image.gif" name="t50104" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 5.</b></td>
+    <td> 
+      <p class="bodycopy">Your data sources are listed. Click the <strong>Test 
+        Connection</strong> icon for one of the data sources. </p>
+      <p><img src="images/view_image.gif" name="t50105" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">You get a Test Connection page, click <strong>Test</strong>.</p>
+      <p><img src="images/view_image.gif" name="t50105a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">You get a successful connection confirmation.</p>
+      <p><img src="images/view_image.gif" name="t50105b" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">Click <strong>Logout</strong>.</p>
+      <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List </a></p>
+<h4>
+  <p class="navheader"><a name="t6" id="t5"></a>Configuring and Running the Client 
+  </p>
+</H4>
+<p class="bodycopy">Now you can compile and run the client. Perform the following 
+  steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b>1.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">Set the following variables in the compileAndRunClient.sh 
+        file:</p>
+      <table width="591" border="0" cellpadding="1" cellspacing="0">
+        <tr valign="top"> 
+          <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink"><strong> JAVA_HOME</strong></td>
+          <td width="400"  class="bodylink">Set to the jdk location</td>
+        </tr>
+        <tr valign="top"> 
+          <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink"><strong> spatialws_lib</strong></td>
+          <td width="400"  class="bodylink">Set to the JDeveloper installation directory</td>
+        </tr>
+        <tr valign="top"> 
+          <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink"><strong> spatialws_server_lib</strong></td>
+          <td width="400"  class="bodylink">Set to the sdows shared library in 
+            OC4J server</td>
+        </tr>
+        <tr valign="top"> 
+          <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink"><strong> spatial_ws_srcpath</strong></td>
+          <td width="400"  class="bodylink">Set to the src directory location 
+            extracted from the wsclient.jar file</td>
+        </tr>
+        <tr valign="top"> 
+          <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+          <td colspan="2"  class="bodylink"><strong> spatialws_target</strong></td>
+          <td width="400"  class="bodylink">Set to the target path for class files 
+            to be generated. Re-use the source path</td>
+        </tr>
+      </table>
+      <p class="bodycopy">Enter the following commands:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>cd $CLIENT_HOME/src
+</b></font><b><font face="Courier New, Courier, mono">gedit compileAndRunClient.sh</font></b></pre>
+      <p class="bodycopy"><b><font face="Courier New, Courier, mono">      </font></b>where $CLIENT_HOME is the directory location where you extracted the wsclient.jar file.</p>
+      <p class="bodycopy">The screenshot shows the configured parameters.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t60101" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">Save the file and exit the editor.</p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">In your terminal window, enter the following commands: 
+      </p>
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong>./compileAndRunClient.sh</strong></span></pre>
+      <p><img src="images/view_image.gif" name="t60102" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List </a></p>
+<h4>
+  <p class="navheader"><a name="s"></a>Summary</p>
+</H4>
+<p><SPAN class=bodycopy>In this tutorial, you learned how to:</SPAN></p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodycopy">Configure and start OC4J </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodycopy">Deploy your EAR file </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Configure and verfiy your data source </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Configure and run the client </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h4 class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" class="bodycopy" onMouseOver="hideAllImages()"> <b><font color="#FF0000">Move 
+  your mouse over this icon to hide all screenshots.</font></b></h4>
+<p>&nbsp; </p>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>
+</html>

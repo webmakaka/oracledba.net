@@ -1,0 +1,461 @@
+<html>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+.style1 {font-weight: bold}
+-->
+</style>
+<title>Running Java in the Database</title>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<link href="../library/otn_new.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style2 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+.style5 {line-height: 14px; color: #000000; text-decoration: none; visited: #000000; font-size: 12px;}
+-->
+</style><body bgcolor="#ffffff" text="#000000">
+<h3 class="topstoryhead">Running Java in the Database</h3>
+<h4 class="navheader">Purpose</h4>
+<p class="bodycopy">This tutorial shows you how to develop and run Java programs 
+  in the Database.</p>
+<p class="navheader">Time to Complete</p>
+<p class="bodycopy">Approximately 30 minutes</p>
+<h3 class="Overview"><a name="t"></a><span class="navheader">Topics</span></h3>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="380">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="17"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="359" class="bodylink"><a href="#o">Overview</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#p">Prerequisites</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#t1" class="boldbodylink" >Loading and Running 
+      a Java Application in the Database</a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink"> <a href="#t2" class="boldbodylink">Mapping a SQL Type 
+      to a Java Type </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink"> <a href="#t3" class="boldbodylink">Invoking Java 
+      in the Database</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td height="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink"><a href="#t4" class="boldbodylink">Illustrating 
+      an Object Type Call Spe</a>c </td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink"> <a href="#t5" class="boldbodylink">Compiling Java 
+      with JIT</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink"> <a href="#t6" class="boldbodylink">Displaying Java 
+      Memory Areas</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#s">Summary</a></td>
+  </tr>
+  </tbody> 
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"> 
+  <b><span class="style1"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. 
+
+
+
+<strong> (Caution: This action loads all screenshots simultaneously, so response time may be slow depending on your Internet connection.)</strong> </font><font color="#ff0000"></font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor 
+  over an individual icon in the following steps to load and view only the screenshot 
+  associated with that step. You can hide an individual  screenshot by clicking it. </p>
+<h3 class="Overview"><a name="o"></a><span class="navheader">Overview</span></h3>
+<p class="bodycopy">Stored procedures allow the exploitation of capabilities of 
+  relational database management systems (RDBMSs) to their fullest extent. Stored 
+  procedures simplify database programming, improvise performance, provides central 
+  management of data logic, and optimizes network traffic.</p>
+<p class="bodycopy"><b class="boldbodycopy">Java for Stored Procedures</b></p>
+<p class="bodycopy">The Java language is by design an object-oriented programming 
+  language that has a built-in security mechanism and an efficient garbage collection 
+  system. Java also has a rich and very large set of standard libraries which 
+  results in quicker and lower-cost applications development. With Java stored 
+  procedures, developers have the ability to harness all above stated powers of 
+  Java when building database applications.</p>
+<p class="bodycopy">The following OBE is based on the book <b>Oracle Database 
+  Programming using Java and Web Services </b>written by Kuassi Mensah. The description 
+  of the book is available at <b>http://db360.blogspot.com/2006/08/oracle-database-programming-using-java_01.html</b> 
+  and the code samples available on OTN at <b>http://download.oracle.com/technology/tech/java/jsp/pdf/Code_depot.zip</b></p>
+<p class="bodycopy" align="right"><a href="#t" class="bodylink">Back to Topic 
+  List</a></p>
+<h3 class=navheader><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before you perform this tutorial, you should: </p>
+<table border="0" cellpadding="1" cellspacing="0" width="650">
+  <tbody> 
+  <tr valign="top"> 
+    <td class="bodycopy" width="24"><b> 1.</b></td>
+    <td colspan="2" width="622"> 
+      <p class="bodycopy">Install Oracle Database 11g</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="24"><b> 2.</b></td>
+    <td colspan="2" width="622"> 
+      <p class="bodycopy">Download and Install JDK 6.0 from <a href="http://java.sun.com/javase/downloads/index.jsp">Sun</a></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="boldbodycopy" width="24">4</td>
+    <td colspan="2" width="622"> 
+      <p class="bodycopy">Download and unzip the <a href="files/java.zip">java.zip</a> file into your 
+        working directory (i.e.wkdir)</p>
+    </td>
+  </tr>
+  </tbody> 
+</table>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h3 class="navheader"><a name="t1" id="t1"></a>Loading 
+  and Running a Java Application in the Database </h3>
+<p> <span class="bodycopy">Using the following steps load TrimLoad.java in the 
+  database using the default server-side connection (<font face="Courier New, Courier, mono">conn 
+  = DriverManager.getConnection(&quot;jdbc:default:connection:&quot;);</font>) 
+  and then execute it using the procedure TrimLobProc:</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Open a terminal window and change to the directory where you unzipped the files. Execute the following command:</p>
+      <pre><strong><font face="Courier New, Courier, mono">loadjava -u hr/hr TrimLob.java</font>      </strong></pre>
+      <p><img src="images/view_image.gif" name="new00" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy" height="69"><b> 2.</b></td>
+    <td colspan="2" width="621" height="69"> 
+      <p class="bodycopy">Open a terminal window and change to the directory where you unzipped the files. Execute the following command:</p>
+      <pre><strong><font face="Courier New, Courier, mono">drop table basic_lob_table;
+create table basic_log_table (x varchar2 (30), b blob, c clob);
+/</font> </strong></pre>
+      <p><img src="images/view_image.gif" name="new01" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy" height="66"><b> 3.</b></td>
+    <td colspan="2" width="621" height="66"> 
+      <p class="bodycopy">Execute the procedure <font face="Courier New, Courier, mono">TrimLobProc</font> 
+        using the following commands:</p>
+      <pre class="bodycopy"><strong><font face="Courier New, Courier, mono">set serveroutput on
+call dbms_java.set_output(50000);
+call TrimLobProc();</font></strong></pre>
+      <p><img src="images/view_image.gif" name="new03" border="1" class="imgborder_off" id="htmldbt01s04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p class="bodycopy" align="right"><a href="#t" class="bodylink">Back to Topic 
+  List</a></p>
+<h4 class="navheader"><a name="t2" id="t2"></a>Mapping SQL Type 
+  to Java Type </H4>
+<p class="bodycopy"> Because data types in SQL and data types in the Java programming 
+  language are not identical, mapping transfers data between an application using 
+  Java types and a database using SQL types. Using the following steps map various 
+  SQL types to/from corresponding Java types:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="621"> <p class="bodycopy">Map <font face="Courier New, Courier, mono">oracle.sql.char</font> 
+        to SQL CHAR. Execute the <a href="files/TypesTab.sql">TypesTab.sql</a> and <a href="files/orasqlCHAR.sql">orasqlCHAR.sql</a> scripts:
+</p>
+      <pre class="bodycopy"><strong><font face="Courier New, Courier, mono">@TypesTab
+@orasqlCHAR</font></strong></pre>
+      <p><img src="images/view_image.gif" name="img04_a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="621"> 
+      <p><span class="bodycopy">Mapping CLOB locator to/from <font face="Courier New, Courier, mono">java.sql.Clob</font>. Execute the <a href="files/XobTypesTab.sql"><span class="style10">XobTypesTab.sql</span></a> and <a href="files/ClobMap.sql"><span class="style10">ClobMap.sql</span></a> scripts:</span></p>
+      <pre><span class="style2"><strong><font face="Courier New, Courier, mono">@XobTypesTab
+@ClobMap</font></strong></span></pre>
+      <p><img src="images/view_image.gif" name="img04_b" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>3.</b></td>
+    <td colspan="2"> 
+      <p><span class="bodycopy">Mapping REF Cursor to <font face="Courier New, Courier, mono">java.sql.ResultSet. </font>Execute the <a href="files/ResultSet.sql"><span class="style10">ResultSet.sql</span></a> script:</span></p>
+      <pre><span class="style5"><strong><font face="Courier New, Courier, mono">@ResultSet</font></strong></span></pre>
+      <p><img src="images/view_image.gif" name="new04" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>4.</b></td>
+    <td colspan="2" width="621"> 
+      <p><span class="bodycopy">Mapping <font face="Courier New, Courier, mono">VARRAY</font> to Scalar 
+        SQL Type, <font face="Courier New, Courier, mono">Number. </font>Execute the <font face="Courier New, Courier, mono"><a href="files/XVARRAY.sql">XVARRAY.SQL</a> </font>and<font face="Courier New, Courier, mono"> <a href="files/NumVarray.sql">NumVarray.sql</a> </font>scripts<font face="Courier New, Courier, mono">: </font></span></p>
+      <pre><span class="style9"><strong><font face="Courier New, Courier, mono">@XVARRAY
+@NumVarray</font></strong></span></pre>
+      <p><img src="images/view_image.gif" name="img04_d" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p class="bodycopy" align="right"><a href="#t" class="bodylink">Back to Topic 
+  List</a></p>
+<h4> 
+  <p class="navheader"><a name="t3" id="t2"></a>Invoking 
+    Java in Database</p>
+</h4>
+<p> <span class="bodycopy">Perform the following steps to invoke a Java application 
+  using <font face="Courier New, Courier, mono">ojmjava</font> or PL/SQL wrapper:</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="621"> <p><span class="bodycopy">Setting up the database table. Execute the </span><span class="style12"><font face="Courier New, Courier, mono"><a href="files/XVARRAY.sql">Workers</a></font></span><span class="bodycopy"><font face="Courier New, Courier, mono"><a href="files/XVARRAY.sql">.SQL</a> </font>script<font face="Courier New, Courier, mono">: </font></span></p>
+      <pre><span class="style11"><strong><font face="Courier New, Courier, mono">@Workers
+exit</font></strong></span></pre>
+      <p><img src="images/view_image.gif" name="img05_a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Invoking Java in the Database using <font face="Courier New, Courier, mono">ojmjava</font>, 
+        which is an interactive command-line utility which can run Java classes 
+        in the database from the client machine. The <font face="Courier New, Courier, mono">ojmjava</font> 
+        uses the JDBC connection to create a database session to pass a byte array 
+        from <font face="Courier New, Courier, mono">ojmjava</font> client to 
+        <font face="Courier New, Courier, mono">ojmjava</font> server where the 
+        main method of the user class is executed. The <font face="Courier New, Courier, mono">ojmjava</font> 
+        server then passes the output back to the client. From your terminal window, execute the following commands:</p>
+      <pre class="bodycopy"><span class="style13"><strong><font face="Courier New, Courier, mono">ojvmjava -thin -user hr/hr
+</font></strong></span><strong><font face="Courier New, Courier, mono">Java Workers 621 &quot;Senior VP&quot; 650000</font></strong><font face="Courier New, Courier, mono"> </font> </pre>
+      <p><img src="images/view_image.gif" name="new05" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>3.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Invoking Java in Database using the PL/SQL wrapper. From your terminal window, execute the following commands:</p>
+      <pre class="bodycopy"><span class="style14"><strong><font face="Courier New, Courier, mono">sqlplus hr/hr
+create or replace procedure WorkerSp
+  (wid IN varchar2, wpos in varchar2, wsal in varchar2) as
+  language Java name 
+  'Workers.main(java.lang.String[])';</font></strong></span><strong><font face="Courier New, Courier, mono">
+call WorkerSp('621','Senior VP','650000');</font></strong><font face="Courier New, Courier, mono"> </font> </pre>
+      <p><img src="images/view_image.gif" name="img05_c2" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p class="bodycopy" align="right"><a href="#t" class="bodylink">Back to Topic 
+  List</a></p>
+<h4> 
+  <p class="navheader"><a name="t4" id="t2"></a>Illustrating an Object Type Call 
+    Spec </p>
+</h4>
+<p> <span class="bodycopy">Object Type Call Spec can publish <font face="Courier New, Courier, mono">public 
+  static</font> member methods of an object type using the <font face="Courier New, Courier, mono">STATIC</font> 
+  keyword. However, unlike any other PL/SQL packaged Call Spec, using the <font face="Courier New, Courier, mono">MEMBER</font> 
+  keyword Object Type Call Spec can also publish non-static instance methods.Using 
+  following steps create and test an Object Type Call spec:</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Invoking Java in Database using the PL/SQL wrapper. From your terminal window, execute the <a href="files/BasicObjTyp.sql">@BasicObjTyp.sql</a> script:</p>
+      <pre class="bodycopy"><span class="style15"><strong><font face="Courier New, Courier, mono">@BasicObjTyp</font></strong></span></pre>
+      <p><img src="images/view_image.gif" name="img03_a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p class="bodycopy" align="right"><a href="#t" class="bodylink">Back to Topic 
+  List</a></p>
+<h4> 
+  <p class="navheader"><a name="T5"></a>Compiling Java with JIT</p>
+</h4>
+<p class="bodycopy"><span class="bodycopy">You can achieve the best execution performance for 
+  Java by using binary executables, which are obtained by compiling Java source 
+  code using JIT compilers and/or static compilers. Starting with Oracle Database 
+  11g OJVM uses a JIT compiler which allows dynamic selection, native-compilation, 
+  and execution of most frequently used Java methods hence leading to better performance 
+  and manageability compared to NCOMP used in Oracle Database 10g. 
+  You can display the benefits of JIT compilation compared to interpretation of 
+Java application using the following steps:</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">From your terminal window, execute the <a href="files/JITDemo.sql">@JITDemo.sql</a> script:</p>
+      <pre class="bodycopy"><span class="style16"><strong><font face="Courier New, Courier, mono">@JITDemo</font></strong></span></pre>
+      <p class="bodycopy">Notice the timing ratio between interpreted and compiled code</p>
+      <p><img src="images/view_image.gif" name="new06" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p class="bodycopy" align="right"><a href="#t" class="bodylink">Back to Topic 
+  List</a></p>
+<h4> 
+  <p class="navheader"><a name="t6" id="t6"></a>Displaying Java Memory Areas</p>
+</h4>
+<p class="bodycopy">In OracleJVM the states of Java objects, used for specific 
+    needs, are preserved in various specific memory ares (such as Newspace, Oldspace, 
+    Runspace, Stackspace, Sessionspace) called &quot;object memories&quot;.Perform 
+  the following step to display various Java memory areas </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">From your terminal window, execute the <a href="files/BasicObjTyp.sql">@memtest.sql</a> script:</p>
+      <pre class="bodycopy"><span class="style17"><strong><font face="Courier New, Courier, mono">@memtest</font></strong></span></pre>
+      <p><img src="images/view_image.gif" name="img07_a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+
+</table>
+<p class="bodycopy" align="right"><a href="#t" class="bodylink">Back to Topic 
+  List</a></p>
+<h4>
+  <p class="navheader"><a name="s"></a>Summary</p>
+</h4>
+<p><span class=bodycopy>In this tutorial, you learned about the following:</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="380">
+  <tbody>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodycopy">Load and Run a Java Application in the Database </td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodycopy">Map a SQL Type to a Java Type </td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodycopy">Invoke Java in the Database</td>
+    </tr>
+    <tr valign="top">
+      <td height="16"><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodycopy">Illustrate an Object Type Call Spec </td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodycopy">Compile Java with JIT</td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodycopy">Display Java Memory Areas</td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="hideAllImages()">  <b><font color="#ff0000">Place the cursor over this icon to hide all screenshots.</font></b>
+</h3>
+<h4 align="left">
+  <p align="left"> 
+  </p>
+</h4>
+<div align="right"></div>
+<h4 align="left">
+  <p align="left"> 
+  </p>
+</h4>
+<div align="right"></div>
+<h4>
+  <p></p>
+  <h3>&nbsp;</h3>
+  <h4>&nbsp;</h4>
+  <h4>&nbsp;</h4>
+</h4>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+preLoadImages();
+//-->
+</script>
+
+
+<script language="JavaScript" type="text/JavaScript">
+<!--
+preLoadImages();
+//-->
+</script>
+</html>

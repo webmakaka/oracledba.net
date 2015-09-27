@@ -1,0 +1,17 @@
+Project	Task Name	Start Date	End Date	Status	Assigned To
+Maintain Support Systems	HR software needs upgrade	01-Dec-2004	14-Jan-2005	open	3
+Maintain Support Systems	Apply Billing System updates	15-Dec-2004	22-Dec-2004	open	1
+Maintain Support Systems	Investigate new Virus Protection software	15-Dec-2004	28-Jan-2005	open	3
+Maintain Support Systems	Arrange for holiday coverage	01-Nov-2004	15-Nov-2004	closed	7
+Email Integration	Complete plan	15-Nov-2004	30-Nov-2004	closed	2
+Email Integration	Check software licenses	01-Dec-2004	15-Dec-2004	open	2
+Email Integration	Get RFPs for new server	01-Dec-2004	30-Dec-2004	open	2
+Email Integration	Purchase backup server	17-Jan-2005	21-Jan-2005	open	7
+Employee Satisfaction Survey	Complete questionaire	19-Jan-2005	28-Jan-2005	open	4
+Employee Satisfaction Survey	Review with legal	31-Jan-2005	04-Feb-2005	open	4
+Employee Satisfaction Survey	Plan rollout schedule	17-Jan-2005	21-Jan-2005	open	4
+Public Website	Determine host server	15-Nov-2004	30-Nov-2004	closed	8
+Public Website	Check software licenses	15-Nov-2004	30-Nov-2004	closed	8
+Public Website	"Purchase additional software licenses, if needed"	30-Nov-2004	10-Dec-2004	on-hold	7
+Public Website	Develop web pages	15-Nov-2004	15-Dec-2004	open	6
+Public Website	Plan rollout schedule	15-Nov-2004	03-Dec-2004	closed	8

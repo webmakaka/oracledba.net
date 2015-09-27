@@ -1,0 +1,769 @@
+<html>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+.style4 {font-family: "Courier New", Courier, mono}
+.style7 {font-size: 12px}
+-->
+</style>
+<title>Controlling Execution Plan Evolution Using SQL Plan Management</title>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style13 {color: #FF0000}
+.style14 {color: #000000}
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<h3 align="left" class="topstoryhead"><span class="bodylink"> </span>Controlling Execution Plan Evolution Using SQL Plan Management</h3>
+<h4 class=Purpose><span class="navheader">Purpose</span></h4>
+<p class="bodycopy">This tutorial describes how you can manage your SQL execution plans in Oracle Database 11g. </p>
+<p class="navheader">Time to Complete</p>
+<p class="bodycopy">Approximately 30 minutes</p>
+<h4 class=Topic><span class="navheader"><a name="t"></a>Topics</span></h4>
+<p class="bodycopy">This tutorial discusses the following:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#o">Overview</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#p">Prerequisites</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t1" class="bodylink">Capturing Plans Automatically </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t2" class="bodylink">Capturing Plans in Bulk </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t3" class="bodylink">Managing  Plans </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#s">Summary</a></td>
+  </tr>
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" name="print" width=24
+height=24 border=0 onMouseOver="showAllImages()"><font  color="#FF0000"><b></b></font><b><span class="style7"><font color="#ff0000" face="Arial, Helvetica, sans-serif"> Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. (Caution: This action loads all screenshots simultaneously, so, depending on your Internet connection, may result in a slow response time.) </font><font color="#ff0000"></font></span></b></p>
+<p><span class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over an individual icon in the following steps to load and view only the screenshot associated with that step. You can hide an individual screenshot by clicking it. </span></p>
+<h3 class="navheader"><a name="o" id="o"></a>Overview</h3>
+<p class="NORMAL"> <span class="bodycopy">Potential performance risks can occur when the execution plan changes for a SQL statement. A plan change can occur due for a variety of reasons including but not limited to the following types of changes occurring in the system: optimizer version, optimizer statistics, optimizer parameters, schema/metadata definitions, system settings, as well as SQL profile creation. Sometimes a change in the system (e.g. drop an index) causes an irreversible plan change. Not being able to guarantee a plan will change for the good has caused some customers to freeze their execution plans or their optimizer statistics.</span></p>
+<p class="bodycopy">In Oracle Database 11g a new feature SQL Plan Management (SPM) is introduced, which provides controlled execution plan evolution. With SPM, the optimizer automatically manages execution plans and ensures only known or verified plans are used. When a new plan is found for a SQL statement it will not be used until it has been verified to have comparable or better performance than the current plan.</p>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before starting this tutorial, you should first complete the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="590">
+  <tbody>
+    <tr valign="top">
+      <td width="15" class="bodycopy"><b>1.</b></td>
+      <td colspan="2" class="bodylink"><p>Install Oracle Database 11<i>g</i>. </p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>2.</b></td>
+      <td colspan="2" class="bodylink"><p>Download and unzip the<font face="Courier New, Courier, mono"> <a href="files/spm.zip">spm.zip</a></font> file into a working directory.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t1" id="t1"></a>Capturing Plans Automatically</h3>
+<p class="bodycopy">Automatic plan capture can be switched on by setting the init.ora parameter optimizer_capture_sql_plan_baselines to true. When automatic plan capture is on the SPM repository will be automatically populated for any repeatable SQL statement. To identify repeatable SQL statements the optimizer will log the identity of each SQL statement into a statement log, the first time it is compiled. After a SQL statement.s identity has been logged, if it is processed again (i.e. executed or compiled) the presence of its identity in the statement log will signify it to be a repeatable statement. A SQL plan history will be created and the current or cost-base plan will be added as the first plan baseline. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">Open Enterprise Manager DB Control and login as the <strong>system</strong> user. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="login" border="1" class="imgborder_off" id="login" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">Select the <strong>Server</strong> tab. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm" border="1" class="imgborder_off" id="spm" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td><p class="bodycopy">Under Query Optimizer, select <strong>SQL Plan Control</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm02" border="1" class="imgborder_off" id="spm02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td><p class="bodycopy">Select the <strong>SQL Plan Baseline</strong> tab. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm03" border="1" class="imgborder_off" id="spm03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td><p class="bodycopy">Under Settings, select the link <strong>FALSE</strong> for Capture SQL Plan Baselines. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm17" border="1" class="imgborder_off" id="spm17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td><p class="bodycopy">For the parameter <span class="style4">optimizer_capture_sql_plan_baseline</span> select  <strong>TRUE</strong> for the value and click <strong>OK</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm18" border="1" class="imgborder_off" id="spm18" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 7.</b></td>
+    <td><p class="bodycopy">The parameter is now set to true. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm19" border="1" class="imgborder_off" id="spm19" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 8.</b></td>
+    <td><p class="bodycopy">Open a SQL*Plus session and login as <strong>SYSTEM</strong>. Since this is the first time the SQL statement has been run and it is not yet repeatable and there is no plan baseline yet, you need to execute the following query 2 times.</p>
+      <p class="bodycopy"><span class="bodycopy style4"><b>      @<b>load_auto_select.sql</b>      </b></span></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm20" border="1" class="imgborder_off" id="spm20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 9.</b></td>
+    <td><p class="bodycopy">Switch to Enterprise Manager and enter <strong>%LOAD_AUTO%</strong> in the SQL Text field and click <strong>Go</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm34" border="1" class="imgborder_off" id="spm34" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="style13">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 10.</b></td>
+    <td><p class="bodycopy">Your plan is now in the list. Select the SQL Text link to view details. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm40" border="1" class="imgborder_off" id="spm40" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="style13">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 11.</b></td>
+    <td><p class="bodycopy">The SQL Plan Baseline details are displayed. Notice that the Origin is set to AUTO_CAPTURE because you loaded the baselines automatically. Click <strong>Return</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm41" border="1" class="imgborder_off" id="spm41" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 12.</b></td>
+    <td><p class="bodycopy">Now you want to change or alter the optimizer mode, which triggers the SQL statement to execute with a different plan. Switch to SQL*Plus and change the optimizer mode. Execute the following command.</p>
+      <p class="bodycopy"><span class="bodycopy style4"><b>alter session set optimizer_mode = first_rows;</b></span></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm36" border="1" class="imgborder_off" id="spm36" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 13.</b></td>
+    <td><p class="bodycopy">Rerun the following query. </p>
+        <p class="bodycopy"><span class="bodycopy style4"><b>@<b>load_auto_select.sql</b></b></span></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm37" border="1" class="imgborder_off" id="spm37" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 14.</b></td>
+    <td><p class="bodycopy">Since the SQL statement will have a new plan another plan baseline is automatically captured. You can confirm this by checking the plan baseline. Switch back to DB Control and click <strong>Go</strong>.<span class="bodycopy style4"><b></b></span></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm38" border="1" class="imgborder_off" id="spm38" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 15.</b></td>
+    <td><p class="bodycopy">You now see two plan baselines for the SQL query but you notice that the second plan has not been accepted. This new plan needs to be validated before it is acceptable as a good plan to use. Select checkbox in front of the plan that was not accepted and click <strong>Evolve</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm42" border="1" class="imgborder_off" id="spm42" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 16.</b></td>
+    <td><p class="bodycopy">In this case we are not concerned if this new plan can perform as good as or better then the current SQL plan baseline so you want to select <b>No</b> for Verify Performance. This means that the plan will become an accepted SQL plan baseline regardless of its performance. Then Click <b>OK</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm44" border="1" class="imgborder_off" id="spm44" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="style13">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 17.</b></td>
+    <td><p class="bodycopy">The job was submitted. Click <strong>Go</strong> again to refresh the list. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm44a" border="1" class="imgborder_off" id="spm44a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="style13">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 18.</b></td>
+    <td><p class="bodycopy">The plan is now accepted. To review the explain plan, select the SQL Text link.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm46" border="1" class="imgborder_off" id="spm46" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="style13">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 19.</b></td>
+    <td><p class="bodycopy">This plan performs a bitmap index full scan. Click <strong>Return</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm47" border="1" class="imgborder_off" id="spm47" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="style13">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 20.</b></td>
+    <td><p class="bodycopy">You can now  reset the optimizer mode to the default values and disable  auto capture of plan baselines. Switch to your SQL*Plus session and run the following command. </p>
+        <p class="bodycopy"><span class="bodycopy style4"><b>alter session set optimizer_mode = all_rows;</b></span></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm29" border="1" class="imgborder_off" id="spm29" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 21.</b></td>
+    <td><p class="bodycopy">Switch back to DB Control. Select the <strong>TRUE</strong> link for Capture SQL PLAN Baselines.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm30" border="1" class="imgborder_off" id="spm30" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 22.</b></td>
+    <td><p class="bodycopy">For the parameter <span class="style4">optimizer_capture_sql_plan_baseline</span> select <strong>FALSE</strong> for the value and click <strong>OK</strong>.<span class="bodycopy style4"><b><b></b></b></span></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm31" border="1" class="imgborder_off" id="spm31" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 23.</b></td>
+    <td><p class="bodycopy">The parameter has been changed. <span class="bodycopy style4"></span></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm32" border="1" class="imgborder_off" id="spm32" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 24.</b></td>
+    <td><p class="bodycopy">You can now drop the SQL baselines.<span class="bodycopy style4"> Select the checkbox in front of each baseline and click <strong>Drop</strong>. </span></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm25" border="1" class="imgborder_off" id="spm25" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 25.</b></td>
+    <td><p class="bodycopy">Click <strong>Yes</strong> to confirm the drop. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm26" border="1" class="imgborder_off" id="spm26" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 26.</b></td>
+    <td><p class="bodycopy">Your baselines have been dropped.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm27" border="1" class="imgborder_off" id="spm27" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="t2" id="t2"></a>Capturing Plans in Bulk </h3>
+<p class="bodycopy">There are two ways to capture plans in bulk:</p>
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr valign="top">
+    <td class="bodycopy"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td><p class="bodycopy"><a href="#t2a">Using a SQL Tuning Set (STS) </a> </p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b><img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td class="bodycopy"><a href="#t2b">From the Cursor Cache </a></td>
+  </tr>
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="boldbodycopy"><a name="t2a" id="t2a"></a>Using a SQL Tuning Set (STS) </h3>
+<p class="bodycopy">You can use a SQL Tuning set to Capture plan details for a (critical) set of SQL Statements. This is one way to ensure there will be no unwanted plan changes when upgrading from 10g to 11g. Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">The first task you need to perform is to check the explain plan. Switch to your SQL*Plus session and execute the following script:</p>
+      <p class="bodycopy"><strong>@load_sts_explain_plan</strong></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_01" border="1" class="imgborder_off" id="spm_sts_01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">Then execute the SQL Statement using the following script:</p>
+      <p class="bodycopy"><strong>@load_sts_select </strong></p>
+      <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_02" border="1" class="imgborder_off" id="spm_sts_02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tbody> 
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      3.</b></td>
+    <td> 
+      <p class="bodycopy"> Now you can alter the optimizer mode by executing the following command:</p>
+      <p class="bodycopy"><strong>alter session set optimizer_mode = first_rows;</strong></p>
+      <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_03" border="1" class="imgborder_off" id="spm_sts_03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td><p class="bodycopy"> Now re-execute the following scripts to get a different plan. </p>
+      <p class="bodycopy"><strong>@load_sts_explain_plan<br>
+        @load_sts_select
+      </strong></p>
+      <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_04" border="1" class="imgborder_off" id="spm_sts_04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      5.</b></td>
+    <td> 
+      <p class="bodycopy">Then reset the optimizer mode by executing the following command:</p>
+      <p class="bodycopy"><strong>alter session set optimizer_mode = all_rows; </strong></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_05" border="1" class="imgborder_off" id="spm_sts_05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td><p class="bodycopy">At this point you are ready to create a SQL Tuning Set and load the plan. From your SQL*Plus session, execute the following script to create the SQL Tuning set.</p>
+      <p class="bodycopy"><strong>@cr_sts</strong></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_27" border="1" class="imgborder_off" id="spm_sts_27" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      7.</b></td>
+    <td> 
+      <p class="bodycopy">Now you can populate the SQL Tuning set with the SQL you just ran. Execute the following script to populate the SQL Tuning set:</p>
+      <p class="bodycopy"><strong>@populate_sts </strong></p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_28" border="1" class="imgborder_off" id="spm_sts_28" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 8.</b></td>
+    <td><p class="bodycopy">Switch to Enterprise Manager. Now you are ready to load the plan based on the SQL Tuning set you just created. From the SQL Control Plan &gt; SQL Plan Baseline tab, click <strong>Load</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_19" border="1" class="imgborder_off" id="spm_sts_19" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 9.</b></td>
+    <td><p class="bodycopy">Select the flashlight for SQL Tuning Set. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_20" border="1" class="imgborder_off" id="spm_sts_20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 10.</b></td>
+    <td><p class="bodycopy">Select the Tuning Set <strong>SPM_STS</strong> and click <strong>Select</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_21" border="1" class="imgborder_off" id="spm_sts_21" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 11.</b></td>
+    <td><p class="bodycopy">Click <strong>OK</strong> to create the baseline job. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_22" border="1" class="imgborder_off" id="spm_sts_22" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 12.</b></td>
+    <td><p class="bodycopy">The baseline was created. Click <strong>Refresh</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_23" border="1" class="imgborder_off" id="spm_sts_23" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 13.</b></td>
+    <td><p class="bodycopy">Enter <strong>%LOAD_STS%</strong> in the SQL Text field and click <strong>Go</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_24" border="1" class="imgborder_off" id="spm_sts_24" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 14.</b></td>
+    <td><p class="bodycopy">Select the SQL text link </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_25" border="1" class="imgborder_off" id="spm_sts_25" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><b> 15 </b><b>.</b></p>
+      </td>
+    <td><p class="bodycopy">The explain plan is displayed. <span class="style14">This time the Origin is set to MANUAL-LOAD because of the way the plans were created. Click <strong>Return</strong>. </span></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_26" border="1" class="imgborder_off" id="spm_sts_26" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 16.</b></td>
+    <td><p class="bodycopy">You can now drop the SQL baselines.<span class="bodycopy style4"> Select the checkbox in front of each baseline and click <strong>Drop</strong>. </span></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_29" border="1" class="imgborder_off" id="spm_sts_29" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 17.</b></td>
+    <td><p class="bodycopy">Click <strong>Yes</strong> to confirm the drop.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_30" border="1" class="imgborder_off" id="spm_sts_30" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 18.</b></td>
+    <td><p class="bodycopy">Your baselines have been dropped.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_sts_31" border="1" class="imgborder_off" id="spm_sts_31" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  
+  </tbody> 
+</table>
+<p align="right"><span class="bodylink"><a href="#t2">Back to Topic</a></span></p>
+<h3 class="boldbodycopy"><a name="t2b" id="t2b"></a>From the Cursor Cache </h3>
+<p class="bodycopy"><span class="bodycopy">You can load plans straight from the cursor cache using dbms_spm.load_plans_from_cursor_cache. It is possible to load plans for all of the statements in the cursor cache or you can apply a filter on the module name or schema name, etc. The next time these statements are executed their baseline plans will be used.  Perform the following steps: </span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">The first task you need to perform is to check the explain plan. Switch to your SQL*Plus session and execute the following script:</p>
+        <p class="bodycopy"><strong>@load_cc_explain_plan</strong></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_01" border="1" class="imgborder_off" id="spm_cc_01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">Then execute the SQL Statement using the following script:</p>
+        <p class="bodycopy"><strong>@load_cc_select </strong></p>
+        <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_02" border="1" class="imgborder_off" id="spm_cc_02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tbody>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 3.</b></td>
+      <td><p class="bodycopy"> Now you can alter the optimizer mode by executing the following command:</p>
+          <p class="bodycopy"><strong>alter session set optimizer_mode = first_rows;</strong></p>
+          <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_03" border="1" class="imgborder_off" id="spm_cc_03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 4.</b></td>
+      <td><p class="bodycopy"> Now re-execute the following scripts to get a different plan.</p>
+          <p class="bodycopy"><strong>@load_cc_explain_plan<br>
+          @load_cc_select </strong></p>
+          <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_04" border="1" class="imgborder_off" id="spm_cc_04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 5.</b></td>
+      <td><p class="bodycopy">Then reset the optimizer mode by executing the following command:</p>
+          <p class="bodycopy"><strong>alter session set optimizer_mode = all_rows; </strong></p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_05" border="1" class="imgborder_off" id="spm_cc_05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 6.</b></td>
+      <td><p class="bodycopy">Now that the cursor cache is populated you need to get the sql id for your SQL statement which will be used to filter the content of the cursor cache when you load the baselines. Execute the following script:</p>
+        <p class="bodycopy"><strong>@load_cc_get_sql_id </strong></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_06" border="1" class="imgborder_off" id="spm_cc_06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 7.</b></td>
+      <td><p class="bodycopy">Now, you can load the plan and create the baseline. Switch to Enterprise Manager DB Control. From the Server &gt; SQL Plan Control &gt; SQL Plan Baseline page, click <strong>Load</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_07" border="1" class="imgborder_off" id="spm_cc_07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 8.</b></td>
+      <td><p class="bodycopy">Select the radio button <strong>Load plans from cursor cache</strong> and select the flashlight for SQL id. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_08" border="1" class="imgborder_off" id="spm_cc_08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>9.</b></td>
+      <td><p class="bodycopy">Enter <strong>%LOAD_CC%</strong> for the SQL text and click <strong>Go</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_09" border="1" class="imgborder_off" id="spm_cc_09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 10.</b></td>
+      <td><p class="bodycopy">Select the checkbox in front of the SQL id that you saw in the previous step when you queried the cursor cache in SQL*Plus and click <strong>Select</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_10" border="1" class="imgborder_off" id="spm_cc_10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp; </p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 11.</b></td>
+      <td><p class="bodycopy">Click <strong>OK</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_11" border="1" class="imgborder_off" id="spm_cc_11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 12.</b></td>
+      <td><p class="bodycopy">The job was submitted. Enter <strong>%LOAD_CC%</strong> for SQL Text and click <strong>Go</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_12" border="1" class="imgborder_off" id="spm_cc_12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 13.</b></td>
+      <td><p class="bodycopy">Select the link for your SQL statement. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_13" border="1" class="imgborder_off" id="spm_cc_13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 14.</b></td>
+      <td><p class="bodycopy">The explain plan is shown. Click <strong>Return</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_14" border="1" class="imgborder_off" id="spm_cc_14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 15.</b></td>
+      <td><p class="bodycopy">You can now drop the SQL baselines.<span class="bodycopy style4"> Select the checkbox in front of each baseline and click <strong>Drop</strong>. </span></p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_15" border="1" class="imgborder_off" id="spm_cc_15" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 16.</b></td>
+      <td><p class="bodycopy">Click <strong>Yes</strong> to confirm the drop </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_16" border="1" class="imgborder_off" id="spm_cc_16" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 17.</b></td>
+      <td><p class="bodycopy">Your baselines have been dropped.</p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_cc_17" border="1" class="imgborder_off" id="spm_cc_17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">&nbsp;</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"><span class="bodylink"><a href="#t2">Back to Topic</a></span></p>
+<h3 class="navheader"><a name="t3" id="t3"></a>Managing Plans </h3>
+<p class="bodycopy">Each time a SQL Statement is compiled, the optimizer first uses the traditional cost-based search method to build a best-cost plan. If the initialization parameter OPTIMIZER_USE_PLAN_BASELINES is set to TRUE (default value) it will then try to find a patching plan in the SQL plan baseline. If a match is found then it proceeds as usual. Otherwise, it first adds the new plan to the plan history, and then it costs each of the accepted plans in the SQL plan baseline and picks the one with the lowest cost. Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">The first task you need to perform is to check the explain plan. Switch to your SQL*Plus session and execute the following script:</p>
+        <p class="bodycopy"><strong>@use_opm_explain_plan</strong></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_01" border="1" class="imgborder_off" id="spm_opm_01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">Then execute the SQL Statement using the following script:</p>
+        <p class="bodycopy"><strong>@use_opm_select </strong></p>
+        <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_02" border="1" class="imgborder_off" id="spm_opm_02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tbody>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 3.</b></td>
+      <td><p class="bodycopy"> Now you can alter the optimizer mode by executing the following command:</p>
+          <p class="bodycopy"><strong>alter session set optimizer_mode = first_rows;</strong></p>
+          <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_03" border="1" class="imgborder_off" id="spm_opm_03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 4.</b></td>
+      <td><p class="bodycopy"> Now re-execute the following scripts to get a different plan.</p>
+          <p class="bodycopy"><strong>@use_opm_explain_plan<br>
+        @use_opm_select </strong></p>
+          <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_04" border="1" class="imgborder_off" id="spm_opm_04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 5.</b></td>
+      <td><p class="bodycopy">Then reset the optimizer mode by executing the following command:</p>
+          <p class="bodycopy"><strong>alter session set optimizer_mode = all_rows; </strong></p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_06" border="1" class="imgborder_off" id="spm_opm_06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 6.</b></td>
+      <td><p class="bodycopy">Now that the cursor cache is populated you need to get the sql id for your SQL statement which will be used to filter the content of the cursor cache when you load the baselines. Execute the following script:</p>
+          <p class="bodycopy"><strong>@use_opm_get_sql_id </strong></p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_07" border="1" class="imgborder_off" id="spm_opm_07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 7.</b></td>
+      <td><p class="bodycopy">Now, you can load the plan and create the baseline. Switch to Enterprise Manager DB Control. From the Server &gt; SQL Plan Control &gt; SQL Plan Baseline page, click <strong>Load</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_08" border="1" class="imgborder_off" id="spm_opm_08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 8.</b></td>
+      <td><p class="bodycopy">Select the radio button <strong>Load plans from cursor cache</strong> and select the flashlight for SQL id. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_09" border="1" class="imgborder_off" id="spm_opm_09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>9.</b></td>
+      <td><p class="bodycopy">Enter <strong>%USE_OPM%</strong> for the SQL text and click <strong>Go</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_10" border="1" class="imgborder_off" id="spm_opm_10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp; </p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 10.</b></td>
+      <td><p class="bodycopy">Select the checkbox in front of the SQL id that you saw in the previous step when you queried the cursor cache in SQL*Plus and click <strong>Select</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_11" border="1" class="imgborder_off" id="spm_opm_11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp; </p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 11.</b></td>
+      <td><p class="bodycopy">Click <strong>OK</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_12" border="1" class="imgborder_off" id="spm_opm_12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 12.</b></td>
+      <td><p class="bodycopy">The job was submitted. Enter <strong>%USE_OPM%</strong> for SQL Text and click <strong>Go</strong>. The SQL Plan Baselines are shown. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_13" border="1" class="imgborder_off" id="spm_opm_13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 13.</b></td>
+      <td><p class="bodycopy">Now that the plans are loaded you want to check that it is being used. Switch to your SQL*Plus session and execute the following script:</p>
+        <p class="bodycopy"><strong>@use_opm_explain_plan2</strong></p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_15" border="1" class="imgborder_off" id="spm_opm_15" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">The note at the end of the explain output indicates that a baseline is being used. From the execution plan you see that the  first baseline, a full table scan, is being used.</p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 14.</b></td>
+      <td><p class="bodycopy">You can switch to use the other baseline by change the optimizer mode back to first_rows. Execute the following command: </p>
+          <p class="bodycopy"><strong>alter session set optimizer_mode = first_rows;</strong></p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_26" border="1" class="imgborder_off" id="spm_opm_26" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 15.</b></td>
+      <td><p class="bodycopy">Rerun the explain plan again to see the other baseline. Execute the following script:</p>
+          <p class="bodycopy"><strong>@use_opm_explain_plan2</strong></p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_27" border="1" class="imgborder_off" id="spm_opm_27" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">From the execution plan you see that the second baseline, a bitmap index full scan, is being used.</p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 16.</b></td>
+      <td><p class="bodycopy">At this point, you want to  disable that plan baseline, and check that it will use other plan baseline. Switch to Enterprise Manager and select the checkbox in front of the plan that was shown in the explain plan from the previous step. The click <strong>Disable</strong>.</p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_16" border="1" class="imgborder_off" id="spm_opm_16" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 17.</b></td>
+      <td><p class="bodycopy">The plan has been disabled. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_17" border="1" class="imgborder_off" id="spm_opm_17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 18.</b></td>
+      <td><p class="bodycopy">Switch to your SQL*Plus session and execute the following script again:</p>
+        <p class="bodycopy"><strong>@use_opm_explain_plan2</strong> </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_19" border="1" class="imgborder_off" id="spm_opm_19" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">From the execution plan, you see the plan being used is the index scan instead of the full table scan so this is the second baseline. </p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 19.</b></td>
+      <td><p class="bodycopy">The last task you want to perform is to  disable this other plan baseline. The optimizer will then fall back to the cost-based approach. Switch to Enterprise Manager and select the checkbox in front of the plan that was shown in the explain plan from the previous step. The click <strong>Disable</strong>.</p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_20" border="1" class="imgborder_off" id="spm_opm_20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 20.</b></td>
+      <td><p class="bodycopy">Both plans are now disabled. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_21" border="1" class="imgborder_off" id="spm_opm_21" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 21.</b></td>
+      <td><p class="bodycopy">Switch to your SQL*Plus session and execute the following script one last time:</p>
+          <p class="bodycopy"><strong>@use_opm_explain_plan2</strong> </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_22" border="1" class="imgborder_off" id="spm_opm_22" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">The optimizer is now using the default cost based approach as there is no note at the end of the plan stating a baseline was used.</p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 22.</b></td>
+      <td><p class="bodycopy">You can now drop the SQL baselines.<span class="bodycopy style4"> Select the checkbox in front of each baseline and click <strong>Drop</strong>. </span></p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_23" border="1" class="imgborder_off" id="spm_opm_23" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 23.</b></td>
+      <td><p class="bodycopy">Click <strong>Yes</strong> to confirm the drop </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_24" border="1" class="imgborder_off" id="spm_opm_24" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 24.</b></td>
+      <td><p class="bodycopy">Your baselines have been dropped.</p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="spm_opm_25" border="1" class="imgborder_off" id="spm_opm_25" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">&nbsp;</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a> </span></p>
+<h3 class="navheader"><a name="s" id="s"></a>Summary</h3>
+<p><span class=bodycopy>In this tutorial, you've learned how to:</span></p>
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Capture plans automatically </td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Capture plans using a SQL Tuning Set or SQL ID </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Select a plan to use </td>
+  </tr>
+  <tbody>
+  </tbody>
+</table>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<p><span class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="noscreenshots" width=24
+height=24 border=0 onMouseOver="hideAllImages()"></span></span><b class="bodycopy"><font color="#FF0000">Move your mouse over this icon to hide all screenshot</font></b></p>
+<h3>&nbsp;</h3>
+<h4>&nbsp;</h4>
+<h4>&nbsp;</h4>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>
+</html>

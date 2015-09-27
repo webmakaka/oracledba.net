@@ -1,0 +1,151 @@
+SQL> connect / as sysdba
+Connected.
+SQL>
+SQL> @flada_list1.sql
+SQL> REM "******************************************* "
+SQL> REM "For demo purposes ONLY:"
+SQL>
+SQL> connect / as sysdba
+Connected.
+SQL>
+SQL> set echo on
+SQL> set serveroutput on
+SQL> -- set verify on
+SQL> set term on
+SQL> set lines 200
+SQL> set pages 44
+SQL> set pause on
+SQL>
+SQL> /*== To list the available data dictioary views ==*/
+SQL>
+SQL> SELECT table_name
+  2  FROM   dict
+  3  WHERE  table_name LIKE '%FLASHBACK_ARCHIVE%'
+  4  /
+
+
+TABLE_NAME
+------------------------------
+DBA_FLASHBACK_ARCHIVE
+DBA_FLASHBACK_ARCHIVE_TABLES
+DBA_FLASHBACK_ARCHIVE_TS
+USER_FLASHBACK_ARCHIVE
+USER_FLASHBACK_ARCHIVE_TABLES
+
+SQL> pause Press [Enter] to continue ...
+Press [Enter] to continue ...
+
+SQL>
+SQL> col FLASHBACK_ARCHIVE_NAME format A25
+SQL> col ARCHIVE_TABLE_NAME format A20
+SQL> col TABLE_NAME format A12
+SQL> col OWNER_NAME format A10
+SQL>
+SQL> DESC dba_flashback_archive
+ Name   Null?    Type
+ ------------------------------------------------------------------------------- ---------------------------------- -------- ------------------------------------ ----------------------------------------
+ FLASHBACK_ARCHIVE_NAME   NOT NULL VARCHAR2(255)
+ FLASHBACK_ARCHIVE#   NOT NULL NUMBER
+ RETENTION_IN_DAYS   NOT NULL NUMBER
+ CREATE_TIME    TIMESTAMP(9)
+ LAST_PURGE_TIME    TIMESTAMP(9)
+ STATUS    VARCHAR2(7)
+
+SQL> pause Press [Enter] to continue ...
+Press [Enter] to continue ...
+
+SQL>
+SQL> /*== To query the time when the flashback data archive(s) have been created  ==*/
+SQL>
+SQL> SELECT flashback_archive_name, create_time, status
+  2  FROM   dba_flashback_archive
+  3  /
+
+
+FLASHBACK_ARCHIVE_NAME    CREATE_TIME      STATUS
+------------------------- ------------------------------------------------------ --------------------- -------
+FLA1                      18-APR-07 08.23.55.000000000 PM
+
+SQL> pause Press [Enter] to continue ...
+Press [Enter] to continue ...
+
+SQL>
+SQL> DESC dba_flashback_archive_ts
+ Name   Null?    Type
+ ------------------------------------------------------------------------------- ---------------------------------- -------- ------------------------------------ ----------------------------------------
+ FLASHBACK_ARCHIVE_NAME   NOT NULL VARCHAR2(255)
+ FLASHBACK_ARCHIVE#   NOT NULL NUMBER
+ TABLESPACE_NAME   NOT NULL VARCHAR2(30)
+ QUOTA_IN_MB    VARCHAR2(40)
+
+SQL> pause Press [Enter] to continue ...
+Press [Enter] to continue ...
+
+SQL>
+SQL> /*== To list the tablespace(s), which are used for flashback data archives ==*/
+SQL>
+SQL> SELECT *
+  2  FROM   dba_flashback_archive_ts
+  3  /
+
+
+FLASHBACK_ARCHIVE_NAME    FLASHBACK_ARCHIVE# TABLESPACE_NAME                QUOT A_IN_MB
+------------------------- ------------------ ------------------------------ ---- ------------------------------------
+FLA1                                       1 FLA_TBS1                       10
+
+SQL> pause Press [Enter] to continue ...
+Press [Enter] to continue ...
+
+SQL>
+SQL> DESC dba_flashback_archive_tables
+ Name   Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ TABLE_NAME   NOT NULL VARCHAR2(30)
+ OWNER_NAME   NOT NULL VARCHAR2(30)
+ FLASHBACK_ARCHIVE_NAME   NOT NULL VARCHAR2(255)
+ ARCHIVE_TABLE_NAME    VARCHAR2(53)
+
+SQL> pause Press [Enter] to continue ...
+Press [Enter] to continue ...
+
+SQL>
+SQL> /*== Query the table name(s), the owner name(s), and ==*/
+SQL> /*== the internal "history" table name(s) of the flashback data archive ==*/
+SQL>
+SQL> SELECT *
+  2  FROM   dba_flashback_archive_tables
+  3  /
+
+
+TABLE_NAME   OWNER_NAME FLASHBACK_ARCHIVE_NAME    ARCHIVE_TABLE_NAME
+------------ ---------- ------------------------- --------------------
+EMPLOYEES    HR         FLA1                      SYS_FBA_HIST_69357
+
+SQL>
+SQL> pause Press [Enter] to continue ...
+Press [Enter] to continue ...
+
+SQL> clear columns
+SQL>
+SQL> connect hr/HR
+Connected.
+SQL>
+SQL> SELECT table_name
+  2  FROM   dict
+  3  WHERE  table_name LIKE '%FLASHBACK_ARCHIVE%'
+  4  /
+
+
+TABLE_NAME
+------------------------------
+USER_FLASHBACK_ARCHIVE
+USER_FLASHBACK_ARCHIVE_TABLES
+
+SQL> pause Press [Enter] to continue ...
+Press [Enter] to continue ...
+
+SQL> exit
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.1.0.4.0 - Beta
+With the Partitioning, OLAP and Data Mining options
+[oracle@stctestbox05 flada]$
+

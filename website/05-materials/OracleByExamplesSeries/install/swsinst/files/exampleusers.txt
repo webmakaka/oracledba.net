@@ -1,0 +1,42 @@
+	<user>
+          <name>SpatialWsUser0</name>
+          <display-name>Spatial WS user 0</display-name>
+          <description>Used for SpatialWs</description>
+          <credentials>!welcome</credentials>
+        </user>
+        <user>
+          <name>SpatialWsUser1</name>
+          <display-name>Spatial WS user 1</display-name>
+          <description>Used for SpatialWs</description>
+          <credentials>!welcome</credentials>
+        </user>
+        <user>
+          <name>SpatialWsUser2</name>
+          <display-name>Spatial WS user 2</display-name>
+          <description>Used for SpatialWs</description>
+          <credentials>!welcome</credentials>
+        </user>
+        <user>
+          <name>SpatialWsUser3</name>
+          <display-name>Spatial WS user 3</display-name>
+          <description>Used for SpatialWs</description>
+          <credentials>!welcome</credentials>
+        </user>
+	 <user>
+          <name>wfs_rel_user</name>
+          <display-name>wfs_rel_user</display-name>
+          <description>Spatial WFS user </description>
+          <credentials>!wfs_rel_user</credentials>
+        </user>
+                  <user>
+          <name>wfs_doc_user</name>
+          <display-name>wfs_doc_user</display-name>
+          <description>Spatial WFS user </description>
+          <credentials>!wfs_doc_user</credentials>
+        </user>
+        <user>
+          <name>csw_user</name>
+          <display-name>csw_user</display-name>
+          <description>Spatial CSW  user </description>
+          <credentials>!csw_user</credentials>
+        </user>

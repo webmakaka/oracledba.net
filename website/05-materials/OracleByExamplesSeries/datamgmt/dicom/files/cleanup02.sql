@@ -1,0 +1,3 @@
+drop directory imagedir;
+
+

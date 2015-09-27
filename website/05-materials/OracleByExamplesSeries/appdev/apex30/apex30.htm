@@ -1,0 +1,3048 @@
+<html>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+.style1 {font-weight: bold}
+.style4 {font-weight: bold}
+.style5 {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+}
+.style6 {font-family: "Courier New", Courier, mono}
+-->
+</style>
+<title>Building a Functional Application Using Oracle Application Express 3.0</title>
+<style type="text/css">
+<!--
+.style9 {color: #000000; font-weight: bold; }
+.style10 {color: #000000}
+-->
+</style>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<body bgcolor="#ffffff" text="#000000">
+<h3 class="topstoryhead">Building a Functional Application Using Oracle Application Express 3.0 </h3>
+<h4 class="navheader">Purpose</h4>
+<p class="bodycopy">This tutorial shows you how to rapidly create an application 
+  using Oracle Application Express.</p>
+<p class="navheader">Time to Complete</p>
+<p class="bodycopy">Approximately 2 hours</p>
+<h3 class="Overview"><a name="t"></a><span class="navheader">Topics</span></h3>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tbody> 
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#o">Overview</a></td>
+  </tr>
+  <tr valign="top">
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#p">Prerequisites</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"> <a href="#l1" class="boldbodylink" >Creating a Table 
+      from a Spreadsheet</a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"> <a href="#l2" class="boldbodylink" >Adding a Master 
+      Table</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#l3" class="boldbodylink" >Modifying a Table</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#l3a" class="boldbodylink" >Adding a Table Using 
+      a Script </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#l3b" class="boldbodylink" >Adding a Constraint 
+      </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#l4" class="boldbodylink" >Creating an Application</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"> <a href="#l7" class="boldbodylink" >Adding a Master 
+      Detail Form</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#l8c" class="boldbodylink" >Editing Application 
+      Objects </a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"> <a href="#l8" class="boldbodylink" >Creating Lists of 
+      Values (LOVs) </a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#l8b" class="boldbodylink" >Adding an Item Validation 
+      </a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#l8f" class="boldbodylink" >Adding a Flash Chart</a></td>
+  </tr>
+  <tr valign="top">
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#l8g" class="boldbodylink" >Adding a Calendar </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"> </td>
+    <td class="bodylink"><a href="#l8a" class="boldbodylink" >Updating the Home 
+      Page Navigation List </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"> </td>
+    <td class="bodylink"> <a href="#l9" class="boldbodylink" >Applying a New Theme</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"> </td>
+    <td class="bodylink"><a href="#l9a" class="boldbodylink" >Adding a Logo </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"> <a href="#l10" class="boldbodylink" >Creating Users</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"> <a href="#l11" class="boldbodylink" >Restricting Access</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink"><a href="#s">Summary</a></td>
+  </tr>
+  </tbody> 
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"> 
+  <b><span class="style1"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. 
+
+
+
+<strong> (Caution: This action loads all screenshots simultaneously, so response time may be slow depending on your Internet connection.)</strong> </font><font color="#ff0000"></font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor 
+  over an individual icon in the following steps to load and view only the screenshot 
+  associated with that step. You can hide an individual  screenshot by clicking it. </p>
+<h3 class="Overview"><a name="o"></a><span class="navheader">Overview</span></h3>
+<p class="boldbodycopy">What Is Oracle Application Express?</p>
+<p class="bodycopy">Oracle Application Express is a rapid web application development tool for the Oracle database. Using only a web browser and limited programming experience, you can develop and deploy professional applications that are both fast and secure. </p>
+<p class="boldbodycopy">What Components Make Up Oracle Application Express?</p>
+<p class="bodycopy">Oracle Application Express  contains four main components:</p>
+<table border="1" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="122" class="bodycopy"><b>Application Builder</b></td>
+    <td colspan="2" width="518">
+      <p class="bodycopy">Used to  build database-centric interactive Web applications.</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="122" class="bodycopy"><b>SQL Workshop</b></td>
+    <td colspan="2" width="518" class="bodycopy">Used to access database objects, run SQL statements and SQL scripts.</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>Utilities</b></td>
+    <td colspan="2" class="bodycopy"> Used to Load and Unload data, Generate DDL,  run Object Reports and manage the Recycle Bin. </td>
+  </tr>
+  <tr valign="top">
+    <td width="122" class="bodycopy"><b>Administration</b></td>
+    <td colspan="2" width="518" class="bodycopy"> Used to manage services and users and to monitor activity. </td>
+  </tr>
+</table>
+<p class="boldbodycopy">Terminology</p>
+<p class="bodycopy">The following concepts are important to know when working with Oracle Application Express:</p>
+<table border="1" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b>Workspace</b></td>
+    <td colspan="2"><p class="bodycopy">A workspace is a virtual private database allowing multiple users to work within the same Oracle Application Express installation but keeping their objects, data and applications private. </p></td>
+  </tr>
+  <tr valign="top">
+    <td width="57" class="bodycopy"><b>Application</b></td>
+    <td colspan="2" width="583">
+      <p class="bodycopy">An application is a collection of pages with branches that connect them. Its attributes include the authentication method, default UI templates, and authorization rules. </p></td>
+  </tr>
+  <tr valign="top">
+    <td width="57" class="bodycopy"><b>Page</b></td>
+    <td colspan="2" width="583" class="bodycopy"> A page is the basic building block of an application. When you build an application in Application Builder, you create pages that contain user interface elements, such as tabs, lists, buttons, items, and regions.</td>
+  </tr>
+  <tr valign="top">
+    <td width="57" class="bodycopy"><b>Region</b></td>
+    <td colspan="2" width="583" class="bodycopy"> Content is displayed in regions, which are logical subsections of a page. Each page can have any number of regions of several different types. These types include: HTML text, SQL Queries, PL/SQL-generated HTML, and charts. Each region is rendered using a region template. Regions are positioned on the page using display points defined in the page template. </td>
+  </tr>
+  <tr valign="top">
+    <td width="57" class="bodycopy"><b>Item</b></td>
+    <td colspan="2" width="583" class="bodycopy"> An item can be a text field, text area, password, select list, check box, and so on. Item attributes affect the display and behavior of items on a page. For example, these attributes can impact where a label displays, how large an item is, and whether or not the item is displayed next to, or below the previous item.&nbsp; The value of an item is automatically stored into the application's session state, which can be referenced at any point within the user's session. 
+    </td>
+  </tr>
+</table>
+<h4 class="boldbodycopy">Architecture</h4>
+<p class="bodycopy">Oracle Application Express lives completely within your Oracle database. It is comprised of nothing more than data in tables and large amounts of PL/SQL code. The essence of Oracle Application Express is approximately 165 tables and 200 PL/SQL objects containing 300,000+ lines of code. </p>
+<p class="bodycopy">Whether you are running the Oracle Application Express development environment or an application you built using Oracle Application Express, the process is the same.<span style="">&nbsp; </span>Your browser sends a URL request that is translated into the appropriate Oracle Application Express PL/SQL call.<span style="">&nbsp; </span>After the database processes the PL/SQL, the results are relayed back to your browser as HTML.<span style="">&nbsp; </span>This cycle happens each time you either request a page or submit a page.<span style="">&nbsp; </span>The method behind the url translation depends on your Oracle version.<span style="">&nbsp; </span>Running Oracle Application Express in Oracle prior to 10.2.0.3 requires Apache and mod PL/SQL.<span style="">&nbsp; </span>In Oracle 10.2.0.3 and beyond, including Oracle Express Edition (XE), Oracle Application Express can use the embedded PL/SQL gateway or Apache.</p>
+<p class="bodycopy"> <font color="black" size="2"><span style="font-size: 10pt; color: windowtext;">The application session state is managed in database tables within Oracle Application Express and does not use a dedicated database connection.&nbsp; Minimal CPU resources are consumed in the Application Express environment. If a user requests a page and is mentally processing the resultant page before making another request, the database could be stopped and restarted during the user&rsquo;s think time without any perceived outage by the user.</span></font> </p>
+<p class="boldbodycopy">What is new in Oracle Application Express 3.0?</p>
+<p class="bodycopy">This release includes several major new features plus dozens of other smaller, timesavings enhancements. </p>
+<table border="1" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b>PDF Printing</b></td>
+    <td colspan="2"><p class="bodycopy">You can  export a report region to PDF. When you click to edit a report region, you notice a new tab, Print Attributes. You can also define Report Queries and Report Layouts under Shared Components. For Printing, please note that you can have the end user access this using a built-in link or via your own custom button.</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="81" class="bodycopy"><b>Access Migration</b></td>
+    <td colspan="2" width="559"><p class="bodycopy">Recently, a  new Application Migration Workshop was introduced for Oracle Application Express. That component, more details <a href="http://www.oracle.com/technology/products/database/application_express/migrations/mig_index.html" target="_window">here</a>, is a standard component of Application Express 3.0. To access the new component, select Application Migrations from the Home page.</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="81" class="bodycopy"><b>Flash Charts</b></td>
+    <td colspan="2" width="559" class="bodycopy"> When you  create a new page or region of type chart, there is a new type - Flash Chart. There are 18 types of charts that are
+supported. During the creation process, you can preview the selected
+type and set most attributes for your resulting chart. In addition to
+creating new Flash Charts, you can also convert your existing SVG
+Charts to Flash Charts. The migration utility is available under
+Application Reports &gt; Page Components and also under Tasks if you edit a region that contains an SVG Chart.</td>
+  </tr>
+  <tr valign="top">
+    <td width="81" class="bodycopy"><b>Drag and Drop Item Layout</b></td>
+    <td colspan="2" width="559" class="bodycopy"> On the Page Definition page,there is a new icon called Drag and Drop to the right of
+the Reorder Items icons. You can reorder items within the
+current region, change select attributes (item name, label, and type
+within the current item-type range), delete items and quickly create
+new items. You can place items to the left or right of an existing item
+and can insert a new row to quickly add items in the middle of an
+existing form. To remove an item, simply drag it into the recycle
+bucket at the bottom. </td>
+  </tr>
+  <tr valign="top">
+    <td width="81" class="bodycopy"><b>Improved Web Services</b></td>
+    <td colspan="2" width="559" class="bodycopy"> The Application Express Web services engine  supports more loosely
+defined types and document style Web services. Both enhancements make
+it possible to support JDeveloper created Web services and Oracle BPEL
+synchronous Web services. You can interact with Web
+services over SSL (HTTPS) and Web services that require basic
+authentication. In addition, you can manually creating a
+Web service reference if the Application Express engine cannot
+correctly parse the WSDL document for a particular service. You supply
+the SOAP request envelope and the URL endpoint among other information
+about the Web service.</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>New Item Types</b></td>
+    <td colspan="2" class="bodycopy">Several new items types have been added.  These include:<br>
+&nbsp;&nbsp;&nbsp;- Shuttle<br>
+&nbsp;&nbsp;&nbsp;- HTML Editor Minimal - available under Textarea<br>
+&nbsp;&nbsp;&nbsp;- HTML Editor Standard - available under Textarea<br>
+&nbsp;&nbsp;&nbsp;- Popup Color Picker - available under Popup List of Values<br>
+&nbsp;&nbsp;&nbsp;- Date Picker (use format mask)</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>Calendar Enhancement</b></td>
+    <td colspan="2" class="bodycopy">When you create a calendar page or region, you  automatically get a Monthly, Weekly, and Daily Calendar. The user can toggle between the mode that they want using buttons.</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>Supporting Objects Enhancement</b></td>
+    <td colspan="2" class="bodycopy">The Supporting Objects feature that was introduced in Application Express 2.2 has been enhanced to allow for the definition of upgrade scripts. As a result, you can  post upgrades to the Packaged Applications distributed on OTN and  you can install an upgrade using the same wizard as for initial installation. You can also use this feature for distributing upgrades.</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>Page and Region Caching</b></td>
+    <td colspan="2" class="bodycopy">Page and Region caching allows you to write parts of your application to a cache to improve performance. The cache attributes are set on the Page and Region attributes pages. This is useful for static pages and regions such as lists that do not have any conditions and regions containing HTML text.</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>Item Finder Enhancements</b></td>
+    <td colspan="2" class="bodycopy">In the  Application Builder, there are two new tabs on the Item Finder. One for CSS - this allows you to identify cascading style sheets that are available to any Application Express application, regardless of theme. The second is for Images - it displays an Icon gallery of generic art for use with applications. A Table Finder has also been added to both the Object Browser and SQL Commands components of the SQL Workshop. Next time you are creating a trigger in the Object Browser or writing some custom SQL in SQL Commands and just can't recall the column name you need, click the flashlight icon.</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><b>Application and Schema Comparison</b></p>
+    </td>
+    <td colspan="2" class="bodycopy">A new Application Comparison utility  under Application Reports &gt; Cross Application can be used to identify differences between two selected applications. The Schema Comparison is found under Utilities. It is used to identify differences between objects in two different schemas.</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>Friendly URL Syntax to Facilitate Bookmarks</b></td>
+    <td colspan="2" class="bodycopy">This feature allows links to use a session ID of zero for public applications. This makes all public page links consistent which makes them much more search engine and bookmark friendly. The actual session ID is stored in a cookie (this is not a security issue because this feature is only for public pages).</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>New Password and Account Controls</b></td>
+    <td colspan="2" class="bodycopy">At the instance and Workspace level, you can  specify rules for password expiration, mandate strong passwords (minimum number of characters, containing number and letters, etc), require change password on first use (very useful for system generated initial passwords), and lock accounts.</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>Improved Workspace Management</b></td>
+    <td colspan="2" class="bodycopy">In addition to the password controls above, there are several other workspace management improvements. You can  define the sizes that you want for your workspaces (selection presented to the user requesting and the default that will be selected), request an email of your Workspace Names (this is useful when you just can't recall the name of but you always know your email address), and review a log of login attempts.</td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class="navheader"><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before you perform this tutorial, you should: </p>
+<table border="0" cellpadding="1" cellspacing="0" width="650">
+  <tbody>
+    <tr valign="top">
+      <td class="bodycopy"><b> 1.</b></td>
+      <td colspan="2"><p class="bodycopy">Install Oracle Database 11g </p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 2.</b></td>
+      <td colspan="2"><p class="bodycopy">Perform the <a href="../../install/apexinst/apexinst.htm">Configuring Oracle Application Express in Oracle Database 11g</a> tutorial </p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 3.</b></td>
+      <td colspan="2"><p class="bodycopy">Download and unzip the <a href="files/apex30.zip" class="style2 style6">apex30.zip</a> file into your working directory.</p></td>
+    </tr>
+  </tbody>
+</table>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h3 class="Install"><a name="l1"></a><SPAN class=navheader>Creating a Table from a Spreadsheet </SPAN></h3>
+<p> <span class="bodycopy">To load the data for this tutorial from a spreadsheet, perform 
+  the following steps:</span></p>
+  <table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Enter the following URL to log in to Oracle Application Express (change the &lt;hostname&gt; to localhost, your specific hostname or apex.oracle.com). </p>
+      <p class="bodycopy"><b>http://&lt;hostname&gt;:7777/pls/apex</b></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">To log in to Oracle Application Express, enter the following 
+        details, and click<b> Login</b>.<br>
+        <br>
+        Workspace: <b>&lt;your workspace name&gt; <br>
+        </b>Username: <b>&lt;your username&gt; </b><br>
+        Password: <b>&lt;your password&gt; </b> </p>
+      <p><img src="images/view_image.gif" name="htmldbt01s02" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"> </p> 
+		
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">To create the table, click the down arrow next to <strong>Utilities 
+        &gt;</strong><b> Data Load/Unload &gt; Load</b>. </p>
+      <p><img src="images/view_image.gif" name="htmldbt01s04" border="1" class="imgborder_off" id="htmldbt01s04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td colspan="2"><p class="bodycopy">Click <strong>Load Spreadsheet Data</strong>. </p>
+        <p><img src="images/view_image.gif" name="htmldbt01s04a" border="1" class="imgborder_off" id="htmldbt01s04a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 5.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Ensure that the import target (Import To) is set to 
+        <b>New table</b>. For Import From, select the <b>Upload file (comma separated 
+        or tab delimited)</b> option. Click <b>Next &gt;</b>.</p>
+      <p><img src="images/view_image.gif" name="htmldbt01s05" border="1" class="imgborder_off" id="htmldbt01s05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>6.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Click <b>Browse...</b></p>
+      <p><img src="images/view_image.gif" name="htmldbt01s06" border="1" class="imgborder_off" id="htmldbt01s06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 7.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Locate the <b>tasks.txt</b> file  and click <b>Open</b>. Because the data in the text file is 
+        tab delimited, enter<b> \t </b>in the Separator field. Click <b>Next &gt;</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt01s08" border="1" class="imgborder_off" id="htmldbt01s08" onClick="hideImage(this)" onMouseOver="showImage(this)">      </p>      
+    <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 8.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy"> The Table Information page displays the columns in 
+        the table and their formats, as well as the data to be inserted into the 
+        table after the table is created. For Table Name, enter <b>OBE_TASKS</b>,<b> 
+        </b>and click<b> Next &gt;</b>.</p>
+      <p><img src="images/view_image.gif" name="htmldbt01s09" border="1" class="imgborder_off" id="htmldbt01s09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 9.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Using the Primary Key page, you can add a system-generated 
+        primary key to your table and populate that column with a new sequence. 
+        Review the default values, and click<b> Load Data</b>.</p>
+      <p><img src="images/view_image.gif" name="htmldbt01s10" border="1" class="imgborder_off" id="htmldbt01s10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 10.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">After the table is created and the data is loaded, you 
+        are left on the Files page. You can see the file that you just uploaded 
+        with 16 rows successfully uploaded. To view your new table, click the 
+        <b>SQL Workshop</b> tab.</p>
+      <p><img src="images/view_image.gif" name="htmldbt01s11" border="1" class="imgborder_off" id="htmldbt01s11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 11.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Select the down arrow next to <strong>Object Browser &gt; Browse &gt; Tables</strong>. </p>
+      <p><img src="images/view_image.gif" name="htmldbt01s12" border="1" class="imgborder_off" id="htmldbt01s12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 12.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">To view the table definition, click the <b>OBE_TASKS</b> table under the list of tables in the left navigator.</p>
+      <p><img src="images/view_image.gif" name="htmldbt01s13" border="1" class="imgborder_off" id="htmldbt01s13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>13.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">This page displays the table definition. To view the 
+        data in the table, click the <b>Data</b> tab.</p>
+      <p><img src="images/view_image.gif" name="htmldbt01s14" border="1" class="imgborder_off" id="htmldbt01s14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b>14.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">You see all the data in the table. You can change any 
+        of the data in the table from this page, and also add rows to the table.</p>
+      <p><img src="images/view_image.gif" name="htmldbt02s01" border="1" class="imgborder_off" id="htmldbt02s01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h3 class="navheader"><a name="l2"></a>Adding a Master Table</h3>
+<p class="bodycopy">To make the project name maintainable and to be able to track other information about a project, you can move the Project information into a separate table. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="621">
+      <p class="bodycopy">Click the <b>Table </b>tab<b>.</b></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt02s01" border="1" class="imgborder_off" id="htmldbt02s01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td width="621">
+      <p class="bodycopy">Click <b>Create Lookup Table</b> button. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt02s03" border="1" class="imgborder_off" id="htmldbt02s03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td width="621">
+      <p class="bodycopy">To specify the column on which the master table is to be created, select <b>PROJECT - varchar2,</b> and click <b>Next &gt; </b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt02s04" border="1" class="imgborder_off" id="htmldbt02s04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 4.</b></td>
+    <td width="621">
+      <p class="bodycopy"> Enter the following values, and click <b>Next &gt;</b>.</p>
+      <p class="bodycopy">New Table Name: <b>OBE_PROJECTS</b><br>
+        New Sequence: <b>OBE_PROJECT_SEQ</b> </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt02s05" border="1" class="imgborder_off" id="htmldbt02s05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 5.</b></td>
+    <td width="621">
+      <p class="bodycopy">Click <b>Finish</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt02s06" border="1" class="imgborder_off" id="htmldbt02s06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 6.</b></td>
+    <td width="621">
+      <p class="bodycopy">Notice that the new OBE_PROJECTS table contains a numeric primary key along with the PROJECT column.<b></b></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt02s09" border="1" class="imgborder_off" id="htmldbt02s09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style4">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class="navheader"><b><a name="l3"></a>Modifying a Table</b></h3>
+<p align="left" class="bodycopy">Now that you have the two main tables, enhance the OBE_PROJECTS table by adding some additional columns.<br> 
+  To do this, 
+perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Make sure the OBE_PROJECTS table is selected. You are going to add a column to the table. Click <b>Add Column</b>.<b></b></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s02" border="1" class="imgborder_off" id="htmldbt03s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Enter the following values, and click <b>Next &gt;</b>.</p>
+      <p class="bodycopy">Add Column: <b>PROJECT_DEADLINE</b><br>
+        Type: <strong>DATE</strong></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s03" border="1" class="imgborder_off" id="htmldbt03s03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Click <b>Finish</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s04" border="1" class="imgborder_off" id="htmldbt03s04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td><p class="bodycopy">You see the modified table definition with the new PROJECT_DEADLINE column added. You want to create one more column for PROJECT_PRIORITY. Click <b>Add Column</b>.<b></b></p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s02a" border="1" class="imgborder_off" id="htmldbt03s02a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td><p class="bodycopy">Enter the following values, and click <b>Next &gt;</b>.</p>
+        <p class="bodycopy">Add Column: <b>PROJECT_PRIORITY</b><br>
+      Type: <strong>NUMBER<br>
+      </strong>Precision:<strong> 1 </strong></p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s02b" border="1" class="imgborder_off" id="htmldbt03s02b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td><p class="bodycopy">Click <b>Finish</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s02c" border="1" class="imgborder_off" id="htmldbt03s02c" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 7.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">The PROJECT_PRIORITY column is added. Click the <strong>Data</strong> tab to view the data. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s06" border="1" class="imgborder_off" id="htmldbt03s06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 8.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">You see all the projects that were referenced in the 
+        OBE_TASKS table. You can change data from here. Click the <b>Edit</b> icon 
+        (<img src="images/htmldbicon02.gif" width="15" height="15"> ) on the left 
+        of PROJECT_ID for <b>Public Website</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s08" border="1" class="imgborder_off" id="htmldbt03s08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="bodycopy"><em><strong></strong></em></span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 9.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">For Project Deadline, enter one month from today's date. Enter <strong>1</strong> for  Priority. Then click <b>Apply 
+        Changes</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s09" border="1" class="imgborder_off" id="htmldbt03s09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="bodycopy"><em><strong></strong></em></span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 10.</b></td>
+    <td> 
+      <p class="bodycopy">You  see the data that you added. Another way to create database objects and load data is to use a script. Select <strong>SQL Scripts</strong> from the drop down list box. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt03s10" border="1" class="imgborder_off" id="htmldbt03s10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="bodycopy"><em><strong></strong></em></span></p>
+    </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class="navheader"><b><a name="l3a" id="l3a"></a>Adding a Table Using a Script </b></h3>
+<p align="left" class="bodycopy">You may have noticed that the <span class="style6">OBE_TASKS.ASSIGNED_TO</span> column was a number. In this topic, you run a script to create the <span class="style6">OBE_EMPLOYEES</span> table and load a list of current employees. Each employee has an <span class="style6">EMPLOYEE_ID</span> that corresponds to the numbers found in the <span class="style6">OBE_TASKS.ASSIGNED_TO</span> column. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="621">
+      <p class="bodycopy">Click <strong>Upload</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="upload01" border="1" class="imgborder_off" id="upload01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td width="621">
+      <p class="bodycopy">Click <strong>Browse...</strong> </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="upload02" border="1" class="imgborder_off" id="upload02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Select <span class="style6"><strong>employees.sql</strong></span> 
+        and click <strong>Open</strong>. Enter <strong>OBE_EMPLOYEES</strong> 
+        for the Script Name and click <strong>Upload</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="upload03" border="1" class="imgborder_off" id="upload04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 4.</b></td>
+    <td width="621">
+      <p class="bodycopy">Select the <strong>OBE_EMPLOYEES</strong> script. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="upload04" border="1" class="imgborder_off" id="upload05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="bodycopy"><em><strong></strong></em></span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 5.</b></td>
+    <td width="621">
+      <p class="bodycopy">The script is shown. Click <strong>Run</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="upload05" border="1" class="imgborder_off" id="upload06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="bodycopy"><em><strong></strong></em></span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 6.</b></td>
+    <td>
+      <p class="bodycopy">Click <strong>Run</strong> to confirm. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="upload06" border="1" class="imgborder_off" id="upload07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="bodycopy"><em><strong></strong></em></span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 7.</b></td>
+    <td> 
+      <p class="bodycopy">The script was executed. To view the results, click 
+        the <b>View</b> <b>Results</b> icon. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="upload07" border="1" class="imgborder_off" id="upload08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="bodycopy"><em><strong></strong></em></span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 8.</b></td>
+    <td>
+      <p class="bodycopy">The OBE_EMPLOYEES table was created and some data was 
+        inserted. Click the <strong>SQL Workshop</strong> breadcrumb. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="upload08" border="1" class="imgborder_off" id="upload09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="bodycopy"><em><strong></strong></em></span></p>
+    </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class="navheader"><b><a name="l3b" id="l3b"></a>Adding a Constraint </b></h3>
+<p align="left" class="bodycopy">You now have the employee data that is referenced by the OBE_TASKS.ASSIGNED_TO column but need to identify a foreign key between the tables. The foreign key ensures that each ASSIGNED_TO column references a valid Employee. It also ensures that an Employee cannot be deleted who has tasks assigned. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="621"><p class="bodycopy">Select the down arrow next to <strong>Object Browser &gt; Browse </strong>and then select <strong>Tables</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk01" border="1" class="imgborder_off" id="fk01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td width="621"><p class="bodycopy">Select the <strong>OBE_TASKS</strong> table and click the <strong>Constraints</strong> tab. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk02" border="1" class="imgborder_off" id="fk02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td width="621"><p class="bodycopy">Click <strong>Create</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk03" border="1" class="imgborder_off" id="fk03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 4.</b></td>
+    <td width="621">
+      <p class="bodycopy">Select <b>Foreign Key</b> for the Constraint Type. Select 
+        <strong>ASSIGNED_TO</strong> for the Foreign Key Column, select <strong>OBE_EMPLOYEES</strong> 
+        for the Reference Table Name and select <strong>EMPLOYEE_ID</strong> from 
+        the Reference Table Column List. Then click <strong>Next &gt; </strong>. 
+      </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk04" border="1" class="imgborder_off" id="fk04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 5.</b></td>
+    <td width="621"><p class="bodycopy">Click <strong>Finish</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk05" border="1" class="imgborder_off" id="fk05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p><span class="bodycopy"><em><strong></strong></em></span></p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 6.</b></td>
+    <td width="621"><p class="bodycopy">The constraint was created successfully. You want to also create a check constraint on the PROJECT_PRIORITY column so that  the data is validated when the data is inserted or updated. Select <strong>OBE_PROJECTS</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk06" border="1" class="imgborder_off" id="fk06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p><span class="bodycopy"><em><strong></strong></em></span></p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 7.</b></td>
+    <td><p class="bodycopy">Click the <strong>Create</strong> section tab. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk07" border="1" class="imgborder_off" id="fk07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p><span class="bodycopy"><em><strong></strong></em></span></p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 8.</b></td>
+    <td>
+      <p class="bodycopy">Select <strong>PROJECT_PRIORITY</strong> for the Constraint 
+        of Column field and enter<span class="style6"><strong> in ('1','2','3')</strong></span> 
+        for the Constraint Expression. Ensure that <b>Check</b> Constraint Type 
+        is selected. Then click <strong>Next &gt;</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk08" border="1" class="imgborder_off" id="fk08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p><span class="bodycopy"><em><strong></strong></em></span></p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 9.</b></td>
+    <td><p class="bodycopy">Click <strong>Finish</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk09" border="1" class="imgborder_off" id="fk09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p><span class="bodycopy"><em><strong></strong></em></span></p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 10.</b></td>
+    <td><p class="bodycopy">The constraint was created successfully. Click the <strong>Home</strong> breadcrumb. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="fk10" border="1" class="imgborder_off" id="fk10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p><span class="bodycopy"><em><strong></strong></em></span></p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l4"></a>Creating an Application
+</span>
+<p class="bodycopy">To create the application framework and default a few initial pages, perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 1.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">From the  Oracle Application Express home page, click the down arrow next to <strong>Application Builder &gt;</strong><b> Create Application &gt; Create Application</b>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s01" border="1" class="imgborder_off" id="htmldbt04s01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 2.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">For Name, enter <span class="style5">Project Tasks Application</span>. Keep the default value of From Scratch for the Creation Application, and click 
+      <b>Next &gt;</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s02" border="1" class="imgborder_off" id="htmldbt04s03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 3.</b></td>
+    <td width="620">      <p class="bodycopy"> The first page you want to create is a Home Page. Make sure <strong>Blank</strong> Page is selected for the Page Type, change the Name to <strong>Home</strong> and click <strong>Add Page</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="appbuild01" border="1" class="imgborder_off" id="appbuild01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp;</p>    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 4.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">To be able to maintain the the employees that you have loaded, you need to create a report and form on the employees table. Select <strong>Report and Form</strong> for the Page Type, Select <strong>Home (1)</strong> for the Subordinate to Page and click the up arrow for Table Name.  </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="appbuild02" border="1" class="imgborder_off" id="appbuild02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 5.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Select <strong>OBE_EMPLOYEES</strong> from the list of Tables. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="appbuild03" border="1" class="imgborder_off" id="appbuild03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 6.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Click<strong> Add Page</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="appbuild04" border="1" class="imgborder_off" id="appbuild04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 7.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">You can change the name of a page when you create the application. Click the <strong>OBE_EMPLOYEES</strong> link for page 3. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="appbuild05" border="1" class="imgborder_off" id="appbuild05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 8.</b></td>
+    <td width="620"> 
+      <p class="bodycopy"> Change the Page Name to <strong>Maintain Employee</strong> and click <strong>Apply Changes</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="appbuild06" border="1" class="imgborder_off" id="appbuild06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 9.</b></td>
+    <td><p class="bodycopy">Click the <strong>OBE_EMPLOYEES</strong> link for page 2 to change it's name. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s14a" border="1" class="imgborder_off" id="htmldbt04s14a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 10.</b></td>
+    <td><p class="bodycopy"> Change the Page Name to <strong>Employee Information </strong> and click <strong>Apply Changes</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s14b" border="1" class="imgborder_off" id="htmldbt04s14b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 11.</b></td>
+    <td><p class="bodycopy"> Click <strong>Next &gt;</strong>. <b><br>
+      </b></p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s14" border="1" class="imgborder_off" id="htmldbt04s14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 12.</b></td>
+    <td>
+      <p class="bodycopy"> Select <strong>No Tabs</strong> and click <strong>Next 
+        &gt;</strong>. <b><br>
+      </b></p>
+        
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s15" border="1" class="imgborder_off" id="htmldbt04s15" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 13.</b></td>
+    <td><p class="bodycopy"> You do not want to reference any components from other applications. Click <strong>Next &gt;</strong>. 
+      </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s16" border="1" class="imgborder_off" id="htmldbt04s16" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 14.</b></td>
+    <td><p class="bodycopy"> Accept the defaults. Click <strong>Next &gt;</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s17" border="1" class="imgborder_off" id="htmldbt04s17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><b> 15</b><b>.</b></p>
+    </td>
+    <td><p class="bodycopy"> Select the <strong>Theme 15</strong>. Click <strong>Next &gt;</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s18" border="1" class="imgborder_off" id="htmldbt04s18" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><b> 16.</b></p>
+    </td>
+    <td><p class="bodycopy"> Review your choices. Click <strong>Create</strong>. <b><br>
+      </b></p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s19" border="1" class="imgborder_off" id="htmldbt04s19" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 17.</b></td>
+    <td><p class="bodycopy"> The Application and its associated pages were created. To run the application, click the <strong>Run Application</strong> icon.
+      </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s20" border="1" class="imgborder_off" id="htmldbt04s20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 18.</b></td>
+    <td>
+      <p class="bodycopy"> Because you chose the default of Application Express 
+        Authentication, you need to login to the new application using the same 
+        login you use to develop. Enter <strong>obe</strong> for the User Name 
+        and <strong>obe</strong> for the Password. Then click <strong>Login</strong>. 
+        <b><br>
+      </b></p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s21" border="1" class="imgborder_off" id="htmldbt04s21" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 19.</b></td>
+    <td><p class="bodycopy"> The Home Page is displayed. The Employee Information link to the report is displayed. Click <strong>Employee Information</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s22" border="1" class="imgborder_off" id="htmldbt04s22" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 20.</b></td>
+    <td><p class="bodycopy"> The List of Employees is displayed. You can edit the Employee information by clicking the icon to the left of the Employee  you want to edit. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s23" border="1" class="imgborder_off" id="htmldbt04s23" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 21.</b></td>
+    <td>
+      <p class="bodycopy"> The Employee Details are displayed. Click the<b> Application 
+        &lt;n&gt; </b> link in the Developer links at the bottom of the window.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt04s24" border="1" class="imgborder_off" id="htmldbt04s24" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l7"></a>Adding a Master Detail Form &nbsp;&nbsp;&nbsp;
+
+</span>
+<p class="bodycopy">Even though Projects and Tasks are stored in two separate tables, it is useful to display their information on one page. A Master-Detail form enables you to do just that. To 
+  add a Master-Detail form, perform the 
+  following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Click <strong>Create Page</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s01" border="1" class="imgborder_off" id="htmldbt07s01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Select the <strong>Form</strong> page type and click <strong>Next &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s02" border="1" class="imgborder_off" id="htmldbt07s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Select <strong>Master Detail Form</strong> and click <strong>Next &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s03" border="1" class="imgborder_off" id="htmldbt07s03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 4.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">You first select the Master table. Select <strong>OBE_PROJECTS</strong> for the Table/View Name and click the Select All (<img src="images/htmldbicon12.gif" width="19" height="18" align="top">) icon to move all the columns to the Displayed Columns area. Then click <strong>Next &gt;</strong>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s05" border="1" class="imgborder_off" id="htmldbt07s05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 5.</b></td>
+    <td><p class="bodycopy">Next, you  select the Detail table. Select <strong>OBE_TASKS</strong> for the Table / View Name and click the Select All ( <img src="images/htmldbicon12.gif" width="19" height="18" align="top">) icon to move all the columns to the Displayed Columns area. Then click <strong>Next &gt;</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s06" border="1" class="imgborder_off" id="htmldbt07s06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 6.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">When the table was created, a trigger was also created to invoke the sequence when a row is inserted. Accept the default to use an Existing Trigger and click <strong>Next &gt;</strong>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s06a" border="1" class="imgborder_off" id="htmldbt07s06a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 7.</b></td>
+    <td><p class="bodycopy">Click <strong>Next &gt;</strong> to use the Existing Trigger on the OBE_TASKS. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s06b" border="1" class="imgborder_off" id="htmldbt07s06b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 8.</b></td>
+    <td><p class="bodycopy"><span class="style10">For Include master row navigation, select <strong>Yes</strong>. This selection allows a user to scroll through projects on the Master-Detail page. </span></p>
+      <p class="bodycopy"><span class="style10">For Master Row Navigation Order, select <strong>PROJECT</strong>. This selection makes the next project displayed, the next one alphabetically by project name. If you chose PROJECT_ID, the next record would be calculated by PROJECT_ID and that would be confusing to the user. </span></p>
+      <p class="bodycopy"><span class="style10">For Include master report, select <strong>Yes</strong>. This section creates a page, in addition to the master/detail, that is a report of all projects. The report also contains navigation to the Master-Detail page. </span></p>
+      <p class="bodycopy"><span class="style10">When done making your selections, click <strong>Next &gt;</strong>.</span> </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s06c" border="1" class="imgborder_off" id="htmldbt07s06c" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 9.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Make sure <strong>Edit detail as tabular form on same 
+        page</strong> is selected and click <strong>Next</strong> <strong>&gt;</strong>.</p>
+      <p class="bodycopy">By selecting to edit detail as a tabular form on the same page, the tasks report on the Master-Detail page is editable. If you selected edit detail on a separate page, the tasks report would just be a report and editing would be per record on a separate page. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s07" border="1" class="imgborder_off" id="htmldbt07s07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 10.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Under the Create Breadcrumb Entry section, change the Entry Name (Master Report) to <strong>Projects</strong> and Entry Name (Master Detail Page) to <strong>Projects and Tasks</strong>. Then click the <strong>Home</strong> link to set the parent breadcrumb of the new Projects report to Home. This selection makes it navigatable from the Home page. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s08" border="1" class="imgborder_off" id="htmldbt07s08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 11.</b></td>
+    <td><p class="bodycopy">Click <strong>Next &gt;</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s12" border="1" class="imgborder_off" id="htmldbt07s12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 12.</b></td>
+    <td><p class="bodycopy">Accept the defaults of Do not use tabs and click <strong>Next &gt; </strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s13" border="1" class="imgborder_off" id="htmldbt07s13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 13.</b></td>
+    <td><p class="bodycopy">Click <strong>Create</strong> to create the Master Detail Form. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s13a" border="1" class="imgborder_off" id="htmldbt07s13a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 14.</b></td>
+    <td><p class="bodycopy">Click the <strong>Run Page</strong> icon. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s13b" border="1" class="imgborder_off" id="htmldbt07s13b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 15.</b></td>
+    <td><p class="bodycopy">A report containing the list of projects is automatically created. Select the Edit ( <img src="images/htmldbicon13.gif" width="18" height="20" align="top">)icon next to one of the projects to view the Master detail Form. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s13c" border="1" class="imgborder_off" id="htmldbt07s13c" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 16.</b></td>
+    <td><p class="bodycopy">The Master Detail Form is shown. This page allows a user to edit the details of the Project as well as the details of the Tasks associated with the Project. It also allows users to add new tasks to the current project. </p>
+        <p class="bodycopy">In the detail region, you see an <strong>Add Row</strong> button. This button saves any pending changes and then adds another row so that a new task can be added to the project. You should also have a <strong>Delete</strong> button. This button is used in conjunction with the check boxes to the left of each Task. The check box in the header row is used to select all of the tasks displayed on the page. When you click the Delete button, any tasks that have been &quot;checked&quot; are deleted. If you use this feature, you notice that a deletion confirmation has been built in. This asks you to confirm your deletion before proceeding.</p>
+        <p class="bodycopy">In addition, you see a Previous and Cancel button for each area on the form. The upper set of buttons correspond to the Project Information and the lower set of buttons correspond to the Tasks. The <strong>Previous</strong> button appears because you selected to include Master row navigation. The <strong>Cancel</strong> button returns the user to the Projects report. </p>
+        <p class="bodycopy">Change the name of the project and click <strong>Apply Changes</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s13d" border="1" class="imgborder_off" id="htmldbt07s13d" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 17.</b></td>
+    <td>
+      <p class="bodycopy">Your changes were made. Click the <strong> Application 
+        &lt;n&gt;</strong>link in the developer toolbar.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt07s13g" border="1" class="imgborder_off" id="htmldbt07s13g" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l8c" id="l8c"></a>Editing Application Objects 
+&nbsp;&nbsp;&nbsp; </span> 
+<p class="bodycopy"> Although the Master-Detail form is fully functional, the 
+  presentation can be improved. In this topic you change the names of the Page 
+  Title, Region Title and change the format an item on the Master Report. Additionally, 
+  you print the Projects report in the PDF format. Lastly, you change the sequence 
+  of items in the Projects and Tasks page using the Drag and Drop feature. Perform 
+  the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Select <strong>4 - OBE PROJECTS</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit01" border="1" class="imgborder_off" id="edit01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Select the <strong>Report</strong> link under Regions. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit02" border="1" class="imgborder_off" id="edit02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Click the <strong>Edit</strong> (<img src="images/htmldbicon02.gif" width="21" height="21">) 
+        icon next to PROJECT_DEADLINE. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit03" border="1" class="imgborder_off" id="edit03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 4.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Under Column Formatting, enter <strong>MM/DD/YYYY</strong> 
+        for the Number/Date Format field and click <strong>Apply Changes</strong>. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit04" border="1" class="imgborder_off" id="edit04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 5.</b></td>
+    <td> 
+      <p class="bodycopy">Click <strong>Apply Changes</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit05" border="1" class="imgborder_off" id="edit05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 6.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Click the <strong>Edit</strong> (<img src="images/htmldbicon18.gif" width="21" height="25" align="top">) 
+        icon for the Page 4. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit06" border="1" class="imgborder_off" id="edit06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 7.</b></td>
+    <td> 
+      <p class="bodycopy">In the Name section, enter <strong>Projects</strong> 
+        for the Name. In the Display Attributes section, enter <strong>Projects</strong> 
+        for the Title. Then click <strong>Apply Changes</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit07" border="1" class="imgborder_off" id="edit07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 8.</b></td>
+    <td> 
+      <p class="bodycopy"><span class="style10">Click <strong>Run</strong>. </span></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit08" border="1" class="imgborder_off" id="edit08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 9.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Notice that the Title in your Browser is set to Projects 
+        and the format of the PROJECT_DEADLINE has changed. You notice that the 
+        Region title is still set to OBE_Projects. Click <strong>Show Edit Links</strong> 
+        in the Developer links area. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit09" border="1" class="imgborder_off" id="edit09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 10.</b></td>
+    <td width="621"> 
+      <p class="bodycopy">Click the <strong>Edit</strong> (<img src="images/htmldbicon07.gif" width="13" height="13">) 
+        icon next to the Obe Projects Region title. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit10" border="1" class="imgborder_off" id="edit10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 11.</b></td>
+    <td> 
+      <p class="bodycopy">Change the title to <strong>Projects</strong> and click 
+        <strong>Apply Changes</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit11" border="1" class="imgborder_off" id="edit11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 12.</b></td>
+    <td> 
+      <p class="bodycopy">Click <strong>Cancel</strong> to close the Page Region 
+        window. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit12" border="1" class="imgborder_off" id="edit12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 13.</b></td>
+    <td> 
+      <p class="bodycopy">Refresh your browser to show the change you just made. 
+        Click <strong>Hide Edit Links</strong> in the Developer Links. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit13" border="1" class="imgborder_off" id="edit13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 14.</b></td>
+    <td> 
+      <p class="bodycopy"> Click the<strong> Edit Page 4 </strong>link in the 
+        developer tool bar. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit13a" border="1" class="imgborder_off" id="edit13a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 15.</b></td>
+    <td> 
+      <p class="bodycopy"> Click the <b>Report</b> link next to the Projects region.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit14" border="1" class="imgborder_off" id="edit14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 16.</b></td>
+    <td> 
+      <p class="bodycopy">Click the <b>Print Attributes</b> tab.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit15" border="1" class="imgborder_off" id="edit15" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 17.</b></td>
+    <td> 
+      <p class="bodycopy">Select <b>Yes</b> in the Enable Report Printing drop-down 
+        menu and select <b>Portrait</b> in the Orientation drop-down menu under 
+        Page Attributes. Then click the <b>Page Header</b> tab.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit16" border="1" class="imgborder_off" id="edit16" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 18.</b></td>
+    <td> 
+      <p class="bodycopy">Enter <b>Project Report</b> for Page Header and and 
+        set the Alignment to <b>center</b>. Click <b>Apply Changes</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit17" border="1" class="imgborder_off" id="edit17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 19.</b></td>
+    <td> 
+      <p class="bodycopy">Notice that now <b>Print</b> appears to the right of 
+        the Report link since you have enabled Report Printing. Click <b>Run</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit18" border="1" class="imgborder_off" id="edit18" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 20.</b></td>
+    <td> 
+      <p class="bodycopy">Notice the Print link at the bottom of the report. Click 
+        the <b>Print</b> link.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit19" border="1" class="imgborder_off" id="edit19" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 21.</b></td>
+    <td> 
+      <p class="bodycopy">Click the <b>Open with</b> radio button and click <b>OK</b> 
+        to view the report in PDF format.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit20" border="1" class="imgborder_off" id="edit20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 22.</b></td>
+    <td> 
+      <p class="bodycopy">The Projects report is displayed in the PDF format.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit21" border="1" class="imgborder_off" id="edit21" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 23.</b></td>
+    <td> 
+      <p class="bodycopy">Click the<strong> Edit Page 4 </strong>link in the developer 
+        tool bar. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit23" border="1" class="imgborder_off" id="edit23" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 24.</b></td>
+    <td> 
+      <p class="bodycopy">Click the<strong> &gt; </strong>arrow to navigate to 
+        the page definition for the Projects and Tasks page (Page 5).</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit24" border="1" class="imgborder_off" id="edit24" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 25.</b></td>
+    <td> 
+      <p class="bodycopy">The page definition for Page 5 is displayed. To reorder 
+        the sequencing of items in this page, click the <b>Items</b> tab.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit25" border="1" class="imgborder_off" id="edit25" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 26.</b></td>
+    <td> 
+      <p class="bodycopy">Click the <strong>Drag and drop</strong> icon in the 
+        Items section.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit26" border="1" class="imgborder_off" id="edit26" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 27.</b></td>
+    <td> 
+      <p class="bodycopy">The Drag and Drop layout is displayed. You can use this 
+        intuitive graphical layout to edit, create, or delete items in this page.<br>
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit27" border="1" class="imgborder_off" id="edit27" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 28.</b></td>
+    <td> 
+      <p class="bodycopy">In order for the Project Priority item to appear above 
+        Project Deadline item in Page 5, drag and drop the <b>P5_PROJECT_ PRIORITY 
+        </b>item above the <b>P5_PROJECT_ DEADLINE</b> item and click <b>Next&gt;</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit28" border="1" class="imgborder_off" id="edit28" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 29.</b></td>
+    <td> 
+      <p class="bodycopy">Click <b>Apply Changes</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit29" border="1" class="imgborder_off" id="edit29" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 30.</b></td>
+    <td> 
+      <p class="bodycopy">Click <b>Run</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit30" border="1" class="imgborder_off" id="edit30" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 31.</b></td>
+    <td> 
+      <p class="bodycopy">Note how the Project Priority field now appears above 
+        the Project Deadline field. Click the <b>Application &lt;n&gt;</b> link 
+        in the developer tool bar.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="edit31" border="1" class="imgborder_off" id="edit31" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l8"></a>Creating Lists of Values (LOVs) </span>
+  
+
+<p class="bodycopy"><span class="bodycopy">Another way to improve the presentation of the application is to create a List of Values. </span>In this topic, you create the following LOVs:</p>
+<table width="650" border="1" cellpadding="1" cellspacing="0">
+  <tr valign="top"> 
+    <td width="84" class="bodycopy"><strong>EMPLOYEES</strong></td>
+    <td width="589" class="bodycopy">A Dynamic LOV to show the list of Employees. This LOV is then associated with the Assigned To column in the List of Tasks.</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="84" class="bodycopy"><strong>STATUSES</strong></td>
+    <td class="bodycopy">A Static LOV to show the list of Statuses. This LOV is then associated with the Status column in the List of Tasks. </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><strong>PRIORITIES</strong></td>
+    <td class="bodycopy">A Static LOV to show the list of Priorities. This LOV 
+      is then associated with the Priority column in the Projects Master area. 
+    </td>
+  </tr>
+</table>
+<p class="bodycopy">Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td class="bodycopy"><b>1. </b></td>
+    <td>
+      <p class="bodycopy">Click the <strong>5 - Master Detail</strong> page. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov01" border="1" class="imgborder_off" id="lov01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b>2. </b></td>
+    <td>
+      <p class="bodycopy">In the Shared Components column, under List of Values, 
+        click the <strong>Create</strong> (<img src="images/htmldbicon03.gif" width="12" height="15"> 
+        ) icon. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov02" border="1" class="imgborder_off" id="lov02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 3.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">For Create List of Values, keep the default value <b> 
+        From Scratch</b>, and click <b>Next &gt;</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov03" border="1" class="imgborder_off" id="lov03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 4.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">For Name, enter <b>EMPLOYEES</b>. For Type, change the 
+        type to <b>Dynamic</b>. Then click <b>Next &gt;</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov04" border="1" class="imgborder_off" id="lov04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 5.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">For a dynamic LOV, you need to enter the SQL you want 
+        to execute when the page is rendered. To find out what the names of your 
+        columns are, you can select the item finder (<img src="images/htmldbicon19.gif" width="20" height="21" align="top">) 
+        icon. <b></b></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov05" border="1" class="imgborder_off" id="lov05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 6.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Click the <strong>Tables</strong> tab. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov06" border="1" class="imgborder_off" id="lov06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 7.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Select the <strong>OBE_EMPLOYEES</strong> table link. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov07" border="1" class="imgborder_off" id="lov07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="26"><b> 8.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Note the names of the columns. You could select the 
+        SQL statement shown and copy this to the clipboard. Exit the Item Finder 
+        window. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov08" border="1" class="imgborder_off" id="lov08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>9.</b></td>
+    <td width="620" class="bodycopy">
+      <p>Change the SQL statement to the following and then click <strong>Create 
+        List of Values</strong>. The first column in a dynamic list of values 
+        is the column displayed to the user. The second column is the corresponding 
+        value to be stored in the database. They can both be the same value when 
+        appropriate. </p>
+      <pre class="style6"><strong>select FIRST_NAME||', '||LAST_NAME d,
+    EMPLOYEE_ID r
+from OBE_EMPLOYEES
+order by 1</strong></pre>
+      <p><span class="bodycopy"><img src="images/view_image.gif" name="lov09" border="1" class="imgborder_off" id="lov09" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 10.</b></td>
+    <td>
+      <p class="bodycopy">Your LOV was created. Note that the LOV is not listed 
+        in the List of Values area because you haven't yet associated it with 
+        this page. You want to create 2 more static LOVs. Click the <strong>Create</strong> 
+        (<img src="images/htmldbicon03.gif" width="12" height="15" align="top"> 
+        ) icon again.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov10" border="1" class="imgborder_off" id="lov10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>11.</b></td>
+    <td width="620" class="bodycopy"> For Create List of Values, keep the default 
+      value <b> From Scratch</b>, and click <b>Next &gt;</b>. 
+      <p><span class="bodycopy"><img src="images/view_image.gif" name="lov11" border="1" class="imgborder_off" id="lov11" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 12.</b></td>
+    <td>
+      <p class="bodycopy">Enter <strong>STATUSES</strong> for the Name and make 
+        sure <strong>Static</strong> is selected for the type and click <strong>Next 
+        &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov12" border="1" class="imgborder_off" id="lov12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>13.</b></td>
+    <td width="620" class="bodycopy">
+      <p class="bodycopy">For Display Value and Return Value, enter the following:</p>
+      <table border="1" cellspacing="0" cellpadding="1">
+        <tr valign="top"> 
+          <td width="94" class="bodycopy"><b>Display Value</b></td>
+          <td class="bodycopy" width="107"><b>Return Value</b></td>
+        </tr>
+        <tr valign="top"> 
+          <td class="bodycopy">Closed</td>
+          <td class="bodycopy">closed</td>
+        </tr>
+        <tr valign="top"> 
+          <td width="94" class="bodycopy">Open</td>
+          <td class="bodycopy" width="107">open</td>
+        </tr>
+        <tr valign="top"> 
+          <td width="94" class="bodycopy">On Hold</td>
+          <td width="107" class="bodycopy">on-hold</td>
+        </tr>
+      </table>
+      <p class="bodycopy">Click <b>Create List of Values.</b></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov13" border="1" class="imgborder_off" id="lov13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>14.</b></td>
+    <td width="620" class="bodycopy">The STATUSES LOV was created. There is one 
+      more LOV to create for the Master portion of the form, Priorities. Click 
+      <strong>Create</strong>. 
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov14" border="1" class="imgborder_off" id="lov14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b>15.</b></td>
+    <td class="bodycopy">For Create List of Values, keep the default value <b> 
+      From Scratch</b>, and click <b>Next &gt;</b>. 
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov14a" border="1" class="imgborder_off" id="lov14a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 16.</b></td>
+    <td>
+      <p class="bodycopy">Enter <strong>PRIORITIES</strong> for the Name and make 
+        sure <strong>Static</strong> is selected for the type and click <strong>Next 
+        &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov14b" border="1" class="imgborder_off" id="lov14b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b>17.</b></td>
+    <td class="bodycopy">
+      <p class="bodycopy">For Display Value and Return Value, enter the following:</p>
+      <table border="1" cellspacing="0" cellpadding="1">
+        <tr valign="top"> 
+          <td width="94" class="bodycopy"><b>Display Value</b></td>
+          <td class="bodycopy" width="107"><b>Return Value</b></td>
+        </tr>
+        <tr valign="top"> 
+          <td class="bodycopy">High</td>
+          <td class="bodycopy">1</td>
+        </tr>
+        <tr valign="top"> 
+          <td width="94" class="bodycopy">Medium</td>
+          <td class="bodycopy" width="107">2</td>
+        </tr>
+        <tr valign="top"> 
+          <td width="94" class="bodycopy">Low</td>
+          <td width="107" class="bodycopy">3</td>
+        </tr>
+      </table>
+      <p class="bodycopy">Click <b>Create List of Values.</b></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov14c" border="1" class="imgborder_off" id="lov14c" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b>18.</b></td>
+    <td class="bodycopy"> The PRIORITIES LOV was created. Now you can associate 
+      the LOVs with the page. Click the <strong>Edit Page 5</strong> (<img src="images/htmldbicon09.gif" height="16" width="15">) 
+      icon. 
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov14d" border="1" class="imgborder_off" id="lov14d" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>19.</b></td>
+    <td width="620" class="bodycopy">Click the <b>Show All </b>icon to reveal 
+      all Page Components. 
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov14e" border="1" class="imgborder_off" id="lov14e" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>20..</b></td>
+    <td width="620" class="bodycopy">In the Regions area, click the <strong>Report</strong> 
+      link. 
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov15" border="1" class="imgborder_off" id="lov15" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 21.</b></td>
+    <td>
+      <p class="bodycopy">Click the Edit (<img src="images/htmldbicon02.gif" width="18" height="19" align="top">)icon 
+        in front of the <strong>ASSIGNED_TO</strong> column. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov16" border="1" class="imgborder_off" id="lov16" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 22.</b></td>
+    <td>
+      <p class="bodycopy">Click the <strong>Tabular Form Element</strong> section 
+        button. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov17" border="1" class="imgborder_off" id="lov17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 23.</b></td>
+    <td>
+      <p class="bodycopy">Change the Display As to <strong>Select List (named 
+        LOV)</strong> and click the <strong>List of Values</strong> section button. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov18" border="1" class="imgborder_off" id="lov18" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 24.</b></td>
+    <td>
+      <p class="bodycopy">Select <strong>EMPLOYEES</strong> for the Named LOV, 
+        select <strong>YES</strong> for Display Null and enter<strong> - None 
+        Assigned - </strong>for the Null display value. Then click <strong>Apply Changes</strong>. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov19" border="1" class="imgborder_off" id="lov19" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 25.</b></td>
+    <td>
+      <p class="bodycopy">Click the Edit (<img src="images/htmldbicon02.gif" width="18" height="19" align="top">)icon 
+        in front of the <strong>STATUS</strong> column. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov20" border="1" class="imgborder_off" id="lov20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 26.</b></td>
+    <td>
+      <p class="bodycopy">The List of Values section button should be already 
+        selected. Select <strong>STATUSES</strong> for the Named LOV, <strong>Yes</strong> 
+        for Display Null and enter <strong>- No Status -</strong> for the Null 
+        display value. Then click the <strong>Tabular Form Element</strong> section button. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov21" border="1" class="imgborder_off" id="lov21" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 27.</b></td>
+    <td>
+      <p class="bodycopy">Select <strong>Select List (named LOV)</strong> for 
+        the Display As and click <strong>Apply Changes</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov22" border="1" class="imgborder_off" id="lov22" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 28.</b></td>
+    <td>
+      <p class="bodycopy">Now you can run the page again to see the results. Click 
+        <strong>Run Page 5</strong> (<img src="images/htmldbicon05.gif" width="12" height="16">) 
+        icon. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov23" border="1" class="imgborder_off" id="lov23" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 29.</b></td>
+    <td>
+      <p class="bodycopy">Select the dropdown list for <strong>Assigned To</strong>. 
+        You see that the dynamic LOV executed and the list of Employees is shown. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov24" border="1" class="imgborder_off" id="lov24" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 30.</b></td>
+    <td>
+      <p class="bodycopy">Select the dropdown list for <strong>Status</strong>. 
+        You see that the static LOV values are shown. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov25" border="1" class="imgborder_off" id="lov25" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 31.</b></td>
+    <td>
+      <p class="bodycopy">Next, you need to assign the the PRIORITIES LOV to the 
+        Priority item in the Master area of the page. Click <strong>Edit Page 
+        5</strong>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov26" border="1" class="imgborder_off" id="lov26" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 32.</b></td>
+    <td>
+      <p class="bodycopy">Under Page Rendering, click the <strong>item</strong> 
+        (<img src="images/htmldbicon14.gif" width="18" height="19">) icon.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov27" border="1" class="imgborder_off" id="lov27" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy">
+      <p><b> 33.</b></p>
+    </td>
+    <td>
+      <p class="bodycopy">Select <strong>P5_PROJECT_PRIORITY</strong>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov28" border="1" class="imgborder_off" id="lov28" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 34.</b></td>
+    <td>
+      <p class="bodycopy">Select the <strong>Radio</strong> link under the Display 
+        As field and click the <strong>LOV</strong> section button. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov29" border="1" class="imgborder_off" id="lov29" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 35.</b></td>
+    <td>
+      <p class="bodycopy">Select <strong>PRIORITIES</strong> for the Named LOV, 
+        enter <strong>4</strong> for Number of Columns, select <strong>Yes</strong> 
+        for Display Nulls and enter <strong>None</strong> for the Null display 
+        value. Then click <strong>Apply Changes</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov30" border="1" class="imgborder_off" id="lov30" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy">
+      <p><b> 36.</b></p>
+    </td>
+    <td>
+      <p class="bodycopy">Click <strong>Run</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov31" border="1" class="imgborder_off" id="lov31" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 37.</b></td>
+    <td>
+      <p class="bodycopy">The Priority field is now a Radiogroup populated with 
+        the LOV values. Click <strong>Edit Page 5</strong> in the Developer links. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="lov32" border="1" class="imgborder_off" id="lov32" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l8b" id="l8b"></a>Adding an Item Validation &nbsp;&nbsp; </span>
+<p class="bodycopy">You don't want a user entering a date prior to today's date. This type of check can be done through an item validation. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td class="bodycopy" width="26"><b> 1.</b></td>
+    <td width="620">
+      <p class="bodycopy">Click the <strong>Create</strong> (<img src="images/htmldbicon03.gif" width="12" height="15">) 
+        icon in the Validations section for Page 5.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val01" border="1" class="imgborder_off" id="val01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 2.</b></td>
+    <td width="620">
+      <p class="bodycopy">Accept the default to create an <strong>Item level validation</strong> 
+        and click <strong>Next &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val02" border="1" class="imgborder_off" id="val02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 3.</b></td>
+    <td>
+      <p class="bodycopy">Select the item <strong>P5_PROJECT_DEADLINE</strong> 
+        and click <strong>Next &gt;</strong>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val03" border="1" class="imgborder_off" id="val03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 4.</b></td>
+    <td width="620">
+      <p class="bodycopy">Select <strong>SQL</strong> for the Validation Method 
+        and click <strong>Next &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val04" border="1" class="imgborder_off" id="val04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 5.</b></td>
+    <td width="620">
+      <p class="bodycopy">Because you want to specify the condition when a PROJECT_DEADLINE 
+        is incorrect, click <strong>SQL Expression</strong> and click <strong>Next 
+        &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val05" border="1" class="imgborder_off" id="val05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 6.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Enter <b>P5_PROJECT_DEADLINE</b> as Validation Name 
+        and click <strong>Next &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val06" border="1" class="imgborder_off" id="val06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 7.</b></td>
+    <td width="620">
+      <p class="bodycopy">Enter <span class="style6"><strong>TO_DATE(:P5_PROJECT_DEADLINE,'MM/DD/YYYY') 
+        &gt;= SYSDATE</strong></span> for the Validation and <strong>Date needs 
+        to be greater than today</strong> for the Error Message and click <strong>Next 
+        &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val07" border="1" class="imgborder_off" id="val07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>8.</b></td>
+    <td width="620">
+      <p class="bodycopy">Select <strong>Request Is Contained within Expression1</strong> 
+        for the Condition Type and enter <strong>SAVE,CREATE</strong> for Expression1. 
+        Then click <strong>Create</strong>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val08" border="1" class="imgborder_off" id="val08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>9.</b></td>
+    <td width="620">
+      <p class="bodycopy">The validation has been created successfully. Click 
+        <strong>Run</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val09" border="1" class="imgborder_off" id="val09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>10.</b></td>
+    <td width="620">
+      <p class="bodycopy">Change the date to something prior to today's date and 
+        click <strong>Apply Changes</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val10" border="1" class="imgborder_off" id="val10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>11.</b></td>
+    <td width="620">
+      <p class="bodycopy"> Notice that you receive an item (or field) error message 
+        as well as a page notification message. This is because you specified 
+        that you wanted both when you created the validation. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val11" border="1" class="imgborder_off" id="val11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>12.</b></td>
+    <td width="620">
+      <p class="bodycopy"> Click the<strong> Application &lt;n&gt; </strong>link in the 
+        developer tool bar. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="val12" border="1" class="imgborder_off" id="val12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l8f" id="l8f"></a>Adding a Flash Chart&nbsp; 
+</span> 
+<p class="bodycopy">You want to create a flash chart. You need to create a 2D pie chart that shows the number of tasks per project. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td class="bodycopy" width="26"><b> 1.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Click <strong>Create Page ></strong> in the Project 
+        Tasks Application home page.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart01" border="1" class="imgborder_off" id="fchart01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 2.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Select the <b>Chart</b> Page Type and click <strong>Next 
+        &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart02" border="1" class="imgborder_off" id="fchart02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 3.</b></td>
+    <td> 
+      <p class="bodycopy">Select the <b>Flash Chart</b> radio button and click 
+        <strong>Next &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart03" border="1" class="imgborder_off" id="fchart03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 4.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Enter the page name as <b>Tasks per Project Chart</b>, 
+        accept the other default values, and click <strong>Next &gt;</strong>. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart04" border="1" class="imgborder_off" id="fchart04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 5.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Select the <b>Do not use tabs</b> option and click <strong>Next 
+        &gt;</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart05" border="1" class="imgborder_off" id="fchart05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 6.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Select <b>2D Pie</b> as the Chart Type, enter <b>Tasks 
+        per Project</b> as the Chart Title and click the <b>Update</b> button 
+        to refresh the chart preview.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart06" border="1" class="imgborder_off" id="fchart066" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 7.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">The preview of the Tasks per Project flash chart is 
+        displayed. Click <strong>Next &gt;</strong>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart07" border="1" class="imgborder_off" id="fchart07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>8.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Copy and paste the following query into the query field. 
+        Click <strong>Next &gt;</strong>.</p>
+      <div align="left"> 
+        <div align="center"> 
+          <div align="right"> 
+            <div align="left"> 
+              <pre class="style6"><strong>select null link,
+       p.project label,
+       t.task_count value
+  from (select project_id,
+               count(*) task_count
+          from obe_tasks
+         group by project_id) t,
+       obe_projects p
+ where t.project_id = p.project_id</strong></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart08" border="1" class="imgborder_off" id="fchart08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>9.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Click <b>Finish</b> to create the chart.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart09" border="1" class="imgborder_off" id="fchart09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>10.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">The flash chart has been created. Click the <b>Run Page</b> 
+        icon to view the flash chart.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart10" border="1" class="imgborder_off" id="fchart10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>11.</b></td>
+    <td width="620"> 
+      <p class="bodycopy"> The flash chart shows the number of tasks per project. The first number for each slice of pie is the project and the second number is the number of tasks. Click the <b>Application 
+        &lt;n&gt;</b> link in the developer tool bar.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart11" border="1" class="imgborder_off" id="fchart11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l8g" id="l8g"></a>Adding a Calendar &nbsp; </span>
+<p class="bodycopy">You want to add a calendar that shows the deadlines of each project and then add a button on the Projects report to link to the Calendar. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy" width="26"><b> 1.</b></td>
+    <td width="620"><p class="bodycopy">Click <strong>Create Page ></strong> in the Project Tasks Application home page.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal01" border="1" class="imgborder_off" id="cal01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 2.</b></td>
+    <td width="620"><p class="bodycopy">Select the <b>Calendar</b> Page Type and click <strong>Next &gt;</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal02" border="1" class="imgborder_off" id="cal02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td><p class="bodycopy">Select the <strong>Easy Calendar</strong>  radio button and click <strong>Next &gt;</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal03" border="1" class="imgborder_off" id="cal03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 4.</b></td>
+    <td width="620"><p class="bodycopy">Enter <strong>Project Tasks Calendar</strong> for the Page Name and  click <strong>Next &gt;</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal04" border="1" class="imgborder_off" id="cal04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 5.</b></td>
+    <td width="620"><p class="bodycopy">Select the <b>Do not use tabs</b> option and click <strong>Next &gt;</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal05" border="1" class="imgborder_off" id="cal05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 6.</b></td>
+    <td width="620"><p class="bodycopy">Select <b>OBE_PROJECTS</b> for the Table / View Name  and click <strong>Next &gt; </strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal06" border="1" class="imgborder_off" id="fchart066" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 7.</b></td>
+    <td width="620"><p class="bodycopy">Ensure that <strong>PROJECT_DEADLINE</strong> is selected for the Date Column and <strong>PROJECT</strong> is select for the Display Column. Then click <strong>Next &gt;</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal07" border="1" class="imgborder_off" id="cal07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>8.</b></td>
+    <td width="620"><p class="bodycopy">Click <strong>Finish</strong> to create the calendar. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal08" border="1" class="imgborder_off" id="cal08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>9.</b></td>
+    <td width="620"><p class="bodycopy">The calendar has been created. Click the <b>Run Page</b> icon to view the calendar.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal09" border="1" class="imgborder_off" id="cal09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>10.</b></td>
+    <td width="620"><p class="bodycopy">The calendar shows the projects on the date due. You can also view the calendar in daily or weekly mode. Click <strong>Weekly</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal10" border="1" class="imgborder_off" id="cal10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>11.</b></td>
+    <td><p class="bodycopy">The Weekly calendar mode is displayed. You can advance to next week. Click <strong>Next</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal10a" border="1" class="imgborder_off" id="cal10a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>12.</b></td>
+    <td><p class="bodycopy">You want to create a button to this calendar from the Projects report. Scroll down to the bottom of the weekly calendar and click the <b>Application &lt;n&gt;</b> link in the developer tool bar.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal10b" border="1" class="imgborder_off" id="cal10b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>13.</b></td>
+    <td width="620"><p class="bodycopy"> Click the <strong>Projects</strong> page. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal11" border="1" class="imgborder_off" id="cal11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>14.</b></td>
+    <td><p class="bodycopy"> In the buttons area, Click the <strong>Create</strong> (<img src="images/htmldbicon03.gif" width="12" height="15">) icon.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal12" border="1" class="imgborder_off" id="cal12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>15.</b></td>
+    <td><p class="bodycopy"> Select the second <strong>Projects (10) </strong> region and click <strong>Next &gt;</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal13" border="1" class="imgborder_off" id="cal13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>16.</b></td>
+    <td><p class="bodycopy"> Select <strong>Create a button in a region position </strong> and click <strong>Next &gt;</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal14" border="1" class="imgborder_off" id="cal14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>17.</b></td>
+    <td><p class="bodycopy"> Enter <strong>View Calendar</strong> for the Button Name and click <strong>Next &gt;</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal15" border="1" class="imgborder_off" id="cal15" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>18.</b></td>
+    <td><p class="bodycopy"> Accept the defaults and click <strong>Next &gt;</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal16" border="1" class="imgborder_off" id="cal16" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>19.</b></td>
+    <td><p class="bodycopy"> Accept the defaults and click <strong>Next &gt;</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal17" border="1" class="imgborder_off" id="cal17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>20.</b></td>
+    <td><p class="bodycopy"> Click the up area to select a page to branch to. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal18" border="1" class="imgborder_off" id="cal18" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>21.</b></td>
+    <td><p class="bodycopy"> Select <strong>Project Tasks Calendar</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal19" border="1" class="imgborder_off" id="cal19" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>22.</b></td>
+    <td><p class="bodycopy"> Click <strong>Create Button</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal20" border="1" class="imgborder_off" id="cal20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>23.</b></td>
+    <td><p class="bodycopy"> Click <strong>Run</strong> to view the Report with the button. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal21" border="1" class="imgborder_off" id="cal21" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>24.</b></td>
+    <td><p class="bodycopy"> Click <strong>View Calendar</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal22" border="1" class="imgborder_off" id="cal22" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>25.</b></td>
+    <td><p class="bodycopy"> The calendar is displayed. Click the <b>Application &lt;n&gt;</b> link in the developer tool bar.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="cal23" border="1" class="imgborder_off" id="cal23" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l8a" id="l8a"></a>Updating the Home Page Navigation List&nbsp;&nbsp;&nbsp;
+
+</span>
+<p class="bodycopy">Now that you have completed your Master Detail Form and Flash Chart, you need to add them to the Home Page Navigation List . 
+  Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td class="bodycopy" width="26"><b> 1.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Click the <b>Home</b> page.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage01" border="1" class="imgborder_off" id="navpage01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 2.</b></td>
+    <td> 
+      <p class="bodycopy">Select the <strong>Regions</strong> (<img src="images/htmldbicon15.gif" width="22" height="23" align="top">) 
+        icon. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage02a" border="1" class="imgborder_off" id="navpage02a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 3.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">In the regions area, click the <strong>List</strong> 
+        link. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage03" border="1" class="imgborder_off" id="navpage03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 4.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Click <strong>Create List Entry &gt;</strong>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage04" border="1" class="imgborder_off" id="navpage04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 5.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Enter <strong>20</strong> for the Sequence, <strong>Manage 
+        Projects and Tasks</strong> in the List Entry Label field. Ensure that 
+        Page in this Application is selected in the Target type and then click 
+        the up arrow for the Page. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage05" border="1" class="imgborder_off" id="navpage05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 6.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Select <strong>4 Projects</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage06" border="1" class="imgborder_off" id="navpage06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>7.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Click <strong>reset</strong> <b>pagination for this 
+        page</b> and click <b>Create and Create Another. </b>By selecting to reset 
+        pagination, the link always displays the first set of records when the 
+        user clicks the link regardless of which set they were viewing the last 
+        time they accessed the page. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage07" border="1" class="imgborder_off" id="navpage07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>8.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Enter <strong>30</strong> for the Sequence, <strong>View 
+        Tasks per Project Chart </strong> in the List Entry Label field. Ensure 
+        that Page in this Application is selected in the Target type and then 
+        click the up arrow for the Page. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage07a" border="1" class="imgborder_off" id="navpage07a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>9.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Select <strong>8 Tasks per Project Chart</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage07b" border="1" class="imgborder_off" id="navpage07b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>10.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Click <strong>reset</strong> <b>pagination for this 
+        page</b> and click <b>Create</b>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage07c" border="1" class="imgborder_off" id="navpage07c" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>11.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Your entry was added to the list. Click the <strong>Run 
+        Page 1</strong> ( <img src="images/htmldbicon05.gif" width="12" height="16" align="top">) 
+        icon. <b></b></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage08" border="1" class="imgborder_off" id="navpage08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>12.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Notice the new two entries. Click <strong>Manage Projects 
+        and Tasks</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage09" border="1" class="imgborder_off" id="navpage09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>13.</b></td>
+    <td width="620"> 
+      <p class="bodycopy"> The Projects report is displayed. Click the <b>Home</b> 
+        breadcrumb.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage10" border="1" class="imgborder_off" id="navpage10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>13.</b></td>
+    <td width="620"> 
+      <p class="bodycopy"> Click <strong>View Tasks per Project Chart</strong>. 
+      </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="navpage11" border="1" class="imgborder_off" id="navpage11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>13.</b></td>
+    <td width="620"> 
+      <p class="bodycopy"> The page is listed. Click the<strong> Application &lt;n&gt; </strong>
+        link in the developer tool bar. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="fchart11" border="1" class="imgborder_off" id="fchart11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l9"></a>Applying a New Theme &nbsp; </span>
+<p class="bodycopy">When you created the application, you selected the  theme 15. You can change the look and feel of the application by changing the theme. You first create a new theme by selecting one from the Oracle Application Express Repository. To apply a new theme, perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 1.</b></td>
+    <td width="620">
+      <p class="bodycopy">Click the down arrow next to <b>Shared Components &gt; 
+        User Interface &gt; Themes</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s02" border="1" class="imgborder_off" id="htmldbt09s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 2.</b></td>
+    <td width="620">
+      <p class="bodycopy">To create a new theme, click <b>Create</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s04" border="1" class="imgborder_off" id="htmldbt09s04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 3.</b></td>
+    <td width="620">
+      <p class="bodycopy">Accept the default <b>From the Repository</b> and click 
+        <b>Next &gt;</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s05" border="1" class="imgborder_off" id="htmldbt09s05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 4.</b></td>
+    <td width="620">
+      <p class="bodycopy">From the Theme options, select the <b>Theme 14</b> option. 
+        Click <b>Next &gt;</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s06" border="1" class="imgborder_off" id="htmldbt09s06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b> 5.</b></td>
+    <td width="620">
+      <p class="bodycopy">Click <b>Create</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s07" border="1" class="imgborder_off" id="htmldbt09s07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>6.</b></td>
+    <td width="620">
+      <p class="bodycopy">To switch to the Modern theme, click <b>Switch Theme</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s08" border="1" class="imgborder_off" id="htmldbt09s08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>7.</b></td>
+    <td width="620">
+      <p class="bodycopy">For Switch to Theme, make sure <b>14. Modern </b> is 
+        selected. Click<b> Next &gt;</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s09" border="1" class="imgborder_off" id="htmldbt09s09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>8.</b></td>
+    <td width="620">
+      <p class="bodycopy">Notice that the page displays the compatibility between 
+        the two themes. This utility checks whether there is a template in the 
+        new theme to replace each of the templates in the current theme. The check 
+        marks in the Status column indicate that the templates are compatible. 
+        Click <b>Next &gt;</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s10" border="1" class="imgborder_off" id="htmldbt09s10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>9.</b></td>
+    <td width="620">
+      <p class="bodycopy"> To confirm the theme switch, click <b>Switch Theme</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s11" border="1" class="imgborder_off" id="htmldbt09s11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>10.</b></td>
+    <td width="620"><p class="bodycopy">To see the new theme, click the <b>Run Page</b> icon (<img src="images/htmldbicon05.gif" width="12" height="16"> ) at the top right of the page.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s12" border="1" class="imgborder_off" id="htmldbt09s12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" height="111" class="bodycopy"><b>11.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Notice that the entire appearance of your application 
+        has changed. The color scheme has changed. Click the <b>Application &lt;n&gt; 
+        </b> link from the developer tool bar.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt09s13" border="1" class="imgborder_off" id="htmldbt09s13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p><em><strong></strong></em></p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l9a" id="l9a"></a>Adding a  Logo &nbsp; </span>
+<p class="bodycopy">You can very easily add a text or image logo to the application. In this case, you add a text logo. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>1.</b></td>
+    <td width="620">
+      <p class="bodycopy">Select the down arrow next to <strong>Shared Components</strong> 
+        and select <strong>Application&gt;Definition</strong>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="image06" border="1" class="imgborder_off" id="image06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>2.</b></td>
+    <td width="620">
+      <p class="bodycopy">Click the <strong>Logo</strong> tab. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="image07" border="1" class="imgborder_off" id="image07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>3.</b></td>
+    <td width="620"><p class="bodycopy">Select <strong>Text</strong> for the Logo Type. Enter <span class="style6"><strong>Project Tracker </strong></span> for Logo and <strong>style=&quot;font-family:Arial; color:#000000; font-size:18; white-space:nowrap; font-weight:bold;&quot;</strong> for Logo Attributes. Then click <strong>Apply</strong> <strong>Changes</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="image08" border="1" class="imgborder_off" id="image08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>4.</b></td>
+    <td width="620"><p class="bodycopy"> To see the logo, click the <b>Run Page</b> icon (<img src="images/htmldbicon05.gif" width="12" height="16"> ) at the top right of the page.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="image09" border="1" class="imgborder_off" id="image09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="26" class="bodycopy"><b>5.</b></td>
+    <td width="620">
+      <p class="bodycopy">The text is displayed. Click the <b>Application &lt;n&gt; 
+        </b> link from the developer tool bar.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="image10" border="1" class="imgborder_off" id="image10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<span class="navheader"><a name="l10"></a>Creating Users&nbsp;&nbsp;
+
+</span>
+<p class="bodycopy">As mentioned earlier, this application uses Oracle Application Express Authentication. 
+  To create new users, you use the functions already available in Oracle Application Express. You  create some new users and then in the next topic you restrict access to certain areas 
+  of the application to certain people. To do this, perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 1.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Click the <b>Home</b> link in the breadcrumb 
+        menu. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt10s01" border="1" class="imgborder_off" id="htmldbt10s01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 2.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">In the Administration box on the right, select <strong>Manage Application Express Users</strong>.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt10s03" border="1" class="imgborder_off" id="htmldbt10s03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td><p class="bodycopy">Click <strong>Create End User</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt10s03a" border="1" class="imgborder_off" id="htmldbt10s03a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 4.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Enter the following information, and then click <b>Create 
+        and Create Another</b><strong></strong>.</p>
+      <p class="bodycopy">User Name: <b>Brad.Knight</b><br>
+        Password and Confirm Password: <b>welcome1</b><br>
+        Email Address: <b>brad.knight@oracle.com<br>
+        </b>Default Schema:<b> <b>OBE</b> <br>
+        </b>User is a developer: <b><b>No<br>
+        </b></b>User is a Workspace Administrator:<b><b><b> <b>No</b> </b>        </b> </b> </p
+      >
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt10s04" border="1" class="imgborder_off" id="htmldbt10s04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 5.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Enter the following information, and then click <b>Create 
+        and Create Another</b><strong></strong>.</p>
+      <p class="bodycopy">User Name: <b>Susie.Parker</b><br>
+        Password and Confirm Password: <b>welcome1</b><br>
+        Email Address: <b>susie.parker@oracle.com</b><br>
+        Default Schema: <strong>OBE</strong><br>
+        User is a developer: <b><b>No<br>
+        </b></b>User is a Workspace Administrator:<b><b><b> <b>No</b> </b></b></b></p
+      >
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt10s05" border="1" class="imgborder_off" id="htmldbt10s05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 6.</b></td>
+    <td width="620"> 
+      <p class="bodycopy">Enter the following information, and then click <b>Create 
+        User</b>.</p>
+      <p class="bodycopy">User Name: <b>John.Bell</b><br>
+        Password and Confirm Password: <b>welcome1</b><br>
+        Email Address: <b>john.bell@oracle.com</b><b><br>
+        </b>Default Schema: <strong>OBE</strong><br>
+        User is a developer: <b><b>No<br>
+        </b></b>User is a Workspace Administrator:<b><b><b> <b>No</b> </b></b></b> 
+      </p
+      >
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt10s06" border="1" class="imgborder_off" id="htmldbt10s06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 7.</b></td>
+    <td> 
+      <p class="bodycopy">Notice that the three users have been created. You  
+        now set up administrator access to the application. Click the <b>Application Builder </b>tab.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="htmldbt10s07" border="1" class="imgborder_off" id="htmldbt10s07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<a name="l11"></a><span class="navheader">Restricting Access</span>
+<p class="bodycopy">Now that you have users defined, you can restrict access to certain portions of the application. In this topic, you allow only certain users to edit tasks.
+  To do this, perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><strong>A</strong></td>
+    <td><a href="#l11t1" class="bodylink">Add an Access Control Page </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><b>B.</b></td>
+    <td><a href="#l11t2" class="bodylink">Identify Privileged Users </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b>C.</b></td>
+    <td><a href="#l11t3" class="bodylink">Apply Authorization Schemes to Application Components.</a></td>
+  </tr>
+  </tbody> 
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h4><a name="l11t1"></a><span class="boldbodycopy">A. Add an Access Control Page </span></h4>
+<p class="bodycopy">To secure the application so that only privileged users can perform certain operations, you create an Access Control Page that is used to define which users can access which part of the application. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="25" height="87"><b> 1.</b></td>
+    <td> 
+      <p>Click the <strong>Project Tasks Application</strong>.</p>
+      <p><img src="images/view_image.gif" name="acl01" border="1" class="imgborder_off" id="acl01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 2.</b></td>
+    <td> 
+      <p>Click <b>Create Page</b>.</p>
+      <p><img src="images/view_image.gif" name="acl02" border="1" class="imgborder_off" id="acl02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 3.</b></td>
+    <td> 
+      <p>Select the <strong>Access Control</strong> page type and click <b>Next 
+        &gt;</b>.</p>
+      <p><img src="images/view_image.gif" name="acl03" border="1" class="imgborder_off" id="acl03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b> 4.</b></td>
+    <td> 
+      <p> Accept the default page value, <strong>9</strong>, and click <strong>Next 
+        &gt;</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl04" border="1" class="imgborder_off" id="acl04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>5.</b></td>
+    <td> 
+      <p>Make sure <b>Do not use tabs</b> is selected and click <strong>Next &gt;</strong>. 
+      </p>
+      <p><img src="images/view_image.gif" name="acl05" border="1" class="imgborder_off" id="acl05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>6.</b></td>
+    <td> 
+      <p>Click <b>Finish</b>.</p>
+      <p><img src="images/view_image.gif" name="acl06" border="1" class="imgborder_off" id="acl06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>7.</b></td>
+    <td> 
+      <p> Click <strong>Run Page</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl07" border="1" class="imgborder_off" id="acl07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>8.</b></td>
+    <td> 
+      <p>You see the access control page you just added to the application. The page is divided into two regions, and the default setting for Application Model is Full Access. In this case, you want to restrict certain users from certain parts of the application. Select <strong>Restricted Access</strong> and click <strong>Set Application Mode</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl08" border="1" class="imgborder_off" id="acl08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><b>9.</b></td>
+    <td><p>The Application mode has been set. In the next topic, you identify your privileged users. Click <strong>Add User</strong>. </p>
+        <p><img src="images/view_image.gif" name="acl09" border="1" class="imgborder_off" id="acl09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  </tbody> 
+</table>
+<p align="right"><a href="#l11" class="bodylink">Back to Topic</a></p>
+<a name="l11t2"></a><span class="boldbodycopy">B. Identify Privileged Users </span>
+<p class="bodycopy">In a previous topic, you created 3 users: Brad.Knight, John.Bell and Susie.Parker. In this topic, you identify Brad.Knight to be allowed to edit the application but he can't change any user access. John.Bell can only view the information in the application, he can not make any changes. And finally Susie.Parker is the administrator of the application so she can change anything in addition to changing the user privileges. Peform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tr valign="top">
+    <td height="87"><b> 1.</b></td>
+    <td height="87"><p>Enter <strong>john.bell</strong> for the username and select <b>View</b> for the privilege, then click <b>Add User</b> again. </p>
+        <p><img src="images/view_image.gif" name="acl10" border="1" class="imgborder_off" id="acl10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tbody> 
+  <tr valign="top"> 
+    <td width="25" height="87"><b> 2.</b></td>
+    <td width="600" height="87"> 
+      <p>Enter <strong>brad.knight</strong> for the username and select <b>Edit</b> for the privilege, then click <b>Add User</b> again. </p>
+      <p><img src="images/view_image.gif" name="acl11" border="1" class="imgborder_off" id="acl11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 3.</b></td>
+    <td width="600" height="50"> 
+      <p>Enter <strong>susie.parker</strong> for the username and select <b>Administrator</b> for the privilege, then click <b>Apply Changes</b>.</p>
+      <p><img src="images/view_image.gif" name="acl12" border="1" class="imgborder_off" id="acl12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  </tbody> 
+</table>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 4.</b></td>
+    <td width="600" height="50"> 
+      <p>Next you can define which areas of the application are restricted. Click 
+        the <b>Application &lt;n&gt; </b> link from the developer tool bar.</p>
+      <p><img src="images/view_image.gif" name="acl13" border="1" class="imgborder_off" id="acl13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  </tbody> 
+</table>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tbody> 
+  </tbody> 
+</table>
+<p align="right"><a href="#l11" class="bodylink">Back to Topic</a></p>
+<a name="l11t3"></a><span class="boldbodycopy">C. Apply Authorization Schemes to Application Components </span>
+<p class="bodycopy">With your authorization scheme created, users with View privilege can review the Employee Information but can not change it. Users with Edit privilege can make changes to Employee Information but can not make changes to the access control list.  Users with Administrator privilege, can make any changes including to the access control list. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="26" height="87"><b> 1.</b></td>
+    <td width="600" height="87"> 
+      <p>Select the down arrow next to <strong>Shared Components</strong> and 
+        select<strong> Application&gt;Definition</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl25" border="1" class="imgborder_off" id="acl25" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" height="87"><b> 2.</b></td>
+    <td width="600" height="87"> 
+      <p>Click the <b>Security</b> tab.</p>
+      <p><img src="images/view_image.gif" name="acl25a" border="1" class="imgborder_off" id="acl25" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 3.</b></td>
+    <td width="600" height="50"> 
+      <p>Under Authorization, change the scheme to <strong>access control - view</strong> 
+        and click <strong>Apply Changes</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl26" border="1" class="imgborder_off" id="acl26" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 4.</b></td>
+    <td width="600" height="50"> 
+      <p>Now that you have given access to the application for view privileged 
+        users, you can restrict edit privileged users to Employee Information. 
+        Click <strong>2 - Employee Information</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl14" border="1" class="imgborder_off" id="acl14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 5.</b></td>
+    <td width="600" height="51"> 
+      <p> In the Regions area, click the <strong>Report</strong> link. Note, you 
+        may need to click the Regions (<img src="images/htmldbicon15.gif" width="22" height="23" align="top">) 
+        icon under Page Rendering. </p>
+      <p><img src="images/view_image.gif" name="acl15" border="1" class="imgborder_off" id="acl15" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 6.</b></td>
+    <td width="600" height="51"> 
+      <p>Click the <strong>Edit</strong> (<img src="images/htmldbicon02.gif" width="21" height="21" align="top">) 
+        icon in front of <strong>EMPLOYEE_ID</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl16" border="1" class="imgborder_off" id="acl16" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 7.</b></td>
+    <td width="600" height="51"> 
+      <p>Click the <strong>Authorization</strong> tab. </p>
+      <p><img src="images/view_image.gif" name="acl17" border="1" class="imgborder_off" id="acl17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b> 8.</b></td>
+    <td height="51">
+      <p>Select <strong>access control - edit</strong> for the Authorization Scheme 
+        and click <strong>Apply Changes</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl18" border="1" class="imgborder_off" id="acl18" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 9.</b></td>
+    <td width="600" height="87"> 
+      <p>Click <strong>Apply Changes</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl19" border="1" class="imgborder_off" id="acl19" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 10.</b></td>
+    <td width="600" height="50"> 
+      <p> Because you only want the Create Button to appear if the user has Edit 
+        or Administrator privilege, you need to set the authorization scheme. 
+        Click the <strong>Button</strong> (<img src="images/htmldbicon16.gif" width="23" height="20" align="top">) 
+        icon under Page Rendering. </p>
+      <p><img src="images/view_image.gif" name="acl20" border="1" class="imgborder_off" id="acl20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 11.</b></td>
+    <td width="600" height="50"> 
+      <p>Click the <strong>Create</strong> link. </p>
+      <p><img src="images/view_image.gif" name="acl21" border="1" class="imgborder_off" id="acl21" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 12.</b></td>
+    <td width="600" height="51"> 
+      <p>Click the <strong>Authorization</strong> section button. </p>
+      <p><img src="images/view_image.gif" name="acl22" border="1" class="imgborder_off" id="acl22" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 13.</b></td>
+    <td width="600" height="51"> 
+      <p>Select the <strong>access control - edit</strong> authorization scheme 
+        and click <strong>Apply Changes</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl23" border="1" class="imgborder_off" id="acl23" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><em><strong></strong></em></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>14.</b></td>
+    <td height="51">
+      <p>You also want to protect against direct access to the page. So even though 
+        you restricted a user that didn't have edit privilege to edit or create 
+        users on page 2, they can still access page 3 if the correct URL is entered. 
+        To prevent this from happening, you need to restrict page 3 to only edit 
+        users. Click<strong> &gt; </strong>for Page to advance to Page 3. </p>
+      <p><img src="images/view_image.gif" name="acl23a" border="1" class="imgborder_off" id="acl23a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>15.</b></td>
+    <td height="51">
+      <p>Click the <strong>Show All</strong> (<img src="images/htmldbicon17.gif" width="22" height="20" align="top">) 
+        icon </p>
+      <p><img src="images/view_image.gif" name="acl23b" border="1" class="imgborder_off" id="acl23b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>16.</b></td>
+    <td height="51">
+      <p>In the Page section, click the <strong>No</strong> link for the Authorization 
+        Page Attribute.</p>
+      <p><img src="images/view_image.gif" name="acl39" border="1" class="imgborder_off" id="acl39" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>17.</b></td>
+    <td height="51"> 
+      <p>For Authorization Scheme, select <b>access control - edit</b>. Click 
+        <b>Apply Changes</b>. Click the <b>Run Page</b> icon.</p>
+      <p><img src="images/view_image.gif" name="acl40" border="1" class="imgborder_off" id="acl40" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td height="50"><b>18.</b></td>
+    <td height="51"> 
+      <p> Click the <b>Application &lt;n&gt; </b> link from the developer tool 
+        bar.</p>
+      <p><img src="images/view_image.gif" name="acl43" border="1" class="imgborder_off" id="acl43" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 19.</b></td>
+    <td width="600" height="51"> 
+      <p> Since users with the administrator privilege are only allowed to make 
+        changes to the access control list, you need to set the authorization 
+        scheme for page 9. Click <strong>9 - Access Control Administration Page</strong>. 
+      </p>
+      <p><img src="images/view_image.gif" name="acl28" border="1" class="imgborder_off" id="acl28" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 20.</b></td>
+    <td width="600" height="51"> 
+      <p>Click the <strong>No</strong> link for Authorization.</p>
+      <p><img src="images/view_image.gif" name="acl29" border="1" class="imgborder_off" id="acl29" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="style9"><strong></strong></span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b> 21.</b></td>
+    <td width="600" height="87"> 
+      <p>Select <strong>access control - administrator</strong> for the Authorization 
+        Scheme and click <strong>Apply Changes</strong>. Now you are ready to 
+        run the application. </p>
+      <p><img src="images/view_image.gif" name="acl30" border="1" class="imgborder_off" id="acl30" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="style9"><strong></strong></span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b>22.</b></td>
+    <td width="600" height="50"> 
+      <p>Enter <strong>1</strong> for Page and click <strong>&lt;</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl31" border="1" class="imgborder_off" id="acl31" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b>23.</b></td>
+    <td width="600" height="50"> 
+      <p>Click <b>Run</b>.</p>
+      <p><img src="images/view_image.gif" name="acl32" border="1" class="imgborder_off" id="acl32" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style9"><strong></strong></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>24.</b></td>
+    <td height="50"> 
+      <p>If you are already logged in as OBE, click <strong>Logout</strong>. Enter 
+        <strong>brad.knight</strong> and <b>welcome1</b> for the username and 
+        password. Then click <strong>Login</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl36" border="1" class="imgborder_off" id="acl36" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style9"><strong></strong></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>25.</b></td>
+    <td height="50">
+      <p>Select <strong>Employee Information</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl37" border="1" class="imgborder_off" id="acl37" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style9"><strong></strong></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>26.</b></td>
+    <td height="50">
+      <p>Notice that Brad can edit the Employees. Click <strong>Logout</strong>.</p>
+      <p><img src="images/view_image.gif" name="acl38" border="1" class="imgborder_off" id="acl38" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style9"><strong></strong></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>27.</b></td>
+    <td height="50"> 
+      <p>Enter <strong>john.bell</strong> and <b>welcome1</b> for the username 
+        and password. Then click <strong>Login</strong>.</p>
+      <p><img src="images/view_image.gif" name="acl33" border="1" class="imgborder_off" id="acl33" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style9"><strong></strong></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>28.</b></td>
+    <td height="50">
+      <p>Select <strong>Employee Information</strong>. </p>
+      <p><img src="images/view_image.gif" name="acl34" border="1" class="imgborder_off" id="acl34" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style9"><strong></strong></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>29.</b></td>
+    <td height="50">
+      <p>John has only view privilege and therefore can not edit the Employees. 
+        He also does not see the Create button displayed. </p>
+      <p><img src="images/view_image.gif" name="acl35" border="1" class="imgborder_off" id="acl35" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style9"><strong></strong></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26"><b>30.</b></td>
+    <td width="600" height="51"> 
+      <p> Change the page number in your URL to try and access Page 3. </p>
+      <p>Example url&nbsp; &#133;/f?p=426:2:2101953412249296357::NO<br>
+        Change to &nbsp;&nbsp;&nbsp;&#133;/f?p=426:<b>3</b>:2101953412249296357::NO</p>
+      <p><img src="images/view_image.gif" name="acl43a" border="1" class="imgborder_off" id="acl43a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>Press the <b>ENTER</b> key on your keyboard. Notice that you receive 
+        a message denying you access to the page because you restricted Page 3 
+        to edit privilege users only. </p>
+      <p><img src="images/view_image.gif" name="acl43" border="1" class="imgborder_off" id="acl43" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  </tbody> 
+</table>
+<p align="right"><a href="#l11" class="bodylink">Back to Topic</a></p>
+<h4>
+  <p class="navheader"><a name="s"></a>Summary</p>
+</H4>
+<h4>&nbsp;</H4>
+<p><span class=bodycopy>In this tutorial, you learned how to:</span></p>
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Create and modify a table</td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Create an application</td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Add and modify a report, form, chart, and calendar </td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Create LOVs and validation items </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Update a navigation list </td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Apply a new theme</td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Create a user and limit access to a user</td>
+  </tr>
+  <tbody>
+  </tbody>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="hideAllImages()">  <b><font color="#ff0000">Place the cursor over this icon to hide all screenshots.</font></b>
+</h3>
+<h4 align="left">
+  <p align="left"> 
+  </p>
+</h4>
+<div align="right"></div>
+<h4 align="left">
+  <p align="left"> 
+  </p>
+</h4>
+<div align="right"></div>
+<h4>
+  <p></p>
+  <h3>&nbsp;</h3>
+  <h4>&nbsp;</h4>
+  <h4>&nbsp;</h4>
+</h4>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+preLoadImages();
+//-->
+</script>
+
+
+<script language="JavaScript" type="text/JavaScript">
+<!--
+preLoadImages();
+//-->
+</script>
+</html>

@@ -1,0 +1,790 @@
+<html>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+
+
+<title>Implementing Information Lifecycle Management Using the ILM Assistant</title>
+
+<style type="text/css">
+<!--
+.style1 {font-size: 12px}
+-->
+</style>
+<link rel="stylesheet" href="file:///D|/My%20Documents/Work/New%20Features/10gR2/OBE/library/otn_new.css" type="text/css">
+<style type="text/css">
+<!--
+.style4 {
+	color: #FF0000;
+	font-weight: bold;
+}
+.style7 {color: #000000}
+.style8 {font-family: "Courier New", Courier, mono}
+-->
+</style>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+<body bgcolor="#FFFFFF" text="#000000">
+<h3 align="left" class="topstoryhead">Implementing Information Lifecycle Management 
+  Using the ILM Assistant <i></i></h3>
+<h4 class="navheader">Purpose</h4>
+<p class="bodycopy">The goal of this tutorial is to show you how to manage data 
+  during its lifetime using the Information Lifecycle Management strategy with 
+  the ILM Assistant.</p>
+<h4 class="navheader">Time to Complete</h4>
+<p class="bodycopy">Approximately 30 minutes </p>
+<h4 class="navheader"><a name="t"></a>Topics</h4>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table width="600" border="0" cellpadding="1" cellspacing="0">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="15"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodylink"><a href="#o" class="bodylink">Overview</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodylink"><a href="#p" class="bodylink">Prerequisites</a></td>
+  </tr>
+  <tr valign="top">
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><a href="#t1a" class="bodylink">Opening the ILM Assistant </a></td>
+  </tr>
+  <tr valign="top">
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><a href="#t1b" class="bodylink">Setting Preferences to Demonstration Mode </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><a href="#t1" class="bodylink">Creating Logical Storage Tiers </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"> 
+      <p><a href="#t2" class="bodylink">Defining a Lifecycle </a></p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><p><a href="#t3" class="bodylink">Assigning a Lifecycle to a Table </a></p></td>
+  </tr>
+  <tr valign="top">
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><p><a href="#t4" class="bodylink">Viewing a Lifecycle Event </a></p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><a href="#t5" class="bodylink">Analyzing Results Using Reports </a></td>
+  </tr>
+  <tr valign="top">
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><p><a href="#t6" class="bodylink">Ensuring Compliance and Security </a></p></td>
+  </tr>
+  <tr valign="top"> 
+    <td><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodylink"><a href="#s" class="bodylink">Summary</a></td>
+  </tr>
+  </tbody> 
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"><b><span class="style1"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place 
+  the cursor over this icon to load and view all the screenshots for this tutorial. 
+  (Caution: This action loads all screenshots simultaneously, so response time 
+  may be slow depending on your Internet connection.)</font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over an individual icon in the following steps to load and view only the screenshot associated with that step. You can hide an individual screenshot by clicking it.</p>
+<h3 class="navheader"><a name="o"></a>Overview</h3>
+<p> <span class="bodycopy">Information Lifecycle Management (ILM) is a set of policies and procedures for managing data during its lifetime.
+  <br>
+  <br>
+The ILM Assistant manages information by recommending the correct placement of data on logical storage tiers as specified by a <b>lifecycle definition</b>, where a lifecycle definition describes the stages and storage tiers that data resides on during its lifetime. </span></p>
+<p class="bodycopy">Each stage specifies a retention period during which the data resides on a logical storage tier. A <b>logical storage tier</b> is a collection of Oracle tablespaces in which partitions may reside. <br>
+  <br>
+  As an example, consider using the ILM Assistant to manage the table <span class="style8">MYSALES</span>. <span class="style8">MYSALES</span> contains partitions SALES_2006, SALES_2005, SALES_2004 and SALES_2003. The logical storage tiers High Performance, Low Cost, and Online Archive are defined in the ILM Assistant and each one contains one or more Oracle tablespaces. The lifecycle definition, SALES_DATA, which is used to manage the table <span class="style8">MYSALES</span> contains the following three stages: </p>
+<ul>
+  <li class="bodycopy">CURRYEAR: Stores the current sales data on the High Performance tier</li>
+  <li class="bodycopy">LASTYEAR: Stores previous years' sales data on the Low Cost tier</li>
+  <li class="bodycopy">OLDDATA: Stores all the sales data older than two years on the Online Archive tier</li>
+</ul>
+<p class="bodycopy">At the end of 2006, the SALES_2006 partition, which resides on the CURRYEAR stage, will move to the LASTYEAR stage and the SALES_2005 partition, which is on the LASTYEAR stage, will move to the OLDDATA stage. A new SALES_2007 partition will be created on the CURRYEAR stage.
+</p>
+<p class="bodycopy"><img src="images/wwv_flow_file_mgr.get_file.gif" width="537" height="488"></p>
+<p class="bodycopy">&nbsp;</p>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before starting this tutorial, you should first complete the 
+  following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="590">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><b>1.</b></td>
+    <td colspan="2" class="bodylink"><p>Install  Oracle Database 11g.</p>
+      <p>&nbsp; </p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><b>2.</b></td>
+    <td colspan="2" class="bodylink"><p><a href="javascript:;" onClick="MM_openBrWindow('../../install/apexinst/apexinst.htm','popup','status=yes,scrollbars=yes,resizable=yes,width=800,height=600')">Configure Oracle Application Express</a> in the database.</p>
+      <p>&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>3.</b></td>
+    <td colspan="2" class="bodylink"><p>Download and unzip the ILM Assistant from <a href="javascript:;" onClick="MM_openBrWindow('http://www.oracle.com/technology/software/deploy/ilm/index.html','ilmasst','status=yes,scrollbars=yes,resizable=yes,width=800,height=600')">OTN</a>. </p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>4.</b></td>
+    <td colspan="2" class="bodylink"><p>Download and unzip  the  <a href="files/ilm.zip">ilm.zip</a> files for this OBE into a directory on your host machine. </p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>5.</b></td>
+    <td colspan="2" class="bodylink"><p>To install the ILM Assistant, open a terminal window and perform the following commands from the directory where you unzipped the files.</p>
+      <pre class="style8 bodycopy"><strong>sqlplus sys/&lt;sys_password&gt; as sysdba
+alter user FLOWS_020200 identified by FLOWS_020200 account unlock;
+@ilma_install &lt;ilmpasswrd&gt; &lt;tblsp&gt; &lt;sid&gt;</strong></pre>
+      <ul>
+        <li><span class="style1"><span class="style8">&lt;sys_password&gt;</span> is your sys password.</span></li>
+        <li><span class="style1"><span class="style8">    &lt;ilmpasswrd&gt;</span> is a password for which you will need to log in to the ILM Assistant.</span></li>
+        <li><span class="style1">          </span><span class="style8">&lt;tblsp&gt;</span> is the tablespace where the ILM Assistant is installed.</li>
+        <li>          <span class="style8">&lt;sid&gt;</span> is the SID for your Oracle Database . </li>
+      </ul>      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>6.</b></td>
+    <td colspan="2" class="bodylink"><p>Execute the following script from your terminal window in SQL*Plus to load the data for this tutorial:</p>
+      <pre><span class="bodycopy style8"><strong>sqlplus /nolog
+@ilm_data</strong></span></pre>
+      <p>&nbsp; </p></td>
+  </tr>
+  </tbody> 
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t1a" id="t1a"></a>Opening the ILM Assistant </h3>
+<p class="bodycopy">When you installed the ILM Assistant, a workspace and an application are created in Oracle Application Express. To open the ILM Assistant,  perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"><p class="bodycopy">Open a browser window and enter the following URL:</p>
+        <p class="bodycopy"><b><span class="style8">http://&lt;your host name&gt;:&lt;port&gt;/apex/</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;;" lang="EN-GB">f?p=737677</span></b></p>
+        <p class="bodycopy">Log in as <span class="style8"><b>admin/&lt;ilm_password&gt;</b></span> and click <b>Login</b>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="loginadmin" border="1" class="imgborder_off" id="loginadmin" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <ul>
+          <li class="bodycopy"><span class="style8">&lt;your host name</span>&gt; is your machine name or IP address or Localhost.</li>
+          <li class="bodycopy"><span class="bodycopy"><span class="style8">&lt;port&gt;</span> is what you set when you configured Oracle Application Express during the installation.</span></li>
+          <li class="bodycopy"><span class="style8">&lt;ilm_password&gt;</span> is the password you entered during the installation . </li>
+        </ul>        
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t1b" id="t1b"></a>Setting Preferences to Demonstration Mode </h3>
+<p class="bodycopy">Preferences permit customization of the behavior and information displayed in the ILM Assistant. In this topic, you change the Demonstration Mode preference value to something greater than 1 so that you can review the capabilities of the tool without the actual data. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"><p class="bodycopy">Click the <strong>Lifecycle Setup</strong> tab. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lcsetup01" border="1" class="imgborder_off" id="lcsetup01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy">Click the <strong>Preferences</strong> subtab. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lcsetup02" border="1" class="imgborder_off" id="lcsetup02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td colspan="2"><p class="bodycopy">Click the <strong>Edit</strong> icon in front of the Demonstration Mode preference. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lcsetup05" border="1" class="imgborder_off" id="lcsetup05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td colspan="2"><p class="bodycopy">Change the value to <strong>100000</strong> and click <strong>OK</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lcsetup06" border="1" class="imgborder_off" id="lcsetup06" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 7.</b></td>
+    <td colspan="2"><p class="bodycopy">The Demonstration mode preference has been updated. Now you can perform the rest of the OBE. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lcsetup07" border="1" class="imgborder_off" id="lcsetup07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"></h3>
+<h3 class="navheader"><a name="t1"></a>Creating Logical Storage Tiers </h3>
+<p class="bodycopy">ILM is concerned with ensuring that data is placed on the most optimal storage devices depending on how it is being used. This is achieved in the ILM Assistant by specifying logical storage tiers that represent  the different types of storage tiers available in your system. In this example, you create three logical storage tiers: high performance for the very fast, high-throughput storage devices and low-cost and online archive for the placement of data that is infrequently accessed. Perform the 
+  following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Click the <strong> Logical Storage Tiers</strong> subtab. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lcsetup07" border="1" class="imgborder_off" id="lcsetup07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>2.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Click <strong>New Logical Storage Tier</strong>. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor01" border="1" class="imgborder_off" id="logstor01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b>3.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Enter <strong>High Performance</strong> in the Name field, <strong>Very High Performance Discs </strong>in the Description field and <strong>72</strong> in the Cost per GB field. Select the <strong>+</strong> sign in front of Filter Options. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor02" border="1" class="imgborder_off" id="logstor02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>4.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Enter <strong>20</strong> for Rows Displayed and click <strong>Go</strong>.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor02a" border="1" class="imgborder_off" id="logstor02a" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>5.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Select the check box Read-Write Preferred for <span class="style8"><strong>Q4_ORDERS. </strong></span>Select the check box Read-Write Secondary for <span class="style8"><strong> CC_THIS_MONTH, Q1_ORDERS</strong></span>, <span class="style8"><strong>Q2_ORDERS</strong></span>, and<span class="style8"><strong> Q3_ORDERS.</strong></span></p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor02a1" border="1" class="imgborder_off" id="logstor02a1" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>6.</b></td>
+    <td colspan="2"><p class="bodycopy">Then click <strong>Create</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor02a2" border="1" class="imgborder_off" id="logstor02a2" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>7.</b></td>
+    <td colspan="2"><p class="bodycopy">Your Logical Storage Tier has been created. You need to create two more logical tiers: Low Cost and Online Archive. Click <strong>New Logical Storage Tier</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor07" border="1" class="imgborder_off" id="logstor07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>8.</b></td>
+    <td colspan="2"><p class="bodycopy">Enter <strong>Low Cost </strong> in the Name field, <strong>Lower Costs ATA discs, used for older data </strong>in the Description field and <strong>14</strong> in the Cost per GB field. Select the check box Read-Write Preferred for <span class="style8"><strong>2005_ORDERS. </strong></span>Select the check box Read-Write Secondary for  <span class="style8"><strong><strong>2004_ORDERS</strong>, <strong>CC_PREV_MONTH, </strong></strong></span>and<span class="style8"><strong>  <strong>CC_THIS_YEAR</strong>. </strong></span>Then  click <strong>Create</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor08" border="1" class="imgborder_off" id="logstor08" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>9.</b></td>
+    <td colspan="2"><p class="bodycopy">Your Logical Storage Tier has been created. You need to create one more logical tier. Click <strong>New Logical Storage Tier</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor12" border="1" class="imgborder_off" id="logstor12" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>10.</b></td>
+    <td colspan="2"><p class="bodycopy">Enter <strong>Online Archive </strong> in the Name field, <strong>Used for data older than 2 years </strong>in  Description and <strong>7</strong> in the Cost per GB field. Select the check box Read-Write Preferred for <span class="style8"><strong>2003_ORDERS. </strong></span>Select the check box Read-Write Secondary for <span class="style8"><strong><strong>CC_OLD_TRAN</strong>, </strong></span>and<span class="style8"><strong> <strong>OLD_ORDERS</strong>. </strong></span>Then click <strong>Create</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor13" border="1" class="imgborder_off" id="logstor13" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>11.</b></td>
+    <td colspan="2"><p class="bodycopy">All the Logical Storage Tiers have been created. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor16" border="1" class="imgborder_off" id="logstor16" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t2"></a>Defining a Lifecycle</h3>
+<p class="bodycopy">Lifecycle definitions describe how data migrates across logical storage tiers during its lifetime. A lifecycle definition comprises  one or more lifecycle stages that select a logical storage tier, data attributes such as compress and read only and a duration for data residing on that lifecycle stage. A lifecycle definition is valid if it contains at least one lifecycle stage and there must be a final stage, which is either user specified or automatically generated by the ILM Assistant upon completion of the lifecycle definition process. For the final stage, you must specify what happens to the data at the end of the lifecycle: gets archived offline, remains online, or gets purged. In this topic, you create a lifecycle definition that contains four lifecycle stages. Perform the following tasks:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">From the Lifecycle Setup tab, select the <strong>Lifecycle Definitions</strong> subtab. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="logstor16" border="1" class="imgborder_off" id="logstor16" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Click <b>New Lifecycle Definition.</b></p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc02" border="1" class="imgborder_off" id="lifecyc02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>3.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Enter <span class="style8"><b>SOX_ORDERS</b></span> in the Name field and <b>Orders that must comply with Sarbanes Oxley and will be kept for 7 years </b>in the Description field. </p>
+      <p class="bodycopy">A lifecycle is defined by STAGES. A Stage describes what happens to data for that period of time. Enter <strong>Current Orders</strong> in Current Stage name and <strong>This months orders</strong> as the description. Enter<strong> 1</strong> in the Retain Data for field and choose <strong>Months</strong> from the drop-down list. Select <strong>High Performance</strong> for the Logical Storage Tier. </p>
+      <p class="bodycopy">Select <strong>Add More Stages</strong>.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc03" border="1" class="imgborder_off" id="lifecyc03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>4.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Enter <strong>Previous Orders</strong> in the Stage Name field and <strong>Previous 2 months' orders</strong> in the Description field. Make sure <strong>No</strong> is selected for Final Stage for Lifecycle Definition. Enter<strong> 2 </strong> in the Retain Data for field and select <strong>Months</strong> from the drop-down list. Select <strong>High Performance</strong> for the Logical Storage Tier and select <strong>Compressed</strong> for the Stage Attributes. Then click<strong> Add Preceding Stage</strong>. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc06" border="1" class="imgborder_off" id="lifecyc06" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>5.</b></td>
+    <td colspan="2"><p class="bodycopy">Enter <strong>Old</strong> <strong> Orders</strong> in Stage Name and <strong>Last 11  months' orders</strong> in Description.  Enter<strong> 11 </strong> in the Retain Data for field and select <strong>Months</strong> from the drop-down list. Select <strong>Low Cost </strong> for the Logical Storage Tier. Then click<strong> Add Preceding Stage</strong>. </p>
+      <p class="bodycopy">Note: The number of months may need to change depending on when you run this tutorial. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc07" border="1" class="imgborder_off" id="lifecyc07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>6.</b></td>
+    <td colspan="2"><p class="bodycopy">Enter <strong>Very Old</strong> <strong> Orders</strong> in the Stage Name field and <strong>6 years or older </strong> in the Description field. Enter<strong> 6 </strong> in the Retain Data for field and select <strong>Years</strong> from the drop-down list. Select <strong>Online Archive </strong> for the Logical Storage Tier  and select <strong>Compressed</strong> for the Stage Attributes. Then click<strong> Add Preceding Stage</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc08" border="1" class="imgborder_off" id="lifecyc08" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>7.</b></td>
+    <td colspan="2"><p class="bodycopy">Enter <strong>End of Life for Orders </strong><strong></strong> in Stage Name and <strong>Purge after 7 years </strong> in the Description field. Click <strong>Yes</strong> for Final Stage for Lifecycle Definition. Select <strong>Purge</strong> for End of Life Action. Then click<strong> Finish</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc09" border="1" class="imgborder_off" id="lifecyc09" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 8.</b></td>
+    <td colspan="2"><p class="bodycopy">Your Lifecycle definition has been created. Click the <strong>Edit</strong> icon. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc10" border="1" class="imgborder_off" id="lifecyc10" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 9.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">To see a graphical view of the lifecycle, click <strong>Graphical View</strong>. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc10a" border="1" class="imgborder_off" id="lifecyc10a" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>10.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">The graphical view appears. Click <strong>OK</strong>. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc11" border="1" class="imgborder_off" id="lifecyc11" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>11.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Your Lifecycle definition has been created successfully. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc12" border="1" class="imgborder_off" id="lifecyc12" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t3"></a>Assigning a Lifecycle to a Table </h3>
+<p class="bodycopy"> For tables having no partitioning, a simulated partitioning strategy can be generated showing how to partition the table and  how data would be migrated if  managed by the ILM Assistant.  Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="24" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="622"> 
+      <p class="bodycopy">Under the Lifecycle Setup tab, select the <strong>Lifecycle Table</strong> subtab. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="lifecyc12" border="1" class="imgborder_off" id="lifecyc12" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy">To receive a list of tables to manage by the ILM Assistant, you need to refresh the list. Click <strong>Refresh Table List</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="new01" border="1" class="imgborder_off" id="new01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td colspan="2"><p class="bodycopy">Click <strong>Submit Refresh</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="new02" border="1" class="imgborder_off" id="new02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td colspan="2"><p class="bodycopy">Click <strong>OK</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="new03" border="1" class="imgborder_off" id="new03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td colspan="2"><p class="bodycopy">The Table Refresh is in progress. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="new04" border="1" class="imgborder_off" id="new04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="24" class="bodycopy"><b> 6.</b></td>
+    <td colspan="2" width="622"> 
+      <p class="bodycopy">The list is refreshed. Because the table is not partitioned, the <span class="style8">TL.SALES</span> table is a  candidate to be managed by the ILM Assistant. Click the <strong>Candidate</strong> link for the <span class="style8">TL.SALES</span> table. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="assgntab01" border="1" class="imgborder_off" id="assgntab01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="24" class="bodycopy"><b>7.</b></td>
+    <td colspan="2" width="622"> 
+      <p class="bodycopy">Select the <strong>SOX Orders </strong> Lifecycle you created.The ILM Assistant  automatically identifies suitable partitioning
+keys (in this example <span class="style8">TIME_ID</span>) and quickly analyzes the date to determine
+the range of the data and compression that may be achieved. Click <strong>Preview Simulation</strong>.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="assgntab02" border="1" class="imgborder_off" id="assgntab02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="24" class="bodycopy"><b>8.</b></td>
+    <td colspan="2" width="622"> 
+      <p class="bodycopy">You can modify any of these values such as number of rows to view the projected costs and savings. In this case, you can see the projected savings of using tiered storage and the additional savings that are likely to result from using compression. Click <strong>Migration Script</strong>. 
+      </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="assgntab03" border="1" class="imgborder_off" id="assgntab03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="24" class="bodycopy"><b>9.</b></td>
+    <td colspan="2" width="622"> 
+      <p class="bodycopy">Review the script. Click <strong>Close</strong>. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="assgntab04" border="1" class="imgborder_off" id="assgntab04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>10.</b></td>
+    <td colspan="2"><p class="bodycopy">Alternatively, you can place this table in simulation mode where the ILM Assistant will advise how and when data should be moved. To create the simulation, click <strong>OK</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="assgntab05" border="1" class="imgborder_off" id="assgntab05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>11.</b></td>
+    <td colspan="2"><p class="bodycopy">Click <strong>OK</strong> again to confirm. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="assgntab06" border="1" class="imgborder_off" id="assgntab06" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>12.</b></td>
+    <td colspan="2"><p class="bodycopy">The <span class="style8">SALES</span> table is now simulating being partitioned. You also want to create a managed table. To do this, you click a candidate table that is already partitioned. Click <strong>Candidate</strong> for the <span class="style8">TL.PART_ORDERS</span> table. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="mngtable01" border="1" class="imgborder_off" id="mngtable01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>13.</b></td>
+    <td colspan="2"><p class="bodycopy">Select <span class="style8"><strong>SOX_ORDERS</strong></span> for the Lifecycle Definition and click <strong>Preview</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="mngtable02" border="1" class="imgborder_off" id="mngtable02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>14.</b></td>
+    <td colspan="2"><p class="bodycopy">The storage cost information is displayed. Click <strong>OK</strong>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="mngtable03" border="1" class="imgborder_off" id="mngtable03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b>15.</b></td>
+    <td colspan="2"><p class="bodycopy">The <span class="style8">PART_ORDERS</span> table is now being managed. </p>
+      <p class="bodycopy">Note: If you receive an error &quot;partition is misaligned with its stage&quot;, you need to change the months retained for the Old Orders lifecycle. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="mngtable04" border="1" class="imgborder_off" id="mngtable04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t4"></a>Viewing Lifecycle Events </h3>
+<p class="bodycopy">Lifecycle event scanning determines when it is time to move data across storage tiers, or it is ready for archiving, deletion, compression, or should be set to read-only. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Click the <strong>Lifecycle Management</strong> tab. </p>
+      
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="mngtable04" border="1" class="imgborder_off" id="mngtable04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Click <strong>Scan for Events</strong>. <br>
+      </p>
+      
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt01" border="1" class="imgborder_off" id="scanevt01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Click <strong>OK</strong> to accept the defaults. </p>
+      
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt02" border="1" class="imgborder_off" id="scanevt02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td colspan="2"><p class="bodycopy">Click <strong>OK</strong> to confirm. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt03" border="1" class="imgborder_off" id="scanevt03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td colspan="2"><p class="bodycopy">The ILM Assistant is scanning for events. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt04" border="1" class="imgborder_off" id="scanevt04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td colspan="2"><p class="bodycopy">Some events were found. To review the events, click a number link in the calendar. <span class="style4"></span></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt13" border="1" class="imgborder_off" id="scanevt13" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 7.</b></td>
+    <td colspan="2"><p class="bodycopy">The events are shown. Expand <strong>Filter Options</strong>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt14" border="1" class="imgborder_off" id="scanevt14" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 8.</b></td>
+    <td colspan="2"><p class="bodycopy">Change the Current Tier to <strong>High Performance</strong> and click <strong>Go</strong>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt15" border="1" class="imgborder_off" id="scanevt15" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 9.</b></td>
+    <td colspan="2"><p class="bodycopy">A list of the simulated table events for the day you selected are shown. The ILM Assistant does not take action on any of the events. Select the ones you want to execute and then click  perform selected events. A script is generated that you can save and run, although you may need to edit the  locations of the tablespaces if you have multiple tablespaces on that storage tier. Once the script has been executed, the next time that the scan for events is run, it will automatically detect that  appropriate action has been taken. Select all events with the <strong>High Performance Tier</strong> and click <strong>Perform Selected Events</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt16" border="1" class="imgborder_off" id="scanevt16" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 10.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="bodycopy">Click <strong>OK</strong> to confirm. </span></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt17" border="1" class="imgborder_off" id="scanevt17" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 11.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="bodycopy">The events have been performed. Click the <strong>Event Scan History</strong> subtab. </span></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt18" border="1" class="imgborder_off" id="scanevt18" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 12.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="bodycopy">The list of executed events is shown. </span></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt19" border="1" class="imgborder_off" id="scanevt19" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t5" id="t5"></a>Analyzing Results Using Reports</h3>
+<p class="bodycopy">There are a number of reports supplied with the ILM Assistant to provide you with valuable information about your ILM environment. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"><p class="bodycopy">Click the <strong>Reports</strong> tab. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="scanevt19" border="1" class="imgborder_off" id="scanevt19" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy">Click the <strong>By Table</strong> link. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="rpt01" border="1" class="imgborder_off" id="rpt01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td colspan="2"><p class="bodycopy">Click the <strong>Show Simulated Tables </strong>link. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="rpt02" border="1" class="imgborder_off" id="rpt02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td colspan="2"><p class="bodycopy">This report displays cost comparisons when using a multi-tier storage strategy versus a single-tier strategy for simulated tables. Click the <strong>Storage Tiers </strong> subtab.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="rpt03" border="1" class="imgborder_off" id="rpt03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td colspan="2"><p class="bodycopy">This report displays information about the tablespaces associated with each logical storage tier. Click the <strong>Partitions </strong> subtab. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="rpt04" border="1" class="imgborder_off" id="rpt04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td colspan="2"><p class="bodycopy">This report displays the partitions for the managed tables.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="rpt05" border="1" class="imgborder_off" id="rpt05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t6" id="t6"></a>Ensuring Compliance and Security </h3>
+<p class="bodycopy">The Compliance &amp; Security section within the ILM Assistant displays information that can be used to enforce security and help maintain compliance with the numerous regulations from around the world. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"><p class="bodycopy">Click the <strong>Compliance &amp; Security </strong> tab. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="rpt05" border="1" class="imgborder_off" id="rpt05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="style7">The Overview displays the current status of all security and compliance features in use. </span>Click the <strong>Immutability</strong> subtab. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="sec01" border="1" class="imgborder_off" id="sec01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="style7"> </span>Immutability proves that data hasn't changed by generating and comparing a digital signature. In this case, no signed result sets are defined. Click the <strong>Privacy &amp; Security</strong> subtab. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="sec02" border="1" class="imgborder_off" id="sec02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td colspan="2"><p class="bodycopy">This table shows which tables have security policies against them. Click the <strong>Virtual Private Database Policies</strong> link. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="sec03" border="1" class="imgborder_off" id="sec03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="style7">The VPD policies are shown. Click the <strong>Auditing</strong> subtab. </span></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="sec04" border="1" class="imgborder_off" id="sec04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="style7">The current audit status is displayed. Click the <strong>Fine-Grained Auditing Policies</strong> link. </span></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="sec05" border="1" class="imgborder_off" id="sec05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 7.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="style7">The FGA auditing policies are displayed. Click the <strong>Auditing Records</strong> link. </span></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="sec06" border="1" class="imgborder_off" id="sec06" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 8.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="style7">Currently there are no Audit Records. </span></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="sec07" border="1" class="imgborder_off" id="sec07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h4>
+  <p class="navheader"><a name="s"></a>Summary</p>
+</h4>
+<p class="bodycopy">In this tutorial, you learned how to:</p>
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Create a logical storage tier </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Define a lifecycle </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Assign a lifecycle to a table </td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">View a lifecycle event </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Analyze the results using reports </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Ensure compliance and security </td>
+  </tr>
+  <tbody> </tbody> 
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<p class="navheader"><span class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="hideAllImages()"></span> <b class="bodycopy"><font color="#FF0000">Place your cursor on this icon to hide all screenshots.</font></b></p>
+<p>&nbsp;</p>
+<h4>&nbsp;</h4>
+<h4>&nbsp;</h4>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>
+</html>
+

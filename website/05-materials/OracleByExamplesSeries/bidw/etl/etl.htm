@@ -1,0 +1,2151 @@
+<html><head><title>Using High-Speed Data Loading and Rolling Window Operations with Partitioning</title>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+<!--
+.style3 {	color: #FF0000;
+	font-weight: bold;
+}
+.style5 {font-family: "Courier New", Courier, mono}
+.style6 {font-family: Georgia, "Times New Roman", Times, serif}
+.style8 {font-family: "Courier New", Courier, mono; font-weight: bold; }
+.style9 {font-family: Arial, Helvetica, sans-serif}
+-->
+</style>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<p class="topstoryhead">Using High-Speed Data Loading and Rolling Window Operations 
+  with Partitioning</p>
+<h4 class="navheader">Purpose</h4>
+<p class="bodycopy">In this tutorial, you learn how to use Oracle Database 
+  for high-speed data loading and leverage Oracle Partitioning for a rolling 
+  window operation.</p>
+<p class="navheader">Time to Complete</p>
+<p class="bodycopy">Approximately 2 hours </p>
+<h3 class="Overview"><a name="t"></a><span class="navheader">Topics</span></h3>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tbody> 
+  <tr valign="top"> 
+    <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink" width="548"><a href="#o" class="bodylink">Overview</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink" width="548"><a href="#sc" class="bodylink">Scenario</a></td>
+  </tr>
+  <tr valign="top">
+    <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink" width="548"><a href="#pr" class="bodylink">Prerequisites</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink" width="548"><a href="#t0" class="bodylink">Implement 
+      Schema Changes for the Sales History Schema </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink" width="548"><a href="#t1" class="bodylink">Load Data 
+      by Using External Tables </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink" width="548"> 
+      <p><a href="#t2" class="bodylink">Compare SQL*Loader to the External Table Loading 
+        and Transformation Process</a></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink" width="548"><a href="#t3" class="bodylink">Leverage 
+      Table Compression to Save Disk Space and Reduce the TCO</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="boldbodylink" width="548"><a href="#t4" class="bodylink">Perform 
+      a Rolling Window Operation Using Oracle Partitioning</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodylink" width="548"><a href="#s" class="bodylink">Summary</a></td>
+  </tr>
+  </tbody> 
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"> 
+  <span class="style3">Place the cursor over this icon to load and view all the 
+  screenshots for this tutorial. (Caution: This action loads all screenshots simultaneously, 
+  so response time may be slow depending on your Internet connection.) </span></p>
+<p><span class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over an individual icon in the following steps to load and view only the screenshot associated with that step. You can hide an individual screenshot by clicking it.</span></p>
+<h3 class="Overview"><a name="o"></a><span class="navheader">Overview</span></h3>
+<p class="bodycopy">Most of the time, online transaction processing (OLTP) source 
+  systems feeding a data warehouse are not directly connected to the data warehousing 
+  system for extracting new data. Commonly, the OLTP systems send data feeds in 
+  the form of external files. This data must be loaded into the data warehouse, 
+  preferably in parallel, thus leveraging the existing resources.</p>
+<p class="bodycopy">For example,  due to the business needs and disk space constraints of the sample company used in this tutorial (MyCompany), only the data from the last three years is relevant for analysis. This means that with the insertion of new data, disk
+  space has to be freed, either by purging the old data or by leveraging Oracle Database table compression. The maintenance of this so-called rolling window operation is performed by using Oracle Partitioning.</p>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<P align="left" class=navheader><a name="pr"></a>Prerequisites</P>
+<P align="left" class=bodycopy>Before starting this tutorial, you should:</P>
+<table width="650" border="0" cellpadding="1" cellspacing="0" class="bodycopy">
+  <tr valign="top"> 
+    <td><b> 1.</b></td>
+    <td> 
+      <p> Install Oracle Database 11<em>g</em>.</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td><b> 2.</b></td>
+    <td> 
+      <p>Create a directory named <span class="style5">wkdir</span>. Download 
+        and unzip <a href="files/etl.zip"><font face="Courier New, Courier, mono">etl.zip</font></a> 
+        into the <font face="Courier New, Courier, mono">wkdir</font> directory.</p>
+    </td>
+  </tr>
+</table>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h4 class="navheader"><a name="sc"></a>Scenario</h4>
+<h4 class="boldbodycopy" >External Tables </h4>
+<p class="bodycopy">To load external files into their data warehouse, MyCompany 
+  uses the Oracle Database external table feature, which allows external 
+  data such as flat files to be exposed within the database just like regular 
+  database tables. External tables can be accessed by SQL, so that external files 
+  can be queried directly and in parallel using the full power of SQL, PL/SQL, 
+  and Java. External tables are often used in the extraction, transformation, 
+  and loading (ETL) process to combine data-transformation (through SQL) with 
+  data-loading in a single step. External tables are a very powerful feature 
+  with many possible applications in ETL and other database environments where 
+  flat files are processed. External tables are an alternative to using SQL*Loader. </p>
+<h4 class="boldbodycopy">Parallel Execution</h4>
+<p class="bodycopy">Parallel execution dramatically reduces response time for data-intensive operations on large databases typically used with decision support systems (DSS) and data warehouses. You can also implement parallel execution on certain types of OLTP and hybrid systems. Simply expressed, parallelism is the idea of breaking down a task so that instead of one process doing all of the work in a query, many processes do parts of the work at the same time. For example,  parallel execution can be used when four processes handle four different quarters in a year instead of one process handling all four quarters by itself. </p>
+<h4 class="boldbodycopy">Rolling Window Operations Using Oracle Partitioning</h4>
+<p class="bodycopy">A very important task in the back office of a data warehouse is to keep the data synchronized with the various changes that are taking place in the OLTP (source) systems. In addition, the life span of the data from an analysis perspective is very often limited, so that older data must be purged from the target system while new data is loaded; this operation is often called a rolling window operation. Ideally, this operation should be done as fast as possible without any implication for the concurrent online access of the data warehousing system.</p>
+<p align="right">
+  <a href="#t" class="bodylink">Back to Topic List</a></p>
+<p class="navheader"><a name="t0"></a><SPAN class=navheader>Implement Schema Changes for the Sales History Schema</SPAN></p>
+<p class="bodycopy">Before starting the tasks for this OBE, you need to implement 
+  some changes to the existing Sales History (<span class="style5">SH</span>) 
+  schema. You need to create additional objects in the <span class="style5">SH</span> 
+  schema. In addition, you need to grant additional system privileges to the <span class="style5">SH</span> 
+  user. The SQL file for making these changes is <font face="Courier New">modifySH_11g.sql</font>. 
+  Perform the following steps: </p>
+<h4>
+  <table width="650" border="0" cellpadding="1" cellspacing="0" class="bodycopy">
+    <tr valign="top"> 
+      <td height="112"><b> 1.</b></td>
+      <td height="112"> 
+        <p>Open a terminal window. Change your working directory to <span class="style5"> /home/oracle/wkdir</span>  by executing the following command from your terminal session:</p>
+        <p class="bodycopy style5"><font face="Courier New, Courier, mono"><b>cd 
+          wkdir </b></font></p>
+        <p>(<b>Note:</b> This tutorial assumes you have a <font face = "courier new">/home/oracle/wkdir</font> 
+          folder. If you do not, you will need to create one and unzip the contents 
+          of <font face="courier new">etl.zip</font> into this folder.) </p>
+        <pre><img src="images/view_image.gif" name="setup1" border="1" class="imgborder_off" id="setup1" onClick="hideImage(this)" onMouseOver="showImage(this)"></pre>
+        <p>&nbsp;</p>
+      </td>
+    </tr>
+    
+    <tr valign="top"> 
+      <td height="132" width="25"><b> 2.</b></td>
+      <td height="132"> 
+        <p>Start a SQL*Plus session and log in as the <span class="style5">SH</span> user with a password of <span class="style5">SH</span>.</p>
+        <p>Execute the <b><font face = "courier new">modifySH_11g.sql</font></b> script in your SQL*Plus session as follows: </p>
+        <pre class="bodycopy style5"><b>@modifySH_11g.sql</b></pre>
+        <p>The end of your output should match the image below. </p>
+        <p><img src="images/view_image.gif" border="1" class="imgborder_off" id="setup2" onClick="hideImage(this)" onMouseOver="showImage(this)" name="setup2"></p>
+        <p>&nbsp;</p></td>
+    </tr>
+  </table>
+</h4>
+<p align="right"><A class=bodylink 
+href="#t0"></A><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h3 class="Install"><a name="t1"></a><SPAN class=navheader>Load Data by Using 
+  External Tables </SPAN></h3>
+<p> <span class="bodycopy">In this section of the tutorial, you load data into 
+  the data warehouse using external tables.</span></p>
+<p class="bodycopy">To create and use external tables, perform the following steps:</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      <td class="bodycopy" width="25"><b> 1.</b></td>
+      <td class="bodycopy">
+      <p class="bodycopy"><a href="#t11">Create the necessary directory objects.</a></p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>2.</b></td>
+      <td class="bodycopy"><a href="#t12">Create the external table.</a></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>3.</b></td>
+      <td class="bodycopy"><a href="#t13">Select from the external table.</a> </td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>4.</b></td>
+      <td class="bodycopy"><a href="#t14">Provide transparent high-speed parallel access of external tables.</a></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>5.</b></td>
+      <td class="bodycopy"><a href="#t15">Review Oracle's parallel insert capabilities.</a></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy" width="25"><b> 6.</b></td>
+      <td class="bodycopy">
+      <p class="bodycopy"><a href="#t16">Perform parallel insert.</a></p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h4> 
+  <p class="bodycopy"><a name="t11"></a>1.  Create the Necessary Directory Objects</p>
+</h4>
+<p class="bodycopy">Before you create the external table, you need to create 
+  a directory object in the database that points to the directory on the file 
+  system where the data files will reside. Optionally, you can separate the location 
+  for the <span class="style5">log</span>, <span class="style5">bad</span> and <span class="style5">discard</span> files from the location of the data files. To create 
+  the directory, perform the following steps:</p>
+<h4>
+  <table width="650" border="0" cellpadding="1" cellspacing="0" class="bodycopy">
+    <tr valign="top"> 
+      <td width="25" height="203" ><b> </b></td>
+      <td height="203"> 
+        <p class="style13">In a SQL*Plus session logged on as the <span class="style5">SH</span> user, execute the <b><font face = "courier new">create_directory.sql</font></b> script or copy the following SQL statements into your SQL*Plus session:</p>
+        <pre class="bodycopy"><font face="Courier New, Courier, mono">DROP DIRECTORY data_dir;
+DROP DIRECTORY log_dir;
+CREATE DIRECTORY data_dir AS '/home/oracle/wkdir';<br>CREATE DIRECTORY log_dir AS '/home/oracle/wkdir';</font></pre>
+                <p><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="create_directoy" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="create_directoy"></p>
+        <p class="style13">The scripts are set up for a Linux system and assume 
+          that the files were extracted int<span class="style9">o </span><span class="style5">/home/oracle/wkdir</span>. 
+          Note that due to security reasons, symbolic links are not supported 
+          as <span class="style5">DIRECTORY</span> objects within the database.</p>
+        <p><br>
+        </p></td>
+    </tr>
+  </table>
+</h4>
+<p align="right"><A class=bodylink 
+href="#t1">Back to List</A></p>
+<h4 class="boldbodycopy"><a name="t12"></a>2. Create the External Table</h4>
+<p class="bodycopy">When you create an external table, the following are defined: </p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      <td class="bodycopy" width="25"><b> 1.</b></td>
+      <td class="bodycopy">
+      <p class="bodycopy">The metadata information for the table representation inside the database</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>2.</b></td>
+      
+    <td class="bodycopy">The<font face="Courier New, Courier, mono"> <span class="style13">HOW</span></font> 
+      access parameter definition to extract the data from the external file</td>
+    </tr>
+  </tbody>
+</table>
+<p class="bodycopy">After the creation of this meta information, the external data can be accessed from within the database without the necessity of an initial load. </p>
+<p class="bodycopy">To create the external table, perform the following steps: </p>
+<h4>
+  <table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+    <tr valign="top"> 
+      <td width="25" ><b> </b></td>
+      <td height="87"> 
+        <p>In a SQL*Plus session logged in as the <span class="style5">SH</span> user, execute the <b><font face = "courier new">create_external_table.sql </font></b><span class="style9">script or copy the commands below.</span></p>
+        <pre class="bodycopy"><font face="Courier New, Courier, mono">DROP TABLE sales_delta_XT;</font></pre>
+        <pre class="bodycopy"><font face="Courier New, Courier, mono">CREATE TABLE sales_delta_XT
+               (
+   PROD_ID NUMBER,
+   CUST_ID NUMBER,
+   TIME_ID DATE,
+   CHANNEL_ID CHAR(2),
+   PROMO_ID NUMBER,
+   QUANTITY_SOLD NUMBER(3),
+   AMOUNT_SOLD NUMBER(10,2)
+   )
+   ORGANIZATION external
+   (
+   TYPE oracle_loader
+   DEFAULT DIRECTORY data_dir
+   ACCESS PARAMETERS
+   (
+   RECORDS DELIMITED BY NEWLINE CHARACTERSET US7ASCII
+   BADFILE log_dir:'sh_sales.bad'
+   LOGFILE log_dir:'sh_sales.log_xt'
+   FIELDS TERMINATED BY &quot;|&quot; LDRTRIM
+   (prod_id, cust_id,
+   time_id CHAR(11) DATE_FORMAT DATE MASK &quot;DD-MON-YYYY&quot;,
+   channel_id, promo_id, quantity_sold, amount_sold
+   )
+   )
+   location
+   (
+   'salesDec01.dat'
+   )
+   )REJECT LIMIT UNLIMITED NOPARALLEL</font></pre>
+                <p><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="create_external_tabl" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="create_external_tabl"></p>
+   <p>You can view information about external tables through the following data dictionary views:</p>
+   <pre class="bodycopy style5">        - [USER | ALL| DBA]_EXTERNAL_TABLES
+        - [ALL| DBA]_DIRECTORIES
+        - [USER | ALL| DBA]_EXTERNAL_LOCATIONS</pre>   <p><br>
+      </p></td>
+    </tr>
+  </table>
+</h4>
+<p align="right"><A class=bodylink 
+href="#t1">Back to List</A></p>
+<h4>
+  <p><span class="boldbodycopy"><a name="t13"></a>3. Select From the External 
+    Table</span></p>
+</h4>
+<p class="bodycopy">You can now access the data in the external file without any further action, as shown with the following SQL command:</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0" class="bodycopy">
+  <tr valign="top">
+    <td width="25" height="173" ><b> </b></td>
+    <td height="173"> 
+      <p>In a SQL*Plus session logged in as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the following queries or the <font face = "courier new"><b>select_et.sql</b></font> 
+        file:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono">SELECT COUNT(*) FROM sales_delta_xt; 
+SELECT MAX(time_id) FROM sales_delta_xt; </font>       </pre>
+            
+      <p>If you copied the files correctly, the maximum <font face="Courier New, Courier, mono">TIME_ID</font> 
+        is the last day of December, 2001.</p>      
+			<p><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="Sales_Delta_XT" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="Sales_Delta_XT"></p>
+      <p><br>
+    </p></td>
+  </tr>
+</table>
+<p align="right"><a class=bodylink 
+href="#t1">Back to List</a></p>
+<h4>
+  <p><span class="boldbodycopy"><a name="t14"></a>4. Provide Transparent H</span><span class="boldbodycopy">igh-Speed 
+    Parallel Access of External Tables</span></p>
+  </h4>
+<p class="bodycopy">Unlike SQL*Loader, the access of external tables can be done 
+  in parallel&#151;independent of the number of external files. SQL*Loader can 
+  operate only on a per-file basis. This means that you have to split large source 
+  files manually if you want to parallelize. With external tables, the degree 
+  of parallelism is controlled in exactly the same way as it is for a normal table. 
+  In this case, you define the external table <font face="Courier New, Courier, mono">NOPARALLEL</font> 
+  by default. The following section shows you how to control the degree of parallelism 
+  on a statement level by using a hint. </p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B> 1.</B></TD>
+      
+    <TD height="51"> 
+      <P>The <b><font face = "courier new">parallel_select_from_ET.sql </font></b>script 
+        contains the SQL statements for the next three steps. </P>
+        
+      <p>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the following query or the <span class="style8">parallel_select_from_ET.sql</span> file to see the current parallel session statistics:</p>
+        
+      <pre class="bodycopy"><font face="Courier New, Courier, mono">
+SELECT * 
+FROM   v$pq_sesstat 
+WHERE  statistic in ('Queries Parallelized', 
+                     'Allocation Height');</font></pre>
+              <P><IMG 
+      src="images/view_image.gif" 
+      alt="Move your mouse over this icon to see the image" 
+      name=parallel_select_1 border=1 class="imgborder_off" id="parallel_select_1" onClick="hideImage(this)" onMouseOver="showImage(this)"></P>
+        <P>&nbsp;</P></TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height=51 width="25"><B> 2.</B></TD>
+      <TD height=51>
+        <P>Execute the same query you used before to access the external table with a parallel degree of 4, controlled with a hint. You can use the command below or the <span class="style5"><strong>parallel_select_from_ET_2.sql</strong></span> script.</P>
+        
+        <pre class="bodycopy"><font face="Courier New, Courier, mono">SELECT /*+ parallel(a,4) */ COUNT(*) 
+FROM   sales_delta_XT a;</font></pre>
+              
+        <p class="style13"><IMG 
+      src="images/view_image.gif" 
+      alt="Move your mouse over this icon to see the image" 
+      name=parallel_select_2 border=1 class="imgborder_off" id="parallel_select_2" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        
+      <p class="style13">You are selecting from the external table in parallel, 
+        although the external table points only to one input source file. Alternatively, 
+        you could change the <font face="Courier New, Courier, mono">PARALLEL</font> 
+        property of the external table with an <font face="Courier New, Courier, mono">ALTER 
+        TABLE</font> command as follows:</p>
+        <pre class="bodycopy"><font face="Courier New, Courier, mono">ALTER TABLE sales_delta_XT PARALLEL 4;</font></pre>
+        <P>&nbsp;</P></TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height=50 width="25"><B> 3.</B></TD>
+      <TD height=50>
+        <p> View the session statistics again to see 
+            the differences. Execute the command below or the <span class="style5"><strong>parallel_select_from_ET.sql</strong></span> script. Note that the parallel session statistics have 
+            changed. The display shows that the last query was parallelized and it also 
+            shows the degree of parallelism.        </p>
+        
+        
+        <pre class="bodycopy"><font face="Courier New, Courier, mono">
+SELECT * 
+FROM   v$pq_sesstat 
+WHERE  statistic in 
+       ('Queries Parallelized', 'Allocation Height');</font></pre>
+        <p>	            <IMG 
+      src="images/view_image.gif" 
+      alt="Move your mouse over this icon to see the image" 
+      name=parallel_select_3 border=1 class="imgborder_off" id="parallel_select_3" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><A class=bodylink 
+href="#t1">Back to List</A></p>
+<h4>
+  <p><span class="boldbodycopy"><a name="t15"></a>5. Review Oracle's Parallel 
+    Insert Capabilities</span></p>
+</h4>
+<p class="bodycopy">Oracle Database provides unlimited parallel direct path <font face="Courier New, Courier, mono">INSERT</font> 
+  capabilities within each partition. The execution plan can be used to determine 
+  whether or not the <font face="Courier New, Courier, mono">INSERT</font> will 
+  be done in parallel. Alternatively, you can check the execution plan of an operation 
+  in the SQL cache without the necessity of an <span class="style5">EXPLAIN </span><span class="style5">PLAN</span> 
+  command at all. </p>
+<p class="bodycopy">Examine the following serial plan. Because none of the objects 
+  are defined in parallel, you automatically have serial execution unless you 
+  either change the default degree of parallelism of one of the objects or use 
+  a hint. </p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B> 1.</B></TD>
+      <TD height="51">
+        
+      <P class="style13">To show the execution plan for <font face="Courier New, Courier, mono">SERIAL 
+        INSERT</font> behavior, execute <b><font face="courier new"> show_serial_exec_plan.sql</font></b> 
+        or copy the following SQL statements into your SQL*Plus session:</P>        
+        
+      <pre class="bodycopy"><font face="Courier New, Courier, mono">EXPLAIN PLAN FOR INSERT /*+ APPEND */ INTO sales
+               (
+   PROD_ID,
+   CUST_ID,
+   TIME_ID,
+   CHANNEL_ID,
+   PROMO_ID,
+   QUANTITY_SOLD,
+   AMOUNT_SOLD
+   )
+   SELECT
+   PROD_ID,
+   CUST_ID,
+   TIME_ID,
+   case CHANNEL_ID
+   when 'S' then 3
+   when 'T' then 9
+   when 'C' then 5
+   when 'I' then 4
+   when 'P' then 2
+   else 99
+   end,
+   PROMO_ID,
+   sum(QUANTITY_SOLD),
+   sum(AMOUNT_SOLD)
+   FROM SALES_DELTA_XT
+   GROUP BY 1, prod_id,time_id,cust_id,channel_id,promo_id;</font></pre>
+      
+      <pre><font class="bodycopy style5">set linesize 140
+set pagesize 40
+SELECT * FROM TABLE(dbms_xplan.display);</font>
+
+
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="SerialXPlan" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="SerialXPlan">
+
+
+</pre>
+    </TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height=51 width="25"><B> 2.</B></TD>
+      <TD height=51>
+        
+      <P class="style13">To show the <font face="Courier New, Courier, mono">PARALLEL 
+        INSERT</font> execution plan, execute the commands below or the <b><font face = "courier new">show_parallel_exec_plan.sql</font> 
+        </b> script logged in as the <font face="Courier New, Courier, mono">SH</font> 
+        user. A parallel DML command must always be the first statement of a transaction. 
+        Furthermore, a DML operation cannot execute when there are primary key 
+        and foreign key constraints. Therefore, you have to disable the constraints 
+        prior to the parallel DML operation:</P>
+        
+        
+      <pre class="bodycopy"><strong><font face="Courier New, Courier, mono">
+</font></strong><font face="Courier New, Courier, mono">ALTER TABLE sales DISABLE CONSTRAINT sales_product_fk;<br>ALTER TABLE sales DISABLE CONSTRAINT sales_customer_fk;<br>ALTER TABLE sales DISABLE CONSTRAINT sales_time_fk;<br>ALTER TABLE sales DISABLE CONSTRAINT sales_channel_fk;<br>ALTER TABLE sales DISABLE CONSTRAINT sales_promo_fk;</font></pre>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono">COMMIT;
+
+
+ALTER SESSION ENABLE PARALLEL DML;</font></pre>
+      <pre><span class="bodycopy style5">EXPLAIN PLAN FOR INSERT /*+ APPEND PARALLEL(SALES,4) */ INTO sales</span><font face="Courier New, Courier, mono">
+</font><span class="bodycopy style5">(
+   PROD_ID,
+   CUST_ID,
+   TIME_ID,
+   CHANNEL_ID,
+   PROMO_ID,
+   QUANTITY_SOLD,
+   AMOUNT_SOLD
+   )
+   SELECT /*+ parallel (sales_delta_XT,4) */
+   PROD_ID,
+   CUST_ID,
+   TIME_ID,
+   case CHANNEL_ID</span><span class="style6"><font face="Courier New, Courier, mono">
+   </font></span><span class="bodycopy style5">when 'S' then 3
+   when 'T' then 9
+   when 'C' then 5
+   when 'I' then 4
+   when 'P' then 2
+   else 99
+   end,
+   PROMO_ID,
+   sum(QUANTITY_SOLD),
+   sum(AMOUNT_SOLD)
+   FROM SALES_DELTA_XT
+   GROUP BY 1, prod_id,time_id,cust_id,channel_id,promo_id;</span></pre>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono">set linesize 140
+set pagesize 40
+SELECT * FROM TABLE(dbms_xplan.display);</font></pre>
+      <p><br>
+        <img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ParallelXPlan" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="ParallelXPlan"></p>
+      <p>&nbsp;</p></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><A class=bodylink 
+href="#t1">Back to List</A></p>
+<h4>
+  <p class="boldbodycopy"><a name="t16"></a>6. Perform Parallel Insert</p>
+</h4>
+<p class="bodycopy">In this step of the tutorial you execute the parallel <span class="style5">INSERT</span> discussed previously. Note that you not only <span class="style5">SELECT</span> the data from the external table but also perform an aggregate as part of the <span class="style5">SELECT</span>, prior to the insertion. You are combining a 
+transformation with the actual loading process. This operation cannot be accomplished with the SQL*Loader utility only.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B> 1.</B></TD>
+      <TD height="51">
+        <P>Execute the following  SQL statements  or  the <b><font face = "courier new">parallel_insert_file.sql</font></b> file to perform a parallel <span class="style5">INSERT</span>. Set timing <span class="style5">ON</span>.</P>
+        
+        
+        <pre class="bodycopy style5"><br>set timing on
+COMMIT;</pre>        <pre class="bodycopy style5">ALTER SESSION ENABLE PARALLEL DML;</pre>        
+      <pre><span class="bodycopy style5"><br>INSERT /*+ APPEND PARALLEL(SALES,4) */ INTO sales<br>(<br>  PROD_ID,<br>  CUST_ID,<br>  TIME_ID,<br>  CHANNEL_ID,<br>  PROMO_ID,<br>  QUANTITY_SOLD,<br>  AMOUNT_SOLD<br>)<br>SELECT /*+ PARALLEL (sales_delta_XT,4) */<br>  PROD_ID,<br>  CUST_ID,<br>  TIME_ID,<br>  case CHANNEL_ID<br>  when 'S' then 3<br>  when 'T' then 9<br>  when 'C' then 5<br>  when 'I' then 4<br>  when 'P' then 2<br>  else 99<br>  end,<br>  PROMO_ID,<br>  sum(QUANTITY_SOLD),<br>  sum(AMOUNT_SOLD)<br>FROM SALES_DELTA_XT<br>GROUP BY 1, prod_id,time_id,cust_id,channel_id,promo_id;
+set timing off
+
+SELECT * FROM TABLE(dbms_xplan.display_cursor);
+
+<br>SELECT * 
+FROM   v$pq_sesstat 
+WHERE  statistic in ('DML Parallelized','Allocation Height');</span></pre>
+        
+      <p>Record the execution time of this statement and compare it to the 
+        total amount of time you need with SQL*Loader and a subsequent insertion. 
+        Note that you do not see the full benefit of parallelizing the external 
+        table access and combining the transformation with the loading, because 
+        you are accessing a very small amount of data in parallel on a single 
+        CPU machine using one disk.</p>
+        <p><img 
+      src="images/view_image.gif" 
+      alt="Move your mouse over this icon to see the image" 
+      name=ParallelInsert border=1 class="imgborder_off" id="ParallelInsert" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height=51 width="25"><B> 2.</B></TD>
+      <TD height=51>
+        
+      <P>Perform a <font face="Courier New, Courier, mono">ROLLBACK</font> to return the data to its previous state. (In the next example, you insert the same data by using SQL*Loader.)</P>
+      <pre><span class="bodycopy style5"><b>ROLLBACK;</b></span>
+
+<img 
+      src="images/view_image.gif" 
+      alt="Move your mouse over this icon to see the image" 
+      name=rollback1parallelinsert border=1 class="imgborder_off" id="rollback1parallelinsert" onClick="hideImage(this)" onMouseOver="showImage(this)">
+
+</pre>
+    </TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height=50><strong>3.</strong></TD>
+      <TD height=50>
+      <p>After issuing a <font face="Courier New, Courier, mono">ROLLBACK</font>, 
+        you need to reenable the constraints. Execute the commands below or the 
+        <span class="bodycopy style5"><font face="Courier New, Courier, mono">enable_cons.sql</font></span> 
+        script. 
+      <pre><span class="bodycopy style5">
+ALTER TABLE sales 
+   MODIFY CONSTRAINT sales_product_fk ENABLE NOVALIDATE; 
+ALTER TABLE sales 
+   MODIFY CONSTRAINT sales_customer_fk ENABLE NOVALIDATE; 
+ALTER TABLE sales 
+   MODIFY CONSTRAINT sales_time_fk ENABLE NOVALIDATE; 
+ALTER TABLE sales 
+   MODIFY CONSTRAINT sales_channel_fk ENABLE NOVALIDATE; 
+ALTER TABLE sales 
+   MODIFY CONSTRAINT sales_promo_fk ENABLE NOVALIDATE;</span><font face="Courier New, Courier, mono">
+
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="EnableCons" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="EnableCons"></font></pre>
+            <p><br>
+        You loaded and transformed the data as one step. To load and transform 
+        the data with SQL*Loader, you need two process steps, which means more 
+        work effort and slower performance for the complete process.</p>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t1">Back to List</a></p>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h3 class="navheader"><a name="t2"></a>Compare SQL*Loader to the External Table Loading 
+  and Transformation Process</h3>
+<p class="bodycopy">The external table method you previously performed is the preferred method of data loading and transformation. To demonstrate the benefit of using external tables, you can compare the tasks required to load and transform the data by using SQL*Loader.</p>
+<p class="bodycopy">To load and transform data by using SQL*Loader, perform the following steps:</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      <td class="bodycopy" width="25"><b> 1.</b></td>
+      <td class="bodycopy">
+      <p class="bodycopy"><a href="#t21">Create a staging table.</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      <td class="bodycopy"><b>2.</b></td>
+      <td>
+        <p><a href="#t22">Load the data into the staging table by using SQL*Loader.</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      <td class="bodycopy"><b>3.</b></td>
+      <td><a href="#t23">Load the staging table into the target database.</a></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      <td class="bodycopy"><b>4.</b></td>
+      <td><a href="#t24">Drop the staging table.</a></td>
+    </tr>
+  </tbody>
+</table>
+<h4>
+  <p class="boldbodycopy"><a name="t21"></a>1. Create a Staging Table</p>
+</h4>
+<p class="bodycopy">You need a staging table to load the data into so that you can transform it within the database in a second step.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B> </B></TD>
+      <TD height="51">
+        <P class="style13">In a SQL*Plus session connected as the <span class="style5">SH</span> user, execute the commands below or the <b><font face = "courier new">create_stage.sql</font></b> script to create a staging table:</P>
+        
+        
+        <pre><font face="Courier New, Courier, mono">
+</font>
+<span class="style5">CREATE TABLE sales_dec01 AS<br>  SELECT * <br>  FROM   sales <br>  WHERE  1=0;
+
+ ALTER TABLE sales_dec01 MODIFY (channel_id CHAR(2) null);</span>
+<font face="Courier New, Courier, mono">
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="createstage" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="createstage">
+</font></pre>        </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t2">Back to List</a></p>
+<h4 class="boldbodycopy"><a name="t22"></a>2. Load the Data into the Staging Table 
+  by Using SQL*Loader</h4>
+<p class="bodycopy"><b>Note: </b>The scripts are set up for a Linux system and 
+  assume that the files were <font face="Arial, Helvetica, sans-serif">extracted</font> 
+  into<span class="style5"><font face="Arial, Helvetica, sans-serif"> the </font>/home/oracle/wkdir</span> 
+  directory.</p>
+<p class="bodycopy">Load the data file from the <font face = "courier new">sales_dec01.ctl</font> file into the staging table by performing the following steps:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51"><B>1.</B></TD>
+      <TD height="51">
+      <p> Execute the following command from the OS command line:</p>
+      <pre><b><font face="Courier New, Courier, mono">cd /home/oracle/wkdir
+sqlldr <font color="#000000">sh/sh con</font>trol=sales_dec01.ctl direct=true
+</font></b><font face="Courier New, Courier, mono">
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="sqlldr" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="sqlldr"></font></pre>
+            
+      <p><b>Note:</b> You may need to specify your database alias when connecting 
+        using SQL*Loader. <font color="#000000">Start SQL*Loader with the statement:</font></p>
+      <pre><font face="Courier New, Courier, mono">sqlldr <font color="#000000">sh/sh@&lt;database alias&gt; con</font>trol=sales_dec01.ctl direct=true</font></pre>
+            <pre><b><font face="Courier New, Courier, mono">
+</font></b></pre></TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B> 2.</B></TD>
+      <TD height="51">
+        
+      <P>Note that you cannot parallelize this task. <span class="style13">Check 
+        the SQL*Loader <font face = "courier new">sales_dec01.log</font> log file 
+        and record the execution time for the loading process.</span></P>
+        
+        
+      <P>You can check the <font face = "courier new">sales_dec01.log</font> file 
+        using any editor. The file is located in the <span class="style5">/home/oracle/wkdir</span> 
+        directory. </P>
+        <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="LDR_Log" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="LDR_Log"></font></P>
+        <p>Space is consumed in the database for making the data accessible from within the database, unlike an external table. The space consumed by the staging table is linearly dependent on the amount of data to be loaded for further transformation.</p>
+        
+        <p>Also note that it is not possible to parallelize the loading 
+        with SQL*Loader without having several external files. You can use the 
+        <font face="Courier New, Courier, mono">SKIP</font> option for several 
+        SQL*Loader processes, accessing the same file. However, this enforces every 
+        SQL*Loader process to scan the whole external file. This is detrimental 
+        to the overall performance.</p>
+        Information about space usage of an object can be accessed through the following data dictionary views:<br>
+      <font face = "courier new">[USER | ALL| DBA]_SEGMENTS<br>
+[USER | ALL| DBA]_EXTENTS</font></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><A class=bodylink 
+href="#t2">Back to List</A></p>
+<h4 class="boldbodycopy"><a name="t23"></a>3. Load the Staging Table into the 
+  Target Database</h4>
+<p class="bodycopy">After loading the external data and making it accessible 
+  in the database, you can perform your transformation.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD width="25" height="51">&nbsp;</TD>
+      <TD height="51">
+      <p>Log in to SQL*Plus as the <span class="style5">SH</span> user. Execute the SQL statements to transform and insert the external data (which is already 
+        staged in the database) into the <font face="Courier New, Courier, mono">SALES</font> 
+        fact table by executing the commands below or the <b><font face = "courier new">load_stage_table.sql</font></b> 
+        script.</p>
+          
+        
+      <pre><font face="Courier New, Courier, mono">set timing on<br>INSERT /*+ APPEND */ INTO sales<br>  ( PROD_ID, CUST_ID, TIME_ID, CHANNEL_ID,<br>    PROMO_ID, QUANTITY_SOLD, AMOUNT_SOLD )<br>  SELECT<br>    PROD_ID, CUST_ID, TIME_ID,<br>    case CHANNEL_ID<br>    when 'S' then 3<br>    when 'T' then 9<br>    when 'C' then 5<br>    when 'I' then 4<br>    when 'P' then 2<br>    else 99<br>    end,<br>    PROMO_ID,<br>    sum(QUANTITY_SOLD),<br>    sum(AMOUNT_SOLD)<br>  FROM sales_dec01<br>  GROUP BY prod_id,time_id,cust_id,channel_id,promo_id;
+
+set timing off</font></pre>
+              <p><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="loadstagetable" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="loadstagetable"></font></p>
+      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><A class=bodylink 
+href="#t2">Back to List</A></p>
+<h4 class="boldbodycopy"><a name="t24"></a>4. Drop the Staging Table</h4>
+<p class="bodycopy">You can now drop or truncate the staging table to free its consumed space.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD width="25" height="51">&nbsp;</TD>
+      <TD height="51"><p>Use the command below or the  <b><font face = "courier new">drop_sales_dec01.sql</font></b> script to drop the staging table information.</p>
+        
+        <pre>  
+DROP TABLE sales_dec01;  <font face="Courier New, Courier, mono">
+</font><font face="Courier New, Courier, mono">
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="dropsalesdec01" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="dropsalesdec01"></font></pre>     
+      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p class="bodycopy">Using external tables for this simple loading and transformation process 
+  enables you to combine loading and transformation, 
+  which simplifies and speeds up the process. Furthermore, staging of the data in the database is not necessary with external tables. The larger the volume of external data, the more you  save in staging space and processing time by using external tables instead of SQL*Loader.</p>
+<p align="right"><a class=bodylink 
+href="#t2">Back to List</a></p>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h3 class="navheader"><a name="t3"></a>Leverage Table Compression to Save Disk 
+  Space and Reduce the TCO</h3>
+<p class="bodycopy">After successfully loading the December data into the Q4 partition 
+  of your <font face="Courier New, Courier, mono">SALES</font> fact table, this 
+  partition will encounter none to minimal further DML operations. This makes 
+  the table partition an optimal candidate for storage using Oracle's table 
+  compression functionality. Data stored in relational databases keeps growing as businesses 
+  require more information. A big portion of the cost of keeping large amounts 
+  of data is in the cost of disk systems, and the resources utilized in managing 
+  that data. Oracle Database enables a unique way to deal with this cost by 
+  compressing data stored in relational tables with virtually no negative impact 
+  on query time against that data, which results in substantial cost savings.</p>
+<p class="bodycopy">  Commercially available relational database systems have not heavily utilized compression techniques on data stored in relational tables. One reason is that the trade-off between time and space for compression is not always attractive for relational databases. A typical compression technique may offer space savings, but only at a cost of much increased query time against the data. Furthermore, many of the standard techniques do not even guarantee
+  that data size does not increase after compression.</p>
+<p class="bodycopy"> Oracle Database offers a unique compression technique that 
+  is very useful for large data warehouses. It is unique in many ways. Its reduction 
+  of disk space can be significantly higher than standard compression algorithms 
+  because it is optimized for relational data. It has virtually no negative impact 
+  on the performance of queries against compressed data; in fact, it may have 
+  a significant positive impact on queries accessing large amounts of data, as 
+  well as on data management operations such as backup and recovery. It ensures 
+  that compressed data is never larger than uncompressed data. </p>
+<h4 class="boldbodycopy">1. Compress the Most Recent Partition</h4>
+<p class="bodycopy">To measure the benefits of table compression, ensure that the most recent partition does not have compression enabled for it. In addition, determine how large it is. </p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51"><B>1.</B></TD>
+      <TD height="51"><p>Execute the <b><font face = "courier new">part_before_compression.sql</font></b> script or copy the following SQL statements into your SQL*Plus session:</p>
+          
+        
+        <pre><font face="Courier New, Courier, mono">
+
+COLUMN partition_name FORMAT a50<br>COLUMN segment_name FORMAT a50
+
+SELECT partition_name, compression FROM user_tab_partitions
+WHERE partition_name='SALES_Q4_2001';
+
+
+SELECT segment_name, bytes/(1024*1024) MB FROM user_segments
+WHERE segment_name='SALES' AND partition_name='SALES_Q4_2001';</font>
+
+<font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="beforeCompress" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="beforeCompress"></font>
+          </pre>
+    </TD>
+    </TR>
+    <TR vAlign=top>
+      
+    <TD height="207"><B>2.</B></TD>
+      
+    <TD height="207"> 
+      <p>Now compress the partition and transparently maintain all existing indexes. 
+        All local and global indexes will be maintained as part of this SQL statement. 
+        The functionality of online index maintenance for partition maintenance 
+        operations is discussed later in this tutorial.</p>
+      <p>Note that compressing a partition is not an in-place compression. You create a new compressed segment and remove the old uncompressed 
+        segment at the end of the operation.</p>
+      <p>In a SQL*Plus session logged in as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the <span class="style8">compress_salesQ4_2001.sql</span> script or the following SQL statement: </p>
+      <pre><font face="Courier New, Courier, mono">
+ALTER TABLE sales MOVE PARTITION sales_q4_2001 COMPRESS UPDATE INDEXES;
+
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="compresssalesQ42001" border="1" class="imgborder_off" id="compresssalesQ42001" onClick="hideImage(this)" onMouseOver="showImage(this)"></font></pre>
+      <p><br>
+      </p>    </TD>
+    </TR>
+    <TR vAlign=top>
+      <TD width="25" height="51"><B>3.</B></TD>
+      <TD height="51"><p>Identify how much space the new compressed partition is allocated and compare it to the size of the uncompressed partition by executing the following commands or the <span class="style8">part_after_compression.sql</span> script. </p>
+          
+        
+        <pre><b></b><font face="Courier New, Courier, mono">
+SELECT partition_name, compression FROM user_tab_partitions<br>WHERE partition_name='SALES_Q4_2001';
+<br>SELECT segment_name, bytes/(1024*1024) MB FROM user_segments<br>WHERE segment_name='SALES' AND partition_name='SALES_Q4_2001';</font>
+
+
+<font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="afterCompress" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="afterCompress"></font></pre>          
+      <p class="style13"> Typically the compression ratio with real-world data will be higher 
+        than the one experienced with the Sales History schema. The data in the <font face="Courier New, Courier, mono">SALES</font> fact 
+        table is artificially generated and does not show the typical &quot;natural 
+        sorting&quot; that you find in any data warehouse environment where the data 
+        was cleansed, consolidated, or even aggregated prior to its <font face="Courier New, Courier, mono">INSERT</font>.</p>
+      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><A class=bodylink 
+href="#t">Back to Topic List</A></p>
+<h3 class="navheader"><a name="t4"></a>Perform a Rolling Window Operation Using 
+  Oracle Partitioning</h3>
+<p class="bodycopy">Many data warehouses maintain a rolling window of data. For 
+  example, the data warehouse stores the data from the most recent 12 months of 
+  sales. Just as a new partition can be added to the <font face="Courier New, Courier, mono">SALES</font> 
+  table, an old partition can be quickly (and independently) removed from the 
+  <font face="Courier New, Courier, mono">SALES</font> table. Partitioning provides 
+  the ideal framework for those operations. The two benefits (reduced resources 
+  utilization and minimal end-user impact) are just as pertinent to removing a 
+  partition as they are to adding a partition. </p>
+<h4 class="boldbodycopy">Perform the Steps of the Rolling Window Operation:</h4>
+<p class="bodycopy">To perform the  rolling window operation:</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      
+    <td class="bodycopy" width="26"><b> 1.</b></td>
+      <td width="620" class="bodycopy">
+        <p class="bodycopy"><a href="#t411">Prepare a stand-alone table with the new data</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>2.</b></td>
+      <td>
+        <p><a href="#t412"> Add the new data to the fact table</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>3.</b></td>
+      <td> <a href="#t413">Delete old data from the fact table</a></td>
+    </tr>
+  </tbody>
+</table>
+<h3 class="boldbodycopy"><a name="t411" id="t411"></a>1. Prepare a Stand-Alone 
+  Table with the New Data</h3>
+<p class="bodycopy">To perform the rolling window operation, you need to create and load a stand-alone table with the new data by performing the following steps. Note that you will use the external table you defined previously; however, you will point the external table to a different external file.</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      
+    <td class="bodycopy" width="25"><b> 1.1</b></td>
+      <td class="bodycopy">
+      <p class="bodycopy"><a href="#t4111">Modify the external table to use the Sales Q1 data. </a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>1.2</b></td>
+      <td>
+      <p><a href="#t4112">Create the table for the new Sales Q1 data.</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>1.3</b></td>
+      <td><a href="#t4113">Load this  table.</a></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>1.4</b></td>
+      <td class="bodycopy"><p><a href="#t4114">Create bitmap indexes for this table.</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>1.5</b></td>
+      <td class="bodycopy"><p><a href="#t4115">Create constraints for this table.</a></p></td>
+    </tr>
+  </tbody>
+</table>
+<h4 class="boldbodycopy2"><a name="t4111"></a>1.1 Modify the External Table to 
+  use the Sales Q1 Data</h4>
+<p class="bodycopy">In this section, you use the external table you already defined. 
+  However, this time you use a different external file, <font face = "courier new">sales_Q1_data</font>. 
+  So, you have to modify the location attribute of the external table to point 
+  to the new data file.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      
+    <TD height="180"><B>1.</B></TD>
+      
+    <TD height="180">
+<p>First, check the number of rows in the current external table by executing the <b><font face = "courier new">select_et.sql</font></b> script file or the following SQL statements: </p>
+          
+        
+      <pre><font face="Courier New, Courier, mono">SELECT COUNT(*) FROM sales_delta_xt;
+SELECT MAX(time_id) FROM sales_delta_xt;</font></pre>
+        <p><font face="Courier New, Courier, mono">                
+		<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="VerifySalesDelta" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="VerifySalesDelta"></font></p>
+        
+      <p>The file, containing all sales transactions for December 2001, will show 
+        the value for the last day of December, 2001. You see that the number 
+        of rows and the <span class="style13"><font face="Courier New, Courier, mono">MAX(time_id)</font> 
+        </span>will be different after changing the external file at the OS level.</p>
+          <p>&nbsp;</p></TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B> 2.</B></TD>
+      <TD height="51">
+        
+      <P>Change the<font face="Courier New, Courier, mono"> LOCATION</font> attribute. 
+        Execute the command below or the <b><font face = "courier new">alter_loc_attrib.sql</font></b> 
+        script to change the<font face="Courier New, Courier, mono"> LOCATION</font> 
+        attribute:</P>
+        
+        
+      <pre>
+ALTER TABLE sales_delta_xt location ( 'salesQ1.dat' );
+
+<font face="Courier New, Courier, mono">
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="alterlocattrib" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="alterlocattrib"></font></pre>        
+        <p> To check the new data, execute the commands below or the <b><font face = "courier new">select_et.sql</font></b> script to check the new data:</p>
+        
+        
+        <pre><font face="Courier New, Courier, mono"></font>
+SELECT COUNT(*) FROM sales_delta_xt;
+SELECT MAX(time_id) FROM sales_delta_xt;
+        </pre>
+              
+        <p> The number of rows as well as the <span class="style13">maximum <font face="Courier New, Courier, mono">TIME_ID 
+        </font>have changed. If your external table file is correct, the maximum <font face="Courier New, Courier, mono">TIME_ID</font> 
+        i</span>s the last day of March, 2002.</p>
+              <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="bVerifySalesDelta" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="bVerifySalesDelta"></font></P>
+  </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t411">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4112"></a>1.2 Create the Table for the New 
+  Sales Q1 Data</h4>
+<p class="bodycopy">In this step, you create an empty table for the new sales Q1 data. This 
+  table will be added to the already existing partitioned <font face="Courier New, Courier, mono">SALES</font> 
+  table later.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD width="25" height="51">&nbsp;</TD>
+      <TD height="51"><p>Execute the commands below or the <b><font face = "courier new">create_stage_table.sql</font></b> script to create the table:</p>
+          
+        
+        <pre>DROP TABLE sales_delta;
+<br>CREATE TABLE sales_delta NOLOGGING NOCOMPRESS 
+  AS SELECT * FROM sales WHERE 1=0;</pre>          <p><font face="Courier New, Courier, mono"> <img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="CreateSalesDelta" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="CreateSalesDelta"></font></p>
+      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t411">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4113"></a>1.3 Load This Table</h4>
+<p class="bodycopy">To load this table, you perform the following steps:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51"><B>1.</B></TD>
+      <TD height="51">
+      <p>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">load_stage_table2.sql</font></b> 
+        script to load the table:</p>
+          
+        
+      <pre>
+INSERT /*+ APPEND */ INTO sales_delta<br>SELECT /*+ PARALLEL (SALES_DELTA_XT,4) */<br>  PROD_ID,<br>  CUST_ID,<br>  TIME_ID,<br>  case CHANNEL_ID<br>  when 'S' then 3<br>  when 'T' then 9<br>  when 'C' then 5<br>  when 'I' then 4<br>  when 'P' then 2<br>  else 99<br>  end,<br>  PROMO_ID,<br>  sum(QUANTITY_SOLD) quantity_sold,<br>  sum(AMOUNT_SOLD) amount_sold<br>FROM SALES_DELTA_XT<br>GROUP BY prod_id,time_id,cust_id,channel_id,promo_id;
+
+COMMIT;</pre>          <p><font face="Courier New, Courier, mono"> <img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="LoadStageTable2" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="LoadStageTable2"></font></p>
+          
+      <p>&nbsp;</p>
+          <p>&nbsp;</p></TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B> 2.</B></TD>
+      <TD height="51">
+        
+      <P>After loading the <font face="Courier New, Courier, mono">SALES_DELTA</font> table, gather statistics for this newly created table. In a SQL*Plus session logged in as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">gather_stat_stage_table.sql</font></b> 
+        script to gather statistics for the table.</P>
+        
+        
+      <pre><font face="Courier New, Courier, mono"></font>exec dbms_stats.gather_table_stats('SH','sales_delta',estimate_percent=&gt;20);</pre>      
+      <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="GatherStatStageTable" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="GatherStatStageTable"></font></P>      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><A class=bodylink 
+href="#t411">Back to List</A></p>
+<h4 class="boldbodycopy2"><a name="t4114"></a>1.4 Create Bitmap Indexes for This 
+  Table</h4>
+<p class="bodycopy">Because you are going to exchange this stand-alone table with 
+  an empty partition of the <font face="Courier New, Courier, mono">SALES</font> 
+  table at a later point in time, you have to build exactly the same index structure 
+  as the existing <font face="Courier New, Courier, mono">SALES</font> table to 
+  keep the local index structures of this particular table in a usable state after 
+  the exchange.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51"><B>1.</B></TD>
+      <TD height="51">
+      <p>Before creating any bitmap indexes, you need to modify the newly created 
+        table into a compressed table without 
+        actually compressing any data. This operation is necessary to create bitmap 
+        indexes that are valid to be exchanged into the partitioned table that 
+        already contains compressed partitions. Execute the commands below or the <b><font face = "courier new">alter_sales_delta.sql</font></b> script to modify the table. </p>
+          
+        
+      <pre>
+
+ALTER TABLE sales_delta COMPRESS;
+ALTER TABLE sales_delta NOCOMPRESS;
+
+<font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="altersalesdelta" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="altersalesdelta"></font>
+
+</pre>
+    </TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B> 2.</B></TD>
+      <TD height="51">
+        
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">create_static_bitmap_index.sql</font></b> 
+        script to create the bitmapped indexes on the <font face="Courier New, Courier, mono">SALES_DELTA</font> 
+        table. </P>
+        
+        
+      <pre><font face="Courier New, Courier, mono"></font><font face="Courier New, Courier, mono">CREATE BITMAP INDEX sales_prod_local_bix
+  ON sales_delta (prod_id)
+  NOLOGGING COMPUTE STATISTICS ;
+CREATE BITMAP INDEX sales_cust_local_bix
+  ON sales_delta (cust_id)
+  NOLOGGING COMPUTE STATISTICS ;
+CREATE BITMAP INDEX sales_time_local_bix
+  ON sales_delta (time_id)
+  NOLOGGING COMPUTE STATISTICS ;
+CREATE BITMAP INDEX sales_channel_local_bix
+   ON sales_delta (channel_id)
+   NOLOGGING COMPUTE STATISTICS ;
+CREATE BITMAP INDEX sales_promo_local_bix
+   ON sales_delta (promo_id)
+   NOLOGGING COMPUTE STATISTICS ;</font></pre>
+              <p>Note that the statistics for those indexes will be created as part of the index creation.</p>
+        <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="CreateStaticBitmap" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="CreateStaticBitmap"></font></P>
+        <P>&nbsp;</P></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t411">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4115"></a>1.5 Create Constraints for This 
+  Table</h4>
+<p class="bodycopy">&nbsp;</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25">&nbsp;</TD>
+      <TD height="51">
+        
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">create_constraints.sql</font></b> 
+        script to modify the constraints on the <font face="Courier New, Courier, mono">SALES</font> 
+        table:</P>
+        
+      <pre><font face="Courier New, Courier, mono">ALTER TABLE channels MODIFY CONSTRAINT CHANNELS_PK RELY;<br>ALTER TABLE countries MODIFY CONSTRAINT COUNTRIES_PK RELY;<br>ALTER TABLE customers MODIFY CONSTRAINT CUSTOMERS_PK RELY;<br>ALTER TABLE products MODIFY CONSTRAINT PRODUCTS_PK RELY;<br>ALTER TABLE promotions MODIFY CONSTRAINT PROMO_PK RELY;<br>ALTER TABLE times MODIFY CONSTRAINT TIMES_PK RELY;
+
+</font>ALTER TABLE sales_delta
+               ADD ( CONSTRAINT sales_product_delta_fk
+   FOREIGN KEY (prod_id)
+   REFERENCES products RELY ENABLE NOVALIDATE
+   , CONSTRAINT sales_customer_delta_fk
+   FOREIGN KEY (cust_id)
+   REFERENCES customers RELY ENABLE NOVALIDATE
+   , CONSTRAINT sales_time_delta_fk
+   FOREIGN KEY (time_id)
+   REFERENCES times RELY ENABLE NOVALIDATE
+   , CONSTRAINT sales_channel_delta_fk
+   FOREIGN KEY (channel_id)
+   REFERENCES channels RELY ENABLE NOVALIDATE
+   , CONSTRAINT sales_promo_delta_fk
+   FOREIGN KEY (promo_id)
+   REFERENCES promotions RELY ENABLE NOVALIDATE
+   ) ;</pre>        
+      <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="CreateConstraints" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="CreateConstraints"></font></P>
+   <P>&nbsp;</P></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t411">Back to List</a></p>
+<p align="right"><A class=bodylink 
+href="#t4">Back to Topic</A></p>
+<h3 class="boldbodycopy"><a name="t412"></a>2. Add the New Data to the Fact Table</h3>
+<p class="bodycopy">The next task in performing a rolling window operation is to add the newly loaded and indexed data to the fact table. To do this, you perform the following steps:</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      
+    <td class="bodycopy" width="25"><b> 2.1</b></td>
+      <td class="bodycopy">
+      <p class="bodycopy"><a href="#t4121">Create a new partition, if one does not already exist.</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>2.2</b></td>
+      <td>
+      <p><a href="#t4122">Exchange the partition. This is only a data dictionary operation  and does not touch any data</a>.</p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>2.3</b></td>
+      <td><a href="#t4123">Select from the partition to control the success.</a></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>2.4</b></td>
+      <td><a href="#t4124">Split the most recent partition to ensure (business) data integrity</a><a href="#t4124">.</a></td>
+    </tr>
+  </tbody>
+</table>
+<h4 class="boldbodycopy2"><a name="t4121"></a>2.1 Create a New Partition</h4>
+<p class="bodycopy">You need to create a new, empty partition. You can either 
+  create the new partition with a distinct upper boundary or use the keyword 
+  <font face="Courier New, Courier, mono">MAXVALUE</font>. The latter option ensures 
+  that records violating the potential upper boundary condition are not rejected 
+  and the <font face="Courier New, Courier, mono">INSERT</font> operation succeeds.</p>
+<p class="bodycopy">In this business scenario, you issue a <font face="Courier New, Courier, mono">SPLIT 
+  PARTITION</font> after the loading operation to identify any potential violations. 
+  All records violating the upper boundary will be &quot;separated&quot; into 
+  an extra partition.</p>
+<p class="bodycopy">You need to create a new, empty partition. To do this, perform 
+  the following step:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25">&nbsp;</TD>
+      <TD height="51">
+        
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">create_partition_for_sales_etl.sql</font></b> 
+        script to add a partition to the <font face="Courier New, Courier, mono">SALES</font> 
+        table. </P>
+        
+        
+      <pre><font face="Courier New, Courier, mono"></font><font face="Courier New, Courier, mono">
+COLUMN partition_name FORMAT a20
+                 
+select partition_name, high_value 
+from   user_tab_partitions 
+where  table_name='SALES'
+order by partition_position;
+
+ALTER TABLE sales 
+ADD PARTITION sales_q1_2002
+VALUES LESS THAN (MAXVALUE);
+
+SELECT COUNT(*) 
+FROM   sales PARTITION (sales_q1_2002);</font></pre>
+              <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="CreatePartition" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="CreatePartition"></font></P>      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t412">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4122"></a>2.2 Exchange the Partition</h4>
+<p class="bodycopy">You are now ready to add the newly loaded and indexed data 
+  to the real <font face="Courier New, Courier, mono">SALES</font> fact table 
+  by performing a <font face="Courier New, Courier, mono">PARTITION EXCHANGE</font> 
+  command. Note that this is only a DDL command, which does not touch the actual 
+  data at all. To do this, you perform the following step:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25">&nbsp;</TD>
+      <TD height="51">
+        
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the command below or the <b><font face = "courier new">exchange_partition_wo_gim.sql</font></b> 
+        script to the <span class="style5">ALTER</span> the <font face="Courier New, Courier, mono">SALES</font> 
+        table, enabling the partition to be exchanged:</P>
+        
+      <pre><font face="Courier New, Courier, mono">
+ALTER TABLE sales EXCHANGE PARTITION sales_q1_2002 <br>    WITH TABLE sales_delta INCLUDING INDEXES;</font></pre>        <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ExchangePartWOGim" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="ExchangePartWOGim"></font></P>      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t412">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4123"></a>2.3 Select From the Partition</h4>
+<p class="bodycopy">Now you can select from the newly added and exchanged partition.</p>
+<p class="bodycopy">Note that the more data you have to add to your partitioned fact table, the more time you are saving with this metadata-only operation.</p>
+<p class="bodycopy">You need to use a logical partitioning operation such as RANGE Partitioning. HASH Partitioning cannot be used for the very common Rolling Window Operation.</p>
+<p class="bodycopy">All indexes of the <font face="Courier New, Courier, mono">SALES</font> 
+  table are maintained and usable.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51"><B>1.</B></TD>
+      <TD height="51">
+      <p>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the following queries or the <span class="style8">select_count.sql</span> script. They will show you the number of 
+        rows in the exchanged partition and the stand-alone table (which is now 
+        empty). </p>
+        
+      <pre>
+SELECT COUNT(*) <br>FROM   sales PARTITION (sales_q1_2002);
+
+SELECT COUNT(*)<br>FROM   sales_delta;<b>
+
+<font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="VerifyExchange" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="VerifyExchange"></font>
+</b></pre>
+      <p>&nbsp;</p></TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B>2.</B></TD>
+      <TD height="51">
+        
+      <P>Note that all local indexes of the <font face="Courier New, Courier, mono">SALES</font> 
+        table are valid. Execute the command below or the <b><font face = "courier new">show_sales_idx_status.sql</font></b> 
+        script to view the status of the indexes:</P>
+        
+      <pre>SELECT ui.index_name, DECODE(uip.status,null,ui.status,uip.status)<br>FROM user_ind_partitions uip, user_indexes ui<br>WHERE ui.index_name=uip.index_name(+)<br>AND ui.table_name='SALES'<br>GROUP BY ui.index_name, DECODE(uip.status,null,ui.status,uip.status);</pre>                
+                <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="StatusLocalIndex" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="StatusLocalIndex"></font></P>
+      <P class="style13">You can also use the<font face="Courier New, Courier, mono"> 
+        WITHOUT VALIDATION </font>clause as part of the <font face="Courier New, Courier, mono">PARTITION 
+        EXCHANGE</font> command. This causes the Oracle Database server to suppress the 
+        validity checking of the table that is going to be exchanged. Otherwise, 
+        the Oracle Database server guarantees that all values of the partition key match 
+        within the partition boundaries.</P>
+    </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t412">Back to List</a></p>
+<h3 class="boldbodycopy2"><a name="t4124"></a>2.4 Split the Most Recent Partition 
+  to Ensure (Business) Data Integrity</h3>
+<p class="bodycopy">As mentioned previously, you decided to load the data into 
+  a partition with no fixed upper boundary to avoid any potential errors. To identify 
+  any potential violation, you split the most recent partition, thus creating 
+  two partitions, one with a fixed upper boundary.</p>
+<p class="bodycopy">Oracle Database uses an enhanced fast-split operation that 
+  detects whether or not one of the two new partitions after a <font face="Courier New, Courier, mono">SPLIT</font> 
+  operation will be empty. If this is the case, the Oracle Database server will 
+  not create two new segments. It will create only one by using <font face="Courier New, Courier, mono">DBMS_STATS</font> 
+  on the new empty partition, and it will use the existing segment as the new 
+  partition containing all the data.</p>
+<p class="bodycopy">This optimization is completely transparent. It improves the 
+  run time of a <font face="Courier New, Courier, mono">SPLIT</font> operation, 
+  saves system resources, and does not require any index maintenance. </p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51"><B>1.</B></TD>
+      <TD height="51">
+      <p>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font>        user, execute the commands below or the <b><font face = "courier new">fast_split_sales.sql</font></b> 
+        script to alter the <font face="Courier New, Courier, mono">SALES</font> table 
+        and view the indexes status. </p>
+          
+      <pre><b></b><font face="Courier New, Courier, mono">
+ALTER TABLE sales SPLIT PARTITION sales_q1_2002 <br>  AT (TO_DATE('01-APR-2002','DD-MON-YYYY')) <br>  INTO (PARTITION sales_q1_2002, PARTITION sales_beyond_q1_2002);</font></pre>          <pre>
+SELECT COUNT(*) FROM sales PARTITION (sales_beyond_q1_2002);</pre>          
+<pre>
+SELECT ui.index_name, DECODE(uip.status,null,ui.status,uip.status)
+FROM user_ind_partitions uip, user_indexes ui
+WHERE ui.index_name=uip.index_name(+)
+AND ui.table_name='SALES'
+GROUP BY ui.index_name, DECODE(uip.status,null,ui.status,uip.status);</pre>          
+<pre>
+ALTER TABLE sales DROP PARTITION sales_beyond_q1_2002;</pre>          
+<p><b><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="FastSplitSales" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="FastSplitSales"></font>
+          </b></p>
+        <p>&nbsp;</p></TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B>2.</B></TD>
+      <TD height="51">
+        
+      <P>Note that all local indexes of the <font face="Courier New, Courier, mono">SALES</font> 
+        table are still valid. Execute the <b><font face = "courier new">show_sales_idx_status.sql</font></b> 
+        script to view the status of the local indexes on the <font face="Courier New, Courier, mono">SALES</font> 
+        table. </P>
+        
+      <pre><b>@show_sales_idx_status.sql</b></pre>
+              <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="StatusLocalIndex" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="StatusLocalIndex"></font></P>
+              <P>&nbsp;</P></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t412">Back to List</a></p>
+<p align="right"><A class=bodylink 
+href="#t4">Back to Topic</A></p>
+<h3 class="boldbodycopy"><a name="t413"></a>3. Delete Old Data from the Fact Table</h3>
+<p class="bodycopy">The next task to perform in a Rolling Window Operation is 
+  to delete the old data from the fact table. You want to analyze only the most 
+  recent data of the last three years. Because you added Q1-2002, you have to 
+  delete the data of Q1-1998.</p>
+<p class="bodycopy">Without Range Partitioning, you have to perform a DML operation 
+  against the table. With partitioning, you can leverage the <font face="Courier New, Courier, mono">PARTITION 
+  EXCHANGE</font> command again to remove the data from the fact table. Similar 
+  to the adding of new data, hash partitioning does not help you in this case. </p>
+<p class="bodycopy">Note that you are not <strong>deleting</strong> the data. 
+  Instead you are exchanging (logically replacing) the partition containing this 
+  data from the <font face="Courier New, Courier, mono">SALES</font> fact table 
+  with an empty stand-alone table with the same logical structure. You can then 
+  archive this data or drop the exchanged partition, depending on your business 
+  needs. </p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      
+    <td class="bodycopy" width="25"><b> 3.1</b></td>
+      <td class="bodycopy">
+        <p class="bodycopy"><a href="#t4131">Create an empty stand-alone table. </a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>3.2</b></td>
+      <td>
+        <p><a href="#t4132">Create bitmap indexes for this table.</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>3.3</b></td>
+      <td><a href="#t4133">Create constraints for this table.</a></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>3.4</b></td>
+      <td><a href="#t4134">Show the data in the partition before the exchange.</a></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>3.5</b></td>
+      <td><a href="#t4135">Exchange the empty new table with the existing Q1-1998 partition.</a></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>3.6</b></td>
+      <td><a href="#t4136">Show the data in the partition after the exchange.</a></td>
+    </tr>
+  </tbody>
+</table>
+<h4 class="boldbodycopy2"><a name="t4131"></a>3.1 Create an Empty Stand-Alone Table</h4>
+<p class="bodycopy">You need to create an empty table in which to store the old 1998 data. </p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25">&nbsp;</TD>
+      <TD height="51">
+        
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font>        user, execute the commands below or the <b><font face = "courier new">create_empty_sat.sql</font></b> 
+        script to create an empty table that will hold the old 1998 data: </P>
+        
+      <pre><font face="Courier New, Courier, mono">
+DROP TABLE sales_old_q1_1998;
+
+</font>CREATE TABLE sales_old_q1_1998 NOLOGGING COMPRESS <br>  AS SELECT * FROM sales WHERE 1=0;</pre>        <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="CreateEMptyTable" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="CreateEMptyTable"></font></P>
+<P>&nbsp;</P></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t413">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4132"></a>3.2 Create Bitmap Indexes for This 
+  Table</h4>
+<p class="bodycopy">Now create the local indexes. </p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25">&nbsp;</TD>
+      <TD height="51">
+        
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> user, execute the commands below or  the <b><font face = "courier new">create_ndx.sql</font></b> 
+        script to create the local indexes. </P>
+        
+      <pre><font face="Courier New, Courier, mono">CREATE BITMAP INDEX sales_prod_old_bix<br>       ON sales_old_q1_1998 (prod_id)<br>       NOLOGGING COMPUTE STATISTICS ;<br>CREATE BITMAP INDEX sales_cust_old_bix<br>       ON sales_old_q1_1998 (cust_id)<br>       NOLOGGING COMPUTE STATISTICS ;<br>CREATE BITMAP INDEX sales_time_old_bix<br>       ON sales_old_q1_1998 (time_id)<br>       NOLOGGING COMPUTE STATISTICS ;<br>CREATE BITMAP INDEX sales_channel_old_bix<br>       ON sales_old_q1_1998 (channel_id)<br>       NOLOGGING COMPUTE STATISTICS ;<br>CREATE BITMAP INDEX sales_promo_old_bix<br>       ON sales_old_q1_1998 (promo_id)<br>       NOLOGGING COMPUTE STATISTICS ;</font></pre>        <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="CreateNdx" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="CreateNdx"></font></P>
+<P>&nbsp;</P></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t413">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4133"></a>3.3 Create Constraints for This 
+  Table</h4>
+<p class="bodycopy">Now create the constraints.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25">&nbsp;</TD>
+      <TD height="51">
+        
+      <P>In a SQL*Plus session logged on as the 
+        <font face="Courier New, Courier, mono">SH</font> schema, execute the commands below or the <b><font face = "courier new">create_constraints_old.sql</font></b> 
+        script to modify and create the constraints. </P>
+        
+      <pre><b><font face="Courier New, Courier, mono"></font></b><font face="Courier New, Courier, mono">
+ALTER TABLE channels MODIFY CONSTRAINT CHANNELS_PK RELY;<br>ALTER TABLE countries MODIFY CONSTRAINT COUNTRIES_PK RELY;<br>ALTER TABLE customers MODIFY CONSTRAINT CUSTOMERS_PK RELY;<br>ALTER TABLE products MODIFY CONSTRAINT PRODUCTS_PK RELY;<br>ALTER TABLE promotions MODIFY CONSTRAINT PROMO_PK RELY;<br>ALTER TABLE times MODIFY CONSTRAINT TIMES_PK RELY; 
+
+</font>ALTER TABLE sales_old_q1_1998<br>  ADD ( CONSTRAINT sales_product_old_fk<br>  FOREIGN KEY (prod_id)<br>  REFERENCES products RELY ENABLE NOVALIDATE<br>  , CONSTRAINT sales_customer_old_fk<br>  FOREIGN KEY (cust_id)<br>  REFERENCES customers RELY ENABLE NOVALIDATE<br>  , CONSTRAINT sales_time_old_fk<br>  FOREIGN KEY (time_id)<br>  REFERENCES times RELY ENABLE NOVALIDATE<br>  , CONSTRAINT sales_channel_old_fk<br>  FOREIGN KEY (channel_id)<br>  REFERENCES channels RELY ENABLE NOVALIDATE<br>  , CONSTRAINT sales_promo_old_fk<br>  FOREIGN KEY (promo_id)<br>  REFERENCES promotions RELY ENABLE NOVALIDATE<br>  ) ;</pre>        <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="CreateConstraint" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="CreateConstraint"></font></P>      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t413">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4134"></a>3.4 Show the Data in the Partition 
+  Before the Exchange</h4>
+<p class="bodycopy">Before you perform the exchange,  view the 1998 Q1 data that will be aged out of the partition.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25">&nbsp;</TD>
+      <TD height="51">
+        
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the command below or the <b><font face = "courier new">show_partition.sql</font></b> 
+        script to view the data that will be aged out of the partition:</P>
+        
+      <pre><font face="Courier New, Courier, mono">
+SELECT COUNT(*) 
+FROM   sales PARTITION (sales_q1_1998);</font></pre>
+              <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ShowPartition" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="ShowPartition"></font></P>
+              <P>&nbsp;</P></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t413">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4135"></a>3.5 Exchange the Partition</h4>
+<p class="bodycopy">Exchange the empty table with the existing Q1-1998 partition. To do this, perform the following step:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25">&nbsp;</TD>
+      <TD height="51">
+        <P>In a SQL*Plus session logged on as the <span class="style5">SH</span> user,  execute the command below or the <b><font face = "courier new">exchange_old_partition.sql</font></b> script to exchange the partition:</P>
+        
+        <pre>ALTER TABLE sales 
+   EXCHANGE PARTITION sales_q1_1998 
+   WITH TABLE sales_old_q1_1998 
+   INCLUDING INDEXES;</pre>        
+        <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ExchangeOldPart" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="ExchangeOldPart"></font></P>
+      <P>Note that you could have used a <font face="Courier New, Courier, mono">DROP 
+        PARTITION</font> statement instead. The <font face="Courier New, Courier, mono">SALES_OLD_Q1_1998</font> 
+        table now stores all the data of the first quarter of 1998. You could 
+        drop this table to remove the data entirely from the system.</P>
+    </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t413">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4136"></a>3.6 Show the Data in the Partition 
+  After the Exchange</h4>
+<p class="bodycopy">After you perform the exchange, view the data in the partition.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51"><B>1.</B></TD>
+      <TD height="51">
+        
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">count_sales.sql</font></b> 
+        script to view the data in the partition:</P>
+        
+      <pre><font face="Courier New, Courier, mono">SELECT COUNT(*) 
+FROM   sales PARTITION (sales_q1_1998);
+
+SELECT COUNT(*) 
+FROM   sales_old_q1_1998;</font></pre>        
+      <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="VerifyPartition1" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="32VerifyPartition"></font></P>
+        
+      <P>Unlike before the <font face="Courier New, Courier, mono">EXCHANGE</font> 
+        command, the stand-alone table now stores thousands of rows whereas the 
+        equivalent partition of <font face="Courier New, Courier, mono">SALES</font> 
+        is empty.</P>
+      <P>&nbsp;</P></TD>
+    </TR>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B>2.</B></TD>
+      <TD height="51">
+        <P>Local indexes are not affected by the exchange.  Execute the command below or the <b><font face = "courier new">show_sales_idx_status.sql</font></b> script to view the index information. </P>
+                
+        <pre><font face="Courier New, Courier, mono">SELECT ui.index_name, DECODE(uip.status,null,ui.status,uip.status)<br>FROM   user_ind_partitions uip, user_indexes ui<br>WHERE  ui.index_name=uip.index_name(+)<br>AND    ui.table_name='SALES'<br>GROUP BY ui.index_name, DECODE(uip.status,null,ui.status,uip.status);</font></pre>                <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="IndexStatus" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="IndexStatus"></font></P>
+<P>&nbsp;</P></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><A class=bodylink 
+href="#t413">Back to List</A></p>
+<p align="right"><A class=bodylink 
+href="#t4">Back to Topic</A></p>
+<h3 class="boldbodycopy"><a name="t414"></a><strong>Oracle Database 10<em>g</em> Enhancements 
+  for Local Index Maintenance</strong></h3>
+<p class="bodycopy">To learn about local index maintenance enhancements in Oracle 
+  Database 10<em><i>g</i></em>, you will split the most recent quarter partition 
+  into a monthly partition with the online local index maintenance. This is new 
+  functionality in Oracle Database 10<i>g</i>. You will also use the Global Index 
+  Maintenance feature (introduced in Oracle 9<i>i</i>).</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top" class="bodycopy">
+      <td class="bodycopy"><b>1.</b></td>
+      <td class="bodycopy">
+        
+      <p><strong><a href="#t414">Utilize Oracle Database 10<em><i>g</i></em> Enhancements 
+        for Local Index Maintenance</a></strong></p>
+    </td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      <td class="bodycopy"><b>2.</b></td>
+      <td class="bodycopy"><p><strong><a href="#t415">Utilize Oracle's Global Index Maintenance</a></strong></p></td>
+    </tr>
+  </tbody>
+</table>
+<p class="boldbodycopy"><a name="t414"></a>1. Enhancements for Local Index Maintenance:</p>
+<p class="bodycopy">Beginning with Oracle Database 10<em><i>g</i></em>, all partition maintenance 
+  operations can be executed without any impact on its availability. Local Index 
+  Maintenance allows you to keep local indexes of a partitioned table up-to-date 
+  as part of any atomic partition maintenance operation.<br>
+Oracle extended the SQL syntax for partition maintenance operations to control the physical attributes, such as index placement, for all affected local index structures. </p>
+<p class="bodycopy">Steps:</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      
+    <td class="bodycopy" width="25"><b> 1.1</b></td>
+      <td class="bodycopy">
+        <p class="bodycopy"><a href="#t4141">Split the most recent partition by using the default placement rules.</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>1.2</b></td>
+      <td>
+        <p><a href="#t4142">Split a partition by using the extended SQL syntax for local index maintenance.</a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>1.3</b></td>
+      <td><a href="#t4143">Clean up. </a></td>
+    </tr>
+  </tbody>
+</table>
+<p class="bodycopy">Examine this scenario: After successfully loading the data for the first quarter of 2002, you recognize that due to changing business requirements the query pattern has changed. Instead of being focused mostly on quarterly analysis, many 
+business users have started to rely on monthly reporting and analysis. To address this changed business requirement and optimize the query performance, you can leverage Oracle Partitioning and to split the most recent quarter into monthly partitions.</p>
+<p class="bodycopy">The online availability for local index maintenance will not be demonstrated in this example. Online availability is demonstrated for global index maintenance and works in exactly the same manner for local indexes.</p>
+<h4 class="boldbodycopy2"><a name="t4141"></a>1.1 Split the Most Recent Partition</h4>
+<p class="bodycopy">You need to create a new, empty partition. You can either 
+  create the new partition with a distinct upper boundary or by choosing the keyword 
+  <font face="Courier New, Courier, mono">MAXVALUE</font>. The latter option ensures 
+  that records violating the potential upper boundary condition are not rejected 
+  and the <font face="Courier New, Courier, mono">INSERT</font> operation succeeds.</p>
+<p class="bodycopy">In this business scenario, a <font face="Courier New, Courier, mono">SPLIT</font> <font face="Courier New, Courier, mono">PARTITION</font> command is issued after the loading operation to identify any potential 
+  violations. All records violating the upper boundary will be &quot;separated&quot; 
+  into an extra partition.</p>
+<p class="bodycopy">Perform the following steps to create a new, empty partition:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy height="667">
+  <TR vAlign=top>
+    <TD height="51"><B>1.</B></TD>
+    <TD height="51">
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the following SQL statement to split off the most recent 
+        month (March 2002) from the quarterly partition, including local index 
+        maintenance. You can execute the command below or the <b><font face = "courier new">split1_10g.sql</font></b> 
+        script to accomplish this task.</P>
+      <pre>ALTER TABLE sales SPLIT PARTITION sales_q1_2002
+AT (TO_DATE('01-MAR-2002','DD-MON-YYYY'))
+INTO (PARTITION sales_1_2_2002 TABLESPACE example, 
+PARTITION sales_MAR_2002 TABLESPACE example NOCOMPRESS)
+UPDATE INDEXES;</pre>      
+      
+<P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="Split" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="Split"></font></P>
+      <P>&nbsp;</P></TD>
+  </TR>
+  <TBODY>
+    <TR vAlign=top>
+      
+    <TD height="383" width="25"><B>2.</B></TD>
+      
+    <TD height="383"> 
+      <P>You can see that the new index partitions are co-located with the table partitions and that the index partition naming is inherited from the partition naming. Execute the commands below or the <b><font face = "courier new">see_split.sql</font></b> script to view the partition information.</P>
+        
+      <pre>
+COL segment_name format a25
+COL partition_name format a25
+COL tablespace_name format a25</pre>
+              <pre>
+SELECT segment_name, partition_name, tablespace_name 
+FROM user_segments
+WHERE segment_type='INDEX PARTITION'
+AND segment_name IN 
+   (SELECT index_name 
+    FROM   user_indexes 
+    WHERE  table_name='SALES');</pre>        
+<P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="seesplit0" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="seesplit0"></font></P>
+    <P><font face="Courier New, Courier, mono">...</font></P>    
+      <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="seesplit1" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="seesplit1"></font></P>
+      <P>&nbsp;</P>
+    </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t414">Back to List</a></p>
+<h4 class="boldbodycopy"></h4>
+<h4 class="boldbodycopy2"><a name="t4142"></a>1.2 Split a Partition Using the 
+  Extended SQL Syntax</h4>
+<p class="bodycopy">Split the remainder of the former quarter partition into a 
+  January and February partition. For demonstration purposes, create one of the 
+  new partitions in the <font face="Courier New, Courier, mono">SYSAUX</font> 
+  tablespace and name some of the indexes explicitly.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TR vAlign=top>
+    <TD height="51"><B>1.</B></TD>
+    <TD height="51">
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the following SQL statement to split the remainder partition, 
+        including local index maintenance. You can execute the command below or the <b><font face = "courier new">split2_10g.sql</font></b> 
+        script. </P>
+      <pre>
+ALTER TABLE sales SPLIT PARTITION sales_1_2_2002 <br>  AT (TO_DATE('01-FEB-2002','DD-MON-YYYY'))<br>  INTO <br>   (PARTITION sales_JAN_2002 TABLESPACE sysaux COMPRESS,<br>    PARTITION sales_FEB_2002 TABLESPACE example NOCOMPRESS)<br>  UPDATE INDEXES (sales_time_bix <br>   (PARTITION jan_02 TABLESPACE example,<br>    PARTITION feb_02 TABLESPACE system));</pre>      <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="split210g" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="split210g"></font></P>
+      <P>&nbsp;</P></TD>
+  </TR>
+  <TBODY>
+    <TR vAlign=top>
+      <TD height="51" width="25"><B>2.</B></TD>
+      <TD height="51">
+        
+      <P>You can see that the new index partitions are colocated with the table 
+        partitions and that the index partition naming is inherited from the partition. 
+        Execute the command below or the <b><font face = "courier new">see_split2.sql</font></b> 
+        script to view the partition and segment information: </P>
+        
+                        
+        <pre>
+SELECT segment_name, partition_name, tablespace_name <br>FROM   user_segments<br>WHERE  segment_type='INDEX PARTITION'<br>  AND  tablespace_name &lt;&gt;'EXAMPLE'<br>  AND  segment_name IN <br>    (SELECT index_name <br>     FROM   user_indexes <br>     WHERE  table_name='SALES');</pre>        <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="VerifyPartition2" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="VerifyPartition2"></font></P>
+<P>&nbsp;</P></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t414">Back to List</a></p>
+<h4 class="boldbodycopy"></h4>
+<h4 class="boldbodycopy2"><a name="t4143"></a>1.3 Clean Up</h4>
+<p class="bodycopy">Perform clean up operations by moving the partition out of the 
+    <font face="Courier New, Courier, mono">SYSAUX</font> tablespace and into the <font face="Courier New, Courier, mono">EXAMPLE</font> 
+  tablespace. Use the standard naming conventions.</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TR vAlign=top>
+    <TD width="25" height="51">&nbsp;</TD>
+    <TD height="51">
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">cleanup_split_10g.sql</font></b> 
+        script to move the partition and update the indexes. 
+      <pre>ALTER TABLE sales MOVE PARTITION sales_JAN_2002 TABLESPACE example COMPRESS<br>UPDATE INDEXES (sales_time_bix    (PARTITION sales_jan_2002 TABLESPACE example),<br>                sales_cust_bix    (PARTITION sales_jan_2002 TABLESPACE example),<br>                sales_channel_bix (PARTITION sales_jan_2002 TABLESPACE example),<br>                sales_prod_bix    (PARTITION sales_jan_2002 TABLESPACE example),<br>                sales_promo_bix   (PARTITION sales_jan_2002 TABLESPACE example))<br>;</pre>      
+      <pre>
+ALTER INDEX sales_time_bix 
+  REBUILD PARTITION feb_02 TABLESPACE example;</pre>      
+      <pre>
+SELECT segment_name, partition_name, tablespace_name 
+FROM   user_segments
+WHERE  segment_type='INDEX PARTITION'
+  AND  segment_name IN (SELECT index_name 
+                        FROM   user_indexes 
+                        WHERE  table_name='SALES')
+  AND  tablespace_name &lt;&gt; 'EXAMPLE';</pre>      
+      <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="VerifyPartition3" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="VerifyPartition3"></font></P>
+  <P>&nbsp;</P></TD>
+  </TR>
+  <TBODY>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t414">Back to List</a></p>
+<h3 class="boldbodycopy"><a name="t415"></a>2. Utilize Oracle's Global Index Maintenance</h3>
+<p class="bodycopy">Global Index Maintenance enables you to keep global indexes of a partitioned table up-to-date as part of any atomic partition maintenance operation. This keeps  global indexes from being unusable and does not affect their usage when the maintenance operation takes place.</p>
+<p class="bodycopy">Steps:</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      
+    <td class="bodycopy" width="25"><b> 2.1</b></td>
+      <td class="bodycopy">
+        <p class="bodycopy"><a href="#t4151">Prepare for global index maintenance. </a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>2.2</b></td>
+      <td>
+        <p><a href="#t4152">Build a global index. </a></p></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>2.3</b></td>
+      <td><a href="#t4153">Exchange a partition with global index maintenance and experience its effect on global indexes</a>.</td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>2.4</b></td>
+      <td><a href="#t4154">Exchange a partition without global index maintenance and experience its effect on global indexes.</a></td>
+    </tr>
+    <tr valign="top" class="bodycopy">
+      
+    <td class="bodycopy"><b>2.5</b></td>
+      <td><a href="#t4155">Drop the global index and exchange back (clean up).</a></td>
+    </tr>
+  </tbody>
+</table>
+<h4 class="boldbodycopy2"><a name="t4151"></a>2.1 Prepare for Global Index Maintenance</h4>
+<p class="bodycopy">Exchange the March data into the partitioned table in the 
+  presence of a global index. First, you have to build the necessary infrastructure: 
+</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TR vAlign=top>
+    <TD width="25" height="51">&nbsp;</TD>
+    <TD height="51">
+      <P>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">prep4_global_index.sql</font></b> 
+        script to prepare for global index maintenance. </P>
+      <pre>CREATE TABLE sales_mar_2002_temp <br>  NOLOGGING AS SELECT * FROM sales <br>    PARTITION (sales_MAR_2002);</pre>      <pre>ALTER TABLE sales TRUNCATE PARTITION sales_MAR_2002;</pre>      <pre>SELECT COUNT(*) 
+               FROM sales PARTITION (sales_MAR_2002);
+               ALTER TABLE sales_mar_2002_temp COMPRESS;
+               ALTER TABLE sales_mar_2002_temp NOCOMPRESS;</pre>      
+
+      <pre>CREATE BITMAP INDEX sales_prod_mar_2002_bix
+               ON sales_mar_2002_temp (prod_id)
+               NOLOGGING COMPUTE STATISTICS ;</pre>
+      <pre>CREATE BITMAP INDEX sales_cust_mar_2002_bix
+               ON sales_mar_2002_temp (cust_id)
+               NOLOGGING COMPUTE STATISTICS ;</pre>
+      <pre>CREATE BITMAP INDEX sales_time_mar_2002_bix
+               ON sales_mar_2002_temp (time_id)
+               NOLOGGING COMPUTE STATISTICS ;</pre>
+      <pre>CREATE BITMAP INDEX sales_channel_mar_2002_bix
+               ON sales_mar_2002_temp (channel_id)
+               NOLOGGING COMPUTE STATISTICS ;</pre>
+      <pre>CREATE BITMAP INDEX sales_promo_mar_2002_bix
+               ON sales_mar_2002_temp (promo_id)
+               NOLOGGING COMPUTE STATISTICS ;</pre>      <P><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="a_create_bitmap" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="a_create_bitmap"></font></P>
+      <P>&nbsp;</P></TD>
+  </TR>
+  <TBODY>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t415">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4152"></a>2.2 Build a Global Index</h4>
+<p class="bodycopy">To demonstrate the global index maintenance functionality, you first need to create a global index. To do this, you perform the following steps:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TR vAlign=top>
+    <TD height="51"><B>1.</B></TD>
+    <TD height="51">
+      <p>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">create_global_index.sql</font></b> 
+        script to create a concatenated unique index on the <font face="Courier New, Courier, mono">SALES</font> 
+        table:</p>
+      <pre>
+CREATE UNIQUE INDEX sales_pk
+   ON sales (prod_id, cust_id, promo_id, channel_id, time_id)
+   NOLOGGING COMPUTE STATISTICS;</pre>
+            <p>This may take up to a minute.</p>
+    <p><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="createGlobalIndex" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="createGlobalIndex"></font></p>
+    <p>&nbsp;</p></TD>
+  </TR>
+  <TR vAlign=top>
+    <TD height="51"><B>2.</B></TD>
+    <TD height="51">
+      <p>Build a constraint leveraging this index by executing the command below or the <b><font face = "courier new">add_sales_pk.sql</font></b> 
+        script:</p>
+      <pre>
+ALTER TABLE sales ADD CONSTRAINT sales_pk
+PRIMARY KEY (prod_id, cust_id, promo_id, channel_id, time_id) USING INDEX;
+
+<font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="addsalespk" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="addsalespk"></font>
+
+</pre>
+    </TD>
+  </TR>
+  <TR vAlign=top>
+    <TD width="25" height="51"><B>3.</B></TD>
+    <TD height="51">
+      <P>Note that if a constraint is defined using the global index, the same constraint must be defined for the table to be exchanged as well!  Execute the command below or the <b><font face = "courier new">add_salestemp_pk.sql</font></b> script to accomplish this task. </P>
+      <pre>
+ALTER TABLE sales_mar_2002_temp <br>  ADD CONSTRAINT sales_mar_2002_temp_pk<br>  PRIMARY KEY (prod_id, cust_id, promo_id, channel_id, time_id)<br>  DISABLE VALIDATE;<font face="Courier New, Courier, mono">
+
+
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="addsalestemppk" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="addsalestemppk">
+</font></pre></TD>
+  </TR>
+  <TBODY>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t415">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4153"></a>2.3 Exchange a Partition with Global 
+  Index Maintenance</h4>
+<p class="bodycopy">To demonstrate the impact of a partition maintenance operation 
+  on concurrent online access, you need two sessions and therefore two windows. 
+  Please read the following section <u><b>carefully</b></u> before proceeding.</p>
+<p class="bodycopy">In <b>Window One</b>, perform the following steps:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TR vAlign=top>
+    <TD width="25" height="51">&nbsp;</TD>
+    <TD height="51">
+      <p>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the commands below or the <b><font face = "courier new">use_global_index.sql</font></b> 
+        script to create an explain plan and view the information.</p>
+        
+      <pre><font face="Courier New, Courier, mono">
+EXPLAIN PLAN FOR
+   SELECT /*+ INDEX(sales, sales_pk) */ count(*)
+   FROM   sales
+   WHERE  prod_id BETWEEN 100 AND 500;
+
+set linesize 140
+SELECT * 
+FROM TABLE(dbms_xplan.display);
+
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="UseGlobalIndex" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="UseGlobalIndex"></font></pre>      
+        <p>After verifying the plan and that you are using the global index, execute the following statement or the <span class="style5"><strong>run_select.sql</strong></span> file repeatedly. You can use the SQL*Plus functionality &quot;r&quot; or &quot;/&quot; to rerun the last executed statement. </p>
+        
+        <pre><font face="Courier New, Courier, mono">
+SELECT /*+ INDEX(sales, sales_pk) */ count(*)
+FROM   sales
+WHERE  prod_id BETWEEN 100 AND 500;</font></pre>
+              <p>&nbsp;</p>
+        <p><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="bUseGlobalIndex" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="41bUseGlobalIndex"></font></p>        
+        
+      <p>While you are executing the query, perform the steps below in Window Two. 
+        You will see that there is no impact on concurrent query access using 
+        a global index when the partition maintenance operation takes place.</p>
+        
+      <p>The query will <strong>not</strong> fail. Recognize that the query result 
+        will change as soon as the partition exchange command succeeds. The Oracle 
+        Database server guarantees <font face="Courier New, Courier, mono">READ</font> <font face="Courier New, Courier, mono">CONSISTENCY</font> 
+        in this situation  and provides the most efficient partition table 
+        and index maintenance operations without restricting the online usage.</p>
+    </TD>
+  </TR>
+  <TBODY>
+  </TBODY>
+</TABLE>
+<p class="bodycopy">In <b>Window Two</b>, perform the following steps:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TR vAlign=top>
+    <TD height="51"><B>1.</B></TD>
+    <TD height="51">
+      <p>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the following query or  the <b><font face = "courier new">exchange_partition_w_gim.sql</font></b> script.</p>
+        
+      <pre><font face="Courier New, Courier, mono">
+ALTER TABLE sales 
+  EXCHANGE PARTITION sales_mar_2002<br>  WITH TABLE sales_mar_2002_temp<br>  INCLUDING INDEXES UPDATE GLOBAL INDEXES;</font></pre>      <p><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ExchngPartWGim2" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="42ExchngPartWGim"></font></p>
+        
+      <p>Although it is a DDL command, it might take some time because the global 
+        indexes are maintained as part of the atomic <font face="Courier New, Courier, mono">PARTITION 
+        EXCHANGE </font>command.</p>
+        <p>&nbsp;</p></TD>
+  </TR>
+  <TR vAlign=top>
+    <TD height="51"><B>2.</B></TD>
+    <TD height="51"><p>You will see that all indexes are still valid after the partition maintenance operation. Execute the command below or the <b><font face = "courier new">show_sales_idx_status.sql</font></b> script.</p>
+      <pre><b></b><font face="Courier New, Courier, mono">
+SELECT   ui.index_name,
+         DECODE(uip.status,null,ui.status,uip.status) status, 
+         count(*) num_of_part
+FROM     user_ind_partitions uip, user_indexes ui
+WHERE    ui.index_name=uip.index_name(+)
+AND      ui.table_name='SALES'
+GROUP BY ui.index_name, 
+         DECODE(uip.status,null,ui.status,uip.status);
+
+<img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ShowSalesIdxStatus2" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="ShowSalesIdxStatus2">
+</font></pre>
+    </TD>
+  </TR>
+  <TR vAlign=top>
+    <TD width="25" height="51"><B>3.</B></TD>
+    <TD height="51"><p>View  the information in the exchanged partition and the stand-alone table. Execute the commands below or the <b><font face = "courier new">count_mar_sales.sql</font></b> script.</p>
+                
+      <pre>
+SELECT COUNT(*) 
+FROM   sales PARTITION (sales_mar_2002);
+
+
+SELECT COUNT(*) 
+FROM   sales_mar_2002_temp;
+
+</pre>
+                      <p><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ShowExchngPart2" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="ShowExchngPart2"></font></p>
+        <p>Thousands of rows were added to the partitioned table with this command and the stand-alone table is empty now.</p>
+    </TD>
+  </TR>
+  <TBODY>
+  </TBODY>
+</TABLE>
+<p class="bodycopy">The new sales data of Q1-2001 is exchanged again. The global 
+  index was maintained as part of the <font face="Courier New, Courier, mono">PARTITION 
+  EXCHANGE </font>command, without affecting online usage.</p>
+<p class="bodycopy">Next,  investigate the behavior without global index maintenance.</p>
+<p align="right"><a class=bodylink 
+href="#t415">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4154"></a>2.4 Exchange a Partition Without 
+  Global Index Maintenance</h4>
+<p class="bodycopy">To demonstrate this functionality, you will need <b>two windows</b>. 
+  Please read the following section <b>carefully</b> before proceeding.</p>
+<p class="bodycopy">In <b>Window One</b>, perform the following steps:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TR vAlign=top>
+    <TD width="25" height="51">&nbsp;</TD>
+    <TD height="51"><p>In a SQL*Plus session logged on as the SH user, execute the following query or the <b><font face = "courier new">use_global_index.sql</font></b> script.</p>
+        
+      <pre><font face="Courier New, Courier, mono">
+explain plan for
+  SELECT /*+ INDEX(sales, sales_pk) */ count(*)
+  FROM  sales 
+  WHERE prod_id BETWEEN 100 AND 500;
+
+set linesize 140
+
+SELECT * 
+FROM   table(dbms_xplan.display);
+
+SELECT /*+ INDEX(sales, sales_pk) */ count(*)
+FROM   sales 
+WHERE prod_id BETWEEN 100 AND 500;</font></pre>
+              <p>Perform the steps in Window Two below and then execute the query above to see the difference.</p>
+        <p>It will fail as soon as the partition maintenance command is processed.</p>        <p><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="UseGlobalIndex3" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="UseGlobalIndex3"></font></p>
+        <p>&nbsp;</p></TD>
+  </TR>
+  <TBODY>
+  </TBODY>
+</TABLE>
+<p class="bodycopy">In <b>Window Two</b>, perform the following steps:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TR vAlign=top>
+    <TD width="25" height="51"><B>1.</B></TD>
+    <TD height="51">
+      <p>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the following query or the <b><font face = "courier new">exchange_partition_wo_gim2.sql</font></b> script.</p>
+        
+        
+      <pre><font face="Courier New, Courier, mono">
+ALTER TABLE sales 
+    EXCHANGE PARTITION sales_mar_2002 
+    WITH TABLE sales_mar_2002_temp<br>    INCLUDING INDEXES;</font></pre>        <p><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ExchngPartWOGim3" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="ExchngPartWOGim3"></font></p>
+        <p>&nbsp;</p>        </TD>
+  </TR>
+  <TR vAlign=top>
+    <TD height="51"><B>2.</B></TD>
+    <TD height="51"><p>The global index is now marked unusable. Execute the following command or the <b><font face = "courier new">show_sales_idx_status.sql</font></b> script to view this information. </p>
+        
+      <pre>
+SELECT   ui.index_name,
+         DECODE(uip.status,null,ui.status,uip.status) status, 
+         count(*) num_of_part
+FROM     user_ind_partitions uip, user_indexes ui
+WHERE    ui.index_name=uip.index_name(+)
+AND      ui.table_name='SALES'
+GROUP BY ui.index_name, DECODE(uip.status,null,ui.status,uip.status);</pre>
+              <p><font face="Courier New, Courier, mono"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ShowSalesIdxStatus3" border="1" class="imgborder_off" onClick="hideImage(this)" onMouseOver="showImage(this)" id="ShowSalesIdxStatus3">
+</font></p>
+              <p>&nbsp;</p></TD>
+  </TR>
+  <TBODY>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t415">Back to List</a></p>
+<h4 class="boldbodycopy2"><a name="t4155"></a>2.5 Drop Global Index and Exchange 
+  Back</h4>
+<p class="bodycopy">To clean up your environment, perform the following step:</p>
+<TABLE width=650 border=0 cellPadding=1 cellSpacing=0 class=bodycopy>
+  <TR vAlign=top>
+    <TD width="18" height="51">&nbsp;</TD>
+    <TD width="628" height="51">
+      <p>In a SQL*Plus session logged on as the <font face="Courier New, Courier, mono">SH</font> 
+        user, execute the following statements or the <span class="style5"><strong>cleanup_mod1.sql</strong></span> script to clean up the OBE-specific 
+        modifications.</p>
+        
+      <pre><font face="Courier New, Courier, mono"><br>ALTER TABLE sales DROP CONSTRAINT sales_pk;<br>DROP INDEX sales_pk;</font></pre>
+    <pre>
+ALTER TABLE sales 
+  EXCHANGE PARTITION sales_q1_1998 
+  WITH TABLE sales_old_q1_1998 INCLUDING INDEXES;
+
+
+ALTER TABLE sales DROP PARTITION sales_jan_2002;
+
+
+ALTER TABLE sales DROP PARTITION sales_feb_2002;
+
+
+ALTER TABLE sales DROP PARTITION sales_mar_2002;</pre>        
+    <pre>DROP TABLE sales_mar_2002_temp;
+
+DROP TABLE sales_delta;
+
+DROP TABLE sales_old_q1_1998;
+         
+set serveroutput on
+exec dw_handsOn.cleanup_modules</pre>
+    <pre>
+SELECT * FROM TABLE(dw_handsOn.verify_env)</pre>
+<p>&nbsp;</p></TD>
+  </TR>
+  <TBODY>
+  </TBODY>
+</TABLE>
+<p align="right"><a class=bodylink 
+href="#t415">Back to List</a></p>
+<p align="right"><a href="#t4" class="bodylink">Back to Topic</a></p>
+<h4>
+  <p class="navheader"><a name="s"></a>Summary</p>
+</h4>
+<p><span class=bodycopy>In this tutorial, you learned how to:</span></p>
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Load data using external tables</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Compare usage of SQL*Loader to external tables</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Perform a table compression to save disk 
+      space </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Perform a rolling window operation using 
+      Oracle partitioning</td>
+  </tr>
+  <tbody> </tbody> 
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<p class="navheader"><span class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" class="bodycopy" onMouseOver="hideAllImages()"> </span><b class="bodycopy"><font color="#ff0000">Place the cursor over this icon to hide all screenshots.</font></b></p>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script></html>

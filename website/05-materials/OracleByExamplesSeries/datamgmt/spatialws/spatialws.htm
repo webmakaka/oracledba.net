@@ -1,0 +1,1336 @@
+<html>
+<head>
+<title>Running Oracle Spatial Web Services</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<title>Building .NET Applications Using Oracle Developer Tools For Visual Studio .NET</title>
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style3 {font-weight: bold}
+.style5 {color: #FF0000}
+-->
+</style>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+
+</head>
+<body bgcolor="#FFFFFF">
+<h3 align="left"><span class="topstoryhead">Running Oracle Spatial Web Services</span></h3>
+<h4 class="navheader">Purpose</h4>
+<p class="bodycopy">This tutorial describes how to use the demo files for Oracle 
+  Spatial Web Services such as Web Feature Service (WFS), Catalog Services for 
+  the Web (CSW), and Open Location Services (OpenLS).</p>
+<h4 class="navheader">Time to Complete </h4>
+<p class="bodycopy">Approximately 30 minutes </p>
+<h4 class="navheader"><b><a name="t"></a>Topics</b></h4>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="343">
+  <tr valign="top"> 
+    <td width="18" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="321"><a href="#o"> Overview</a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="18" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="321"><a href="#p"> Prerequisites</a> 
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="18" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="boldbodylink" width="321"><a href="#t1" class="bodylink">Running 
+      the Web Feature Service (WFS) Demos</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="18"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="boldbodylink" width="321"><a href="#t2" class="bodylink">Running 
+      the Catalog Services for the Web (CSW) Demos</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="18"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink" width="321"><a href="#t3a" class="bodylink">Running 
+      the Open Location Services (OpenLS) Demos</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="18"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="321"><a href="#s"> Summary </a></td>
+  </tr>
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"> <b><span class="style3"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. 
+
+
+<strong> (Caution: This action loads all screenshots simultaneously, so response time may be slow depending on your Internet connection.)</strong> </font><font color="#ff0000"></font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over an individual icon in the following steps to load and view only the screenshot associated with that step. You can hide an individual screenshot by clicking it.</p>
+<h3 class="navheader"><a name="o"></a>Overview</h3>
+<p class="bodycopy"> <span class="bodycopy">In the tutorial, &quot;Installing 
+  and Configuring Spatial Web Service in OC4J,&quot; you performed steps to install 
+  and configure Spatial Web Service in Oracle Application Server Containers for J2EE. In this 
+  tutorial, you will use the supplied demo files for Oracle Spatial Web Services 
+  such as WFS, CSW, and OpenLS.</span><br>
+</p>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before you perform this tutorial, you should: </p>
+<table border="0" cellpadding="1" cellspacing="0" width="650">
+  <tbody> 
+  <tr valign="top"> 
+    <td class="bodycopy"><b> <img src="images/bullet.gif" width="16" height="16"></b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Complete the tutorial <a href="../../install/swsinst/swsinstall.htm">Installing and Configuring 
+        Spatial Web Service for OC4J</a>.</p>
+      </td>
+  </tr>
+  </tbody> 
+</table>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h3 class="navheader"><a name="t1"></a>Running the Web Feature Service 
+  (WFS) Demos </h3>
+<p class="bodycopy"> Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="393"><a href="#t1a"> Populate the 
+      Relational and Document-Based Feature Type</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="393"><a href="#t1b"> Create the Feature 
+      Type </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="393"><a href="#t1c"> Run the Relational 
+      WFS Demo</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="393"><a href="#t1e">View the Request 
+      and Response XML Examples</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="393"><a href="#t1d"> Run the Document-Based 
+      WFS Demo</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="393"><a href="#t1g">View the Request 
+      and Response XML Examples</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="393"><a href="#t1h">Drop the Feature 
+      Types</a></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<p class="boldbodycopy"><a name="t1a"></a>Populate the Relational and Document-Based 
+  Feature Type</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">From your terminal window, enter the following commands:</p>
+      <pre class="style1 bodycopy"><strong>cd $CLIENT_HOME/src/sql
+sqlplus / as sysdba
+
+</strong><span class="bodycopy">Here, <font face="Courier New, Courier, mono">$CLIENT_HOME</font> is the directory location where you extracted the <font face="Courier New, Courier, mono">wsclient.jar</font> file.</span></pre>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t10101" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">To populate the relational feature type, enter the following 
+        SQL script:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>@wfsrelmd.sql</b></font></pre>
+      <p class="bodycopy"><font face="Courier New, Courier, mono"><b>        </b></font>The <font face="Courier New, Courier, mono">wfsrelmd.sql</font> 
+        script creates users, tables, and indexes; grants privileges; and executes 
+        some PL/SQL procedures. The following screenshot shows only a part of 
+        the output.</p>
+      <p class="bodycopy"><strong><span class="style1"><img src="images/view_image.gif" name="t10102" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"> 
+        </span></strong></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b>3.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">To populate the document-based feature type, enter the 
+        following SQL script:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>@wfsdocmd.sql</b></font></pre>
+      <p class="bodycopy"><font face="Courier New, Courier, mono"><b>        </b></font>The <font face="Courier New, Courier, mono">wfsdocmd.sql</font> 
+        script also creates users, tables, and indexes; grants privileges; and 
+        executes some PL/SQL procedures. The following screenshot shows only a 
+      part of the output.<font face="Courier New, Courier, mono"><b></b></font></p>
+      <p class="bodycopy"><font face="Courier New, Courier, mono"><b><strong><span class="style1"><img src="images/view_image.gif" name="t10103" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></strong></b></font><font face="Courier New, Courier, mono"><b><span class="bodycopy"></span></b></font></p>
+      <p><font face="Courier New, Courier, mono"><span class="bodycopy">Quit SQL 
+        Plus.</span></font></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t1">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t1b"></a>Create the Feature Type</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">To create the feature type (<span class="style1">java oracle.spatial.ws.admin 
+        demo.WFSAdminDemo SampleFeature ./data/datafeatures.xsd ./data/fd_sample.xml 
+        create</span>), enter the following commands:</p>
+      <pre><font face="Courier New, Courier, mono"><b>cd $CLIENT_DIR/src
+./compileAndRunClient.sh runwfsct</b></font></pre>
+      <p class="bodycopy">Here, <font face="Courier New, Courier, mono">CLIENT_DIR</font> 
+        is the path where you extracted the <font face="Courier New, Courier, mono">src</font> 
+        folder.</p>
+        
+      <p><img src="images/view_image.gif" name="t10201" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">In a new terminal, start the OC4J server. Enter the 
+        following commands:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>cd &lt;jdevhome directory&gt;/bin
+</b></font><b><font face="Courier New, Courier, mono">./oc4j -start</font></b></pre>
+      <p><img src="images/view_image.gif" name="t10202" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"> 
+      </p>
+      <p>&nbsp; </p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t1">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t1c"></a>Run the WFS Relational Demo</p>
+<p class="bodycopy"><span class="bodycopy">The WFS relational-based demo presents 
+  the processing of the following WFS request types, for the relational-based 
+  feature type:</span></p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><span class="bodycopy">GetCapabilities</span></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><span class="bodycopy">DescribeFeatureType</span></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><span class="bodycopy">GetFeature</span></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"> 
+      <p><span class="bodycopy">Transaction, with a subelement specifying the 
+        transaction type:</span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16">&nbsp;</td>
+    <td  class="bodylink" width="16"><img src="images/bullet2.gif" width="10" height="10"></td>
+    <td  class="bodylink" width="330"> 
+      <p>Insert</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16">&nbsp;</td>
+    <td  class="bodylink" width="16"><img src="images/bullet2.gif" width="10" height="10"></td>
+    <td  class="bodylink" width="330">Update</td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy" width="16">&nbsp;</td>
+    <td  class="bodylink" width="16"><img src="images/bullet2.gif" width="10" height="10"></td>
+    <td  class="bodylink" width="330">Delete</td>
+  </tr>
+</table>
+<p class="bodycopy">When you run the WFS demo, the WFS server sequentially processes 
+  the inputs and generates the outputs. The input files are <font face="Courier New, Courier, mono">wfsrel_01.xml</font>, 
+  <font face="Courier New, Courier, mono">wfsrel_02.xml</font>, and so on until 
+  <font face="Courier New, Courier, mono">wfsrel_22.xml</font>. The input XML 
+  files, <font face="Courier New, Courier, mono">wfsrel_*.xml</font> files, are 
+  included in the <font face="Courier New, Courier, mono">wsclient.jar</font> 
+  file and can be accessed from the <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data 
+  </font>folder. The generated output files are <font face="Courier New, Courier, mono">wfsrel_01.log</font>, 
+  <font face="Courier New, Courier, mono">wfsrel_02.log</font>, and so on until 
+  <font face="Courier New, Courier, mono">wfsrel_22.log</font>. Perform the following 
+steps to run the WFS demo.</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">To run the relational WFS demo, enter the following 
+        commands (where <font face="Courier New, Courier, mono">$CLIENT_DIR</font> 
+        is the client directory that has this demo's <font face="Courier New, Courier, mono">src/</font> 
+        content):</p>
+      <pre><b><font face="Courier New, Courier, mono">cd $CLIENT_DIR/src/data
+cp wfsMapFile_rel.txt wfsMapFile.txt</font></b></pre>
+      <p><img src="images/view_image.gif" name="t10301" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>2.</b></td>
+    <td colspan="2" width="602"><span class="bodycopy">Then, run the WFS demo 
+      (<span class="style1">java oracle.spatial.ws.svrproxy.TestWFS wfs_rel_user wfs_rel_user</span>) as follows: 
+      </span> 
+      <p class="bodycopy"><font face="Courier New, Courier, mono"><b>cd $CLIENT_DIR/src<br>
+        ./compileAndRunClient.sh runwfsrel</b></font></p>
+      <p class="bodycopy">The <font face="Courier New, Courier, mono">src/data/wfsrel_*.xml</font> 
+        files will be accessed when you run the<font face="Courier New, Courier, mono"> 
+        ./compileAndRunClient.sh runwfsrel</font> command. The corresponding output 
+        files are generated in the <font face="Courier New, Courier, mono">src/data 
+        directory as the wfsrel_*.log </font>files. </p>
+      <p class="bodycopy">The following screenshots show the complete output in 
+        parts.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t10302" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t10302a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t1">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t1e"></a>View the Request and Response 
+  XML Examples</p>
+<p class="bodycopy"> The input/output file contents as per the feature type are 
+  described below:</p>
+<table border="1" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink">&nbsp;</td>
+    <td  class="bodylink" width="247"><b>Input</b></td>
+    <td  class="bodylink" width="268"><b>Output</b></td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="29"><b>GetCapabilities</b></td>
+    <td height="29"  class="bodylink" width="247"><font face="Courier New, Courier, mono">wfsrel_12.xml</font> 
+      is an example of the GetCapabilties request.</td>
+    <td height="29"  class="bodylink" width="268"><font face="Courier New, Courier, mono">wfsrel_12.log 
+      </font>displays the capabilties response, which outlines the capabililties 
+      of the WFS Server.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="41"> <b>DescribeFeatureType</b></td>
+    <td height="41"  class="bodylink" width="247"><font face="Courier New, Courier, mono">wfsrel_11.xml</font> 
+      and<font face="Courier New, Courier, mono"> wfsrel_20.xml </font>are examples 
+      of the DescribeFeatureType request, which requests to describe the structure 
+      of a feature type.</td>
+    <td height="41"  class="bodylink" width="268"><font face="Courier New, Courier, mono">wfsrel_11.log</font> 
+      and<font face="Courier New, Courier, mono"> wfsrel_20.xml </font>displays 
+      the structure of the feature type.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="52"><b>GetFeature</b></td>
+    <td height="52"  class="bodylink" width="247"><font face="Courier New, Courier, mono">wfsrel_01.xml</font>, 
+      <font face="Courier New, Courier, mono">wfsrel_02.xml</font>, and so on 
+      until <font face="Courier New, Courier, mono">wfsrel_10.xml</font>, <font face="Courier New, Courier, mono">wfsrel_13.xml</font>, 
+      and <font face="Courier New, Courier, mono">wfsrel_19.xml </font>are examples 
+      of the GetFeature request, which queries for feature instances satisfying 
+      a filter criteria.</td>
+    <td height="52"  class="bodylink" width="268"><font face="Courier New, Courier, mono">wfsrel_01.log</font>, 
+      <font face="Courier New, Courier, mono">wfsrel_02.log</font>, and so on 
+      until <font face="Courier New, Courier, mono">wfsrel_10.log</font>, <font face="Courier New, Courier, mono">wfsrel_13.log</font>, 
+      and <font face="Courier New, Courier, mono">wfsrel_19.log</font> are results 
+      of the query, showing feature instances, which satisfied the corresponding 
+      filter criteria.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="41"><b>Transaction: Insert</b></td>
+    <td height="41"  class="bodylink" width="247"><font face="Courier New, Courier, mono">wfsrel_14.xml</font>, 
+      <font face="Courier New, Courier, mono">wfsrel_17.xml</font>, and <font face="Courier New, Courier, mono">wfsrel_21.xml 
+      </font>are examples of the Inserting feature instance.</td>
+    <td height="41"  class="bodylink" width="268"><font face="Courier New, Courier, mono">wfsrel_14.log</font>, 
+      <font face="Courier New, Courier, mono">wfsrel_17.log</font>, and <font face="Courier New, Courier, mono">wfsrel_21.log 
+      </font>displays the output of the WFS Server in response to the Insert request.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink"><b>Transaction: Delete</b></td>
+    <td  class="bodylink" width="247"><font face="Courier New, Courier, mono">wfsrel_16.xml</font>, 
+      <font face="Courier New, Courier, mono">wfsrel_18.xml</font>, and <font face="Courier New, Courier, mono">wfsrel_22.xml</font> 
+      are examples of the Deleting feature instance.</td>
+    <td  class="bodylink" width="268"><font face="Courier New, Courier, mono">wfsrel_16.log</font>, 
+      <font face="Courier New, Courier, mono">wfsrel_18.log</font>, and <font face="Courier New, Courier, mono">wfsrel_22.log 
+      </font>displays the output of the WFS Server in response to the Delete request.</td>
+  </tr>
+  <tr valign="top">
+    <td colspan="2"  class="bodylink"><b>Transaction: Update</b></td>
+    <td  class="bodylink" width="247"><font face="Courier New, Courier, mono">wfsrel_15.xml</font> 
+      is an example of the Updating feature instance.</td>
+    <td  class="bodylink" width="268"><font face="Courier New, Courier, mono">wfsrel_15.log</font> 
+      displays the output of the WFS Server in response to the Update request.</td>
+  </tr>
+</table>
+<p class="bodycopy">In the following table, examine <font face="Courier New, Courier, mono">wfsrel_01.xml 
+  </font>and its corresponding output, <font face="Courier New, Courier, mono">wfsrel_01.log</font>. 
+  As mentioned, <font face="Courier New, Courier, mono">wfsrel_01.xml </font>is 
+  an example of the GetFeature request. The input files are shipped inside <font face="Courier New, Courier, mono">wsclient.jar</font>. 
+  All output files are generated in the<font face="Courier New, Courier, mono"> 
+  $CLIENT_HOME/src/data</font> directory when you ran the demo. If you want to 
+  examine other inputs and its corresponding outputs, you can access them in the 
+  <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data </font>directory.</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">Examine the input XML, <font face="Courier New, Courier, mono">wfsrel_01.xml</font> 
+        file, as shown in the following screenshot: </p>
+      <p><img src="images/view_image.gif" name="t10501a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">The corresponding output,<font face="Courier New, Courier, mono"> 
+        wfsrel_01.log</font>, is shown in the screenshot below:</p>
+      <p><img src="images/view_image.gif" name="t10501b" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t1">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t1d"></a>Run the WFS Document-Based 
+Demo </p>
+<p class="bodycopy">The WFS document-based demo presents the processing of the 
+  following WFS request types, for document (external XSD)&#150;based feature 
+  type:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><span class="bodycopy">GetFeature</span></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"> 
+      <p><span class="bodycopy">Transaction, with a subelement specifying the 
+        transaction type:</span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16">&nbsp;</td>
+    <td  class="bodylink" width="16"><img src="images/bullet2.gif" width="10" height="10"></td>
+    <td  class="bodylink" width="330"> 
+      <p>Insert</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16">&nbsp;</td>
+    <td  class="bodylink" width="16"><img src="images/bullet2.gif" width="10" height="10"></td>
+    <td  class="bodylink" width="330">Update</td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16">&nbsp;</td>
+    <td  class="bodylink" width="16"><img src="images/bullet2.gif" width="10" height="10"></td>
+    <td  class="bodylink" width="330">Delete</td>
+  </tr>
+</table>
+<p class="bodycopy"><span class="bodycopy">When you run the WFS document-based 
+  demo, the WFS Server sequentially processes the inputs and generates the outputs. 
+  The input files are <font face="Courier New, Courier, mono">wfsdoc_01.xml</font>, 
+  <font face="Courier New, Courier, mono">wfsdoc_02.xm</font>l, so on until <font face="Courier New, Courier, mono">wfsdoc_20.xml</font>. 
+  The input xml files, <font face="Courier New, Courier, mono">wfsdoc_*.xml </font>files, 
+  are included in the<font face="Courier New, Courier, mono"> wsclient.jar </font>file 
+  and can be accessed from the <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data</font> 
+  folder. The generated output files are <font face="Courier New, Courier, mono">wfsdoc_01.log</font>, 
+  <font face="Courier New, Courier, mono">wfsdoc_02.log</font>, and so on until 
+  <font face="Courier New, Courier, mono">wfsdoc_20.log</font>. Perform the following 
+  steps to run the WFS document-based demo.</span> </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy"><span class="bodycopy">To run the document-based WFS 
+        demo, enter the following commands (where <font face="Courier New, Courier, mono">$CLIENT_DIR</font> 
+        is the client directory that has this demo's <font face="Courier New, Courier, mono">src/</font> 
+        content):</span></p>
+      <pre class="bodycopy"><b><font face="Courier New, Courier, mono">cd $CLIENT_DIR/src/data
+cp wfsMapFile_doc.txt wfsMapFile.txt</font></b></pre>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t10401" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>2.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">Then, run the document-based demo (<font face="Courier New, Courier, mono">java 
+        oracle.spatial.ws.svrproxy.TestWFS wfs_doc_user wfs_doc_user</font>) as 
+        follows:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>cd $CLIENT_DIR/src
+./compileAndRunClient.sh runwfsdoc
+
+</b><span class="bodycopy">The following screenshots show the complete output in parts.</span></font></pre>
+      <font face="Courier New, Courier, mono"><b></b></font>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"></font><img src="images/view_image.gif" name="t10402" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></pre>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t10402a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t1">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t1g"></a>View the Request and Response 
+  XML Examples</p>
+<p class="bodycopy">The input/output file contents as per the feature type are 
+  described below:</p>
+<table border="1" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink">&nbsp;</td>
+    <td  class="bodylink" width="192"><b>Input</b></td>
+    <td  class="bodylink" width="332"><b>Output</b></td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="96"><b>GetFeature</b></td>
+    <td height="96"  class="bodylink" width="192"><font face="Courier New, Courier, mono">wfsdoc_02.xml</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_03.xml</font>, <font face="Courier New, Courier, mono">wfsdoc_04.xml</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_05.xml</font>, <font face="Courier New, Courier, mono">wfsdoc_07.xml</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_12.xml</font>, <font face="Courier New, Courier, mono">wfsdoc_14.xml</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_16.xml</font>, <font face="Courier New, Courier, mono">wfsdoc_18.xml</font>, 
+      and <font face="Courier New, Courier, mono">wfsdoc_20.xml</font> are examples 
+      of the GetFeature request, which queries for feature instances satisfying 
+      a filter criteria.</td>
+    <td height="96"  class="bodylink" width="332"><font face="Courier New, Courier, mono">wfsdoc_02.log</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_03.log</font>, <font face="Courier New, Courier, mono">wfsdoc_04.log</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_05.log</font>,<font face="Courier New, Courier, mono"> 
+      wfsdoc_07.log</font>, <font face="Courier New, Courier, mono">wfsdoc_12.log</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_14.log</font>, <font face="Courier New, Courier, mono">wfsdoc_16.log</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_18.log</font>, and <font face="Courier New, Courier, mono">wfsdoc_20.log</font> 
+      are results of the query, showing feature instances, which satisfied the 
+      corresponding filter criteria.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="45"><b>Transaction: Insert</b></td>
+    <td height="45"  class="bodylink" width="192">wfsdoc_01.xml, wfsdoc_09.xml 
+      are examples of Inserting feature instance</td>
+    <td height="45"  class="bodylink" width="332"><font face="Courier New, Courier, mono">wfsdoc_01.log</font> 
+      and <font face="Courier New, Courier, mono">wfsdoc_09.log </font>display 
+      the output of the WFS Server in response to the Insert request.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="42"><b>Transaction: Delete</b></td>
+    <td  class="bodylink" width="192" height="42">wfsdoc_08.xml, wfsdoc_19.xml 
+      are examples of Deleting feature instance</td>
+    <td  class="bodylink" width="332" height="42"><font face="Courier New, Courier, mono">wfsdoc_08.log</font> 
+      and <font face="Courier New, Courier, mono">wfsdoc_19.log </font>display 
+      the output of the WFS Server in response to the Delete request.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink"><b>Transaction: Update</b></td>
+    <td  class="bodylink" width="192">wfsdoc_06.xml, wfsdoc_10.xml, wfsdoc_11.xml, 
+      wfsdoc_13.xml, wfsdoc_15.xml, wfsdoc_17.xml are examples of Updating feature 
+      instance</td>
+    <td  class="bodylink" width="332"><font face="Courier New, Courier, mono">wfsdoc_06.log</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_10.log</font>, <font face="Courier New, Courier, mono">wfsdoc_11.log</font>, 
+      <font face="Courier New, Courier, mono">wfsdoc_13.log</font>, <font face="Courier New, Courier, mono">wfsdoc_15.log</font>, 
+      and <font face="Courier New, Courier, mono">wfsdoc_17.log</font> display 
+      the output of the WFS Server in response to the Update request.</td>
+  </tr>
+</table>
+<p class="bodycopy">In the table below, examine <font face="Courier New, Courier, mono">wfsdoc_06.xml</font> 
+  and its corresponding output, <font face="Courier New, Courier, mono">wfsdoc_06.log</font>. 
+</p>
+<p class="bodycopy">The input files are shipped inside <font face="Courier New, Courier, mono">wsclient.jar</font>. 
+  All output files are generated in the <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data</font> 
+  directory when you ran the demo. If you want to examine other inputs and its 
+  corresponding outputs, you can access them in the <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data 
+  </font>directory.</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">Examine the <font face="Courier New, Courier, mono">wfsdoc_06.xml 
+        </font>input file. As mentioned, <font face="Courier New, Courier, mono">wfsdoc_06.xml</font> 
+        is an example of the Transaction: Update request. </p>
+      <p><img src="images/view_image.gif" name="t10701" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>2.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">The following screenshot shows the response, the <font face="Courier New, Courier, mono">wfsdoc_06.log 
+        </font>file.</p>
+      <p><img src="images/view_image.gif" name="t10702" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t1">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t1h"></a>Drop the Feature Types</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="bodycopy">To drop the relational feature type, enter the following commands:</span></p>
+        <p class="bodycopy"><font face="Courier New, Courier, mono"><b>cd $CLIENT_DIR/src/sql<br>
+      sqlplus / AS SYSDBA</b></font></p>
+        <p class="bodycopy"> Run the SQL*Plus script: <font face="Courier New, Courier, mono">drprelmd.sql</font><font color="#000000">.</font></p>
+        <p class="bodycopy"><b><font color="#000000" face="Courier New, Courier, mono">@drprelmd.sql</font></b></p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="t10303" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">Quit SQL*Plus.</p>
+        <p class="bodycopy">&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy"><span class="bodycopy">To drop the document-based feature type, enter the following commands:</span></p>
+        <p class="bodycopy"><font face="Courier New, Courier, mono"><b>cd $CLIENT_DIR/src<br>
+      ./compileAndRunClient.sh runwfsdt</b></font></p>
+        <p class="bodycopy"><img src="images/view_image.gif" name="t10403" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>3.</b></td>
+    <td colspan="2"> 
+      <p class="bodycopy">Stop the OC4J server. Enter the following commands:</p>
+      <pre><font face="Courier New, Courier, mono"><b>cd &lt;Jdev directory&gt;/bin
+</b></font><b><font face="Courier New, Courier, mono">./oc4j -shutdown -port 23791 -password admin</font></b></pre>
+      <p><font face="Courier New, Courier, mono"><b><img src="images/view_image.gif" name="t10404" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></b></font></p>
+      <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t1">Back to Topic</a></p>
+<h3 class="navheader"><a name="t2"></a>Running the Catalog Services for 
+  the Web (CSW) Demos</h3>
+<p class="bodycopy"><span class="style5"></span>Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="326">
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="254"><a href="#t2a"> Populate and 
+      Create the Record Type</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="254"><a href="#t2b"> Run the CSW 
+      Demo </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="254"><a href="#t2c">View the Request 
+      and Response XML Examples</a></td>
+  </tr>
+  <tr valign="top">
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="254"><a href="#t2d">Drop the Record 
+      Types</a></td>
+  </tr>
+</table>
+<p class="bodycopy" align="right"><a href="#t">Back to Topic List</a></p>
+<p class="boldbodycopy"><a name="t2a"></a>Populate and Create the Record Type</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="620"> 
+      <p class="bodycopy">Populate the record type for the CSW demo by entering 
+        the following commands (where <font face="Courier New, Courier, mono">$CLIENT_HOME</font> 
+        is the client directory that has this demo's<font face="Courier New, Courier, mono"> 
+        src/</font> content):</p>
+      <pre><b><font face="Courier New, Courier, mono">cd $CLIENT_HOMR/src/sql
+sqlplus / as sysdba
+@cswmd.sql</font></b>
+</pre>
+      <span class="bodycopy">      The<font face="Courier New, Courier, mono"> cswmd.sql</font> script creates 
+      users, tables, and indexes; grants privileges; and executes some PL/SQL 
+      procedures. The screenshot below shows only a part of the output.</span><br>
+      <pre><img src="images/view_image.gif" name="t20101" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></pre>
+      <p><span class="bodycopy">Quit SQL*Plus</span>.</p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="620"> 
+      <p class="bodycopy">To create the type, use the Java class<font face="Courier New, Courier, mono"> 
+        oracle.spatial.ws.admindemo.CSWAdminDemo createRecordType</font>, as follows:</p>
+      <pre><font face="Courier New, Courier, mono"><b>cd $CLIENT_HOME/src
+./compileAndRunClient.sh runcswct</b></font></pre>
+      <p><font face="Courier New, Courier, mono">      </font><strong><span class="style1"><img src="images/view_image.gif" name="t20102" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"> </span></strong></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>3.</b></td>
+    <td colspan="2" width="620" class="bodycopy"> 
+      <p>In a new terminal window, start the OC4J server. Enter the following 
+        commands: </p>
+      <pre><font face="Courier New, Courier, mono"><b>cd &lt;jdevhome directory&gt;/bin
+       ./oc4j -start</b></font>       </pre>
+      <p><strong><span class="style1"><img src="images/view_image.gif" name="t20103" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></strong></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t2b"></a>Run the CSW Demo</p>
+<p class="bodycopy">The CSW demo presents the processing of the following CSW 
+  request types:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink">GetCapabilities</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink">DescribeRecord</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink">GetRecords</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink">GetDomain</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink">GetRecordById</td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"> 
+      <p><span class="bodycopy">Transaction, with a subelement specifying the 
+        transaction type:</span></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16">&nbsp;</td>
+    <td  class="bodylink" width="16"><img src="images/bullet2.gif" width="10" height="10"></td>
+    <td  class="bodylink" width="330"> 
+      <p>Insert</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16">&nbsp;</td>
+    <td  class="bodylink" width="16"><img src="images/bullet2.gif" width="10" height="10"></td>
+    <td  class="bodylink" width="330">Update</td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="16">&nbsp;</td>
+    <td  class="bodylink" width="16"><img src="images/bullet2.gif" width="10" height="10"></td>
+    <td  class="bodylink" width="330">Delete</td>
+  </tr>
+</table>
+<p><span class="bodycopy">When you run the CSW demo, the CSW server sequentially 
+  processes the inputs and generates the outputs. The input files are<font face="Courier New, Courier, mono"> 
+  csw_01.xml</font>, <font face="Courier New, Courier, mono">csw_02.xml</font>, 
+  and so on until <font face="Courier New, Courier, mono">csw_36.xml</font>. The 
+  input XML files, <font face="Courier New, Courier, mono">csw_*.xml </font>files, 
+  are included in the<font face="Courier New, Courier, mono"> wsclient.jar</font> 
+  file and can be accessed from the <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data</font> 
+  folder. The generated output files are<font face="Courier New, Courier, mono"> 
+  csw_01.log</font>,<font face="Courier New, Courier, mono"> csw_02.log</font>, 
+  and so on until <font face="Courier New, Courier, mono">csw_36.log</font>. Perform 
+  the following steps to run the CSW demo.</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="620"> 
+      <p class="bodycopy">To run the CSW demo (<font face="Courier New, Courier, mono">java 
+        oracle.spatial.ws.svrproxy.TestCSW csw_user csw_user</font>), enter the 
+        following commands (where <font face="Courier New, Courier, mono">$CLIENT_HOME</font> 
+        is the client directory that has this demo's content): </p>
+      <pre><font face="Courier New, Courier, mono"><b>cd $CLIENT_HOME/src
+./compileAndRunClient.sh runcsw
+
+</b></font><img src="images/view_image.gif" name="t20201a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></pre>
+      <p><img src="images/view_image.gif" name="t20201b" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t2c"></a>View the Request and Response XML Examples</p>
+<p class="bodycopy">The input/output file contents as per the CSW request types 
+  are described below:</p>
+<table border="1" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink">&nbsp;</td>
+    <td  class="bodylink" width="259"><b>Input</b></td>
+    <td  class="bodylink" width="257"><b>Output</b></td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="40"><b>GetCapabilities</b></td>
+    <td height="40"  class="bodylink" width="259"><font face="Courier New, Courier, mono">csw_10.xml</font> 
+      is an example of the GetCapabilties request.</td>
+    <td height="40"  class="bodylink" width="257"><font face="Courier New, Courier, mono">csw_10.log 
+      </font>displays the capabilties response, which outlines the capabililties 
+      of the CSW Server.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="45"><b>DescribeRecord</b></td>
+    <td height="45"  class="bodylink" width="259"><font face="Courier New, Courier, mono">csw_09.xml</font> 
+      is an example of the DescribeRecord request, which requests to describe 
+      the structure of a record type.</td>
+    <td height="45"  class="bodylink" width="257"><font face="Courier New, Courier, mono">csw_09.log</font> 
+      displays the structure of the record type.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="45"><b>GetRecords</b></td>
+    <td height="45"  class="bodylink" width="259"><font face="Courier New, Courier, mono">csw_02.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_03.xml</font>, and so on until 
+      <font face="Courier New, Courier, mono">csw_07.xml</font>, <font face="Courier New, Courier, mono">csw_19.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_21.xml</font>, <font face="Courier New, Courier, mono">csw_22.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_24.xml</font>, <font face="Courier New, Courier, mono">csw_28.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_30.xml</font>, <font face="Courier New, Courier, mono">csw_32.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_34.xml</font>, and <font face="Courier New, Courier, mono">csw_36.xml</font> 
+      are examples of the GetRecords request, which queries for record instances 
+      satisfying a filter criteria.<br>
+    </td>
+    <td height="45"  class="bodylink" width="257"><font face="Courier New, Courier, mono">csw_02.log</font>, 
+      <font face="Courier New, Courier, mono">csw_03.log</font>, and so on until 
+      <font face="Courier New, Courier, mono">csw_07.log</font>, <font face="Courier New, Courier, mono">csw_19.log</font>, 
+      <font face="Courier New, Courier, mono">csw_21.log</font>, <font face="Courier New, Courier, mono">csw_22.log</font>, 
+      <font face="Courier New, Courier, mono">csw_24.log</font>, <font face="Courier New, Courier, mono">csw_28.log</font>, 
+      <font face="Courier New, Courier, mono">csw_30.log</font>, <font face="Courier New, Courier, mono">csw_32.log</font>, 
+      <font face="Courier New, Courier, mono">csw_34.log</font>, and <font face="Courier New, Courier, mono">csw_36.log</font> 
+      are results of the query, showing record instances, which satisfied the 
+      corresponding filter criteria.<br>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="45"><b>GetDomain</b></td>
+    <td height="45"  class="bodylink" width="259"><font face="Courier New, Courier, mono">csw_11.xml 
+      </font>is an example of the GetDomain request, which is used to obtain run-time 
+      information about the range of values of a request parameter.</td>
+    <td height="45"  class="bodylink" width="257"><font face="Courier New, Courier, mono">csw_11.log</font> 
+      is the response to the GetDomain request.</td>
+  </tr>
+  <tr valign="top">
+    <td colspan="2"  class="bodylink" height="45"><b>GetRecordById</b></td>
+    <td height="45"  class="bodylink" width="259"><font face="Courier New, Courier, mono">csw_08.xml 
+      </font>is an example of the GetRecordById request, which queries for record 
+      instances based on its Identifier.</td>
+    <td height="45"  class="bodylink" width="257"><font face="Courier New, Courier, mono">csw_08.log</font> 
+      are results of the query, showing record instances, which satisfied the 
+      corresponding query criteria.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="45"><b>Transaction: Insert</b></td>
+    <td height="45"  class="bodylink" width="259"><font face="Courier New, Courier, mono">csw_01.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_12.xml</font>, <font face="Courier New, Courier, mono">csw_18.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_20.xml</font>, <font face="Courier New, Courier, mono">csw_23.xml</font>, 
+      and <font face="Courier New, Courier, mono">csw_25.xml </font>are examples 
+      of Inserting a record instance.</td>
+    <td height="45"  class="bodylink" width="257"><font face="Courier New, Courier, mono">csw_01.log</font>, 
+      <font face="Courier New, Courier, mono">csw_12.log</font>, <font face="Courier New, Courier, mono">csw_18.log</font>, 
+      <font face="Courier New, Courier, mono">csw_20.log</font>, <font face="Courier New, Courier, mono">csw_23.log</font>, 
+      and <font face="Courier New, Courier, mono">csw_25.log</font> display the 
+      output of the CSW server in response to the Insert request.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="42"><b>Transaction: Delete</b></td>
+    <td  class="bodylink" width="259" height="42"><font face="Courier New, Courier, mono">csw_13.xml 
+      and </font> <font face="Courier New, Courier, mono">csw_35.xml</font> are 
+      examples of Deleting a record instance.</td>
+    <td  class="bodylink" width="257" height="42"><font face="Courier New, Courier, mono">csw_13.log</font> 
+      and <font face="Courier New, Courier, mono">csw_35.log</font> display the 
+      output of the CSW server in response to the Delete request.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink"><b>Transaction: Update</b></td>
+    <td  class="bodylink" width="259"><font face="Courier New, Courier, mono">csw_14.xml</font>,<font face="Courier New, Courier, mono"> 
+      csw_15.xml</font>,<font face="Courier New, Courier, mono"> csw_16.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_17.xml</font>, <font face="Courier New, Courier, mono">csw_26.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_27.xml</font>, <font face="Courier New, Courier, mono">csw_29.xml</font>, 
+      <font face="Courier New, Courier, mono">csw_31.xml</font>, and <font face="Courier New, Courier, mono">csw_33.xml 
+      </font> are examples of Updating a record instance.</td>
+    <td  class="bodylink" width="257"><font face="Courier New, Courier, mono">csw_14.log</font>, 
+      <font face="Courier New, Courier, mono">csw_15.log</font>, <font face="Courier New, Courier, mono">csw_16.log</font>, 
+      <font face="Courier New, Courier, mono">csw_17.log</font>, <font face="Courier New, Courier, mono">csw_26.log</font>, 
+      <font face="Courier New, Courier, mono">csw_27.log</font>, <font face="Courier New, Courier, mono">csw_29.log</font>, 
+      <font face="Courier New, Courier, mono">csw_31.log</font>, and <font face="Courier New, Courier, mono">csw_33.log</font> 
+      display the output of the CSW server in response to the Update request.</td>
+  </tr>
+</table>
+<p class="bodycopy">In the table below, examine <font face="Courier New, Courier, mono">csw_08.xml 
+  </font>and its corresponding output, <font face="Courier New, Courier, mono">csw_08.log</font>. 
+  The input files are shipped inside <font face="Courier New, Courier, mono">wsclient.jar</font>. 
+  All output files are generated in the <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data</font> 
+  directory when you ran the demo. If you want to examine other inputs and its 
+  corresponding outputs, you can access them in the <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data</font> 
+  directory.</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="630"> 
+      <p class="bodycopy">Examine the <font face="Courier New, Courier, mono">csw_08.xml</font> 
+        input file. As mentioned, <font face="Courier New, Courier, mono">csw_08.xml</font> 
+        is an example of the GetRecordById request.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t20301" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="630"> 
+      <p class="bodycopy">The corresponding output file, the <font face="Courier New, Courier, mono">csw_08.log</font> 
+        file is shown below: </p>
+      <p><img src="images/view_image.gif" name="t20302" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp; </p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t2d"></a>Drop the Record Types</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="620"> 
+      <p class="bodycopy">To drop the CSW record type (<font face="Courier New, Courier, mono">java 
+        oracle.spatial.ws.admindemo.CSWAdminDemo<br>
+        dropRecordType</font>), enter the following commands (where <font face="Courier New, Courier, mono">$CLIENT_DIR</font> 
+        is the client directory that has this demo's <font face="Courier New, Courier, mono">src/</font> 
+        content):</p>
+      <pre><font face="Courier New, Courier, mono"><b>cd $CLIENT_HOME/src
+./compileAndRunClient.sh runcswdt</b></font></pre>
+      <p><img src="images/view_image.gif" name="t20202" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"> 
+      </p>
+      <p>&nbsp; </p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="26" class="bodycopy"><b>2.</b></td>
+    <td colspan="2" width="620"> 
+      <p><font face="Courier New, Courier, mono" class="bodycopy">Stop the OC4J 
+        server. Enter the following commands.</font></p>
+      <pre><font face="Courier New, Courier, mono"><b>cd &lt;Jdev directory&gt;\bin
+</b></font><b><font face="Courier New, Courier, mono">./oc4j -shutdown -port 23791 -password admin</font></b></pre>
+      <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t2">Back to Topic</a></p>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List</a></p>
+<p class="navheader"><a name="t3"></a>Running the Open Location Services 
+  (OpenLS) Demos</p>
+<p class="bodycopy"> <span class="style5"></span> Perform the following steps: 
+</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="322"><a href="#t3a"> Update and Run 
+      the <font face="Courier New, Courier, mono">olscreate.sql</font> Script</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="322"> 
+      <p><a href="#t3b"> Update the<font face="Courier New, Courier, mono"> test.java</font> 
+        File</a></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="322"><a href="#t3c">Compile and Run 
+      Code</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink" width="322"><a href="#t3e">Run the OpenLS 
+      SQL Demos</a></td>
+  </tr>
+</table>
+<p class="bodycopy" align="right"><a href="#t">Back to Topic List</a></p>
+<p class="boldbodycopy"><a name="t3a"></a>Update and Run the<font face="Courier New, Courier, mono"> 
+  olscreate.sql </font>Script</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">Locate the following files:</p>
+      <p>-<span class="bodycopy"> <font face="Courier New, Courier, mono">src/sql/olslocut.dmp</font><br>
+        - <font face="Courier New, Courier, mono">src/sql/olscreate.sql</font></span></p>
+      <p class="bodycopy">Edit <font face="Courier New, Courier, mono">olscreate.sql</font>. 
+        Enter the following commands:</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>cd $CLIENT_HOME/src/sql
+</b></font><b><font face="Courier New, Courier, mono">gedit olscreate.sql</font></b></pre>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">In the <font face="Courier New, Courier, mono">olscreate.sql</font> 
+        file, change several occurrences of &quot;connect user/password&quot; 
+        to specify a desired username and password. For this tutorial, change 
+        the system and mdsys password to <b>oracle</b>.</p>
+      <p class="bodycopy"><b>Note: </b><span class="bodycopy">For Presentation 
+        Service and Route Service the <font face="Courier New, Courier, mono">insert(...)</font> 
+        and <font face="Courier New, Courier, mono">assign_acl(...) </font>statements 
+        need to be updated to point to the correct Route Server, and MapViewer 
+        URLs. If you have access to an Oracle Location Service, you can set up 
+        and access these URLs and then run the OpenLS SQL demos for the Presentation 
+        service and Route Service demos. Oracle Location Service will provide 
+        capability to process Routing and Mapping requests.</span></p>
+      <p class="bodycopy"><span class="bodycopy">For more details about Oracle 
+        Route Server, </span> refer to the chapter on Routing Engine in the Oracle Spatial Developer's Guide. <span class="bodycopy">For more 
+        details about Oracle MapViewer, click the following link:</span></p>
+      <p class="bodycopy"><span class="bodycopy">http://www.oracle.com/technology/software/products/mapviewer/index.html</span></p>
+      <p class="bodycopy"><span class="bodycopy">If you don't have access to Oracle 
+        Location Service, you cannot run the OpenLS SQL demos for Presentation 
+        Service and Route Service. So you need not make any changes to the<font face="Courier New, Courier, mono"> 
+        insert into</font> and <font face="Courier New, Courier, mono">assign_acl 
+        </font>statements mentioned below.</span></p>
+      <p class="bodycopy"><span class="bodycopy">But you can still run the OpenLS 
+        SQL demos for Directory service, and Geocoding service.</span></p>
+      <p class="bodycopy">Change the following:</p>
+      <p class="bodycopy">Server URL definitions in statements that <font face="Courier New, Courier, mono">INSERT 
+        INTO</font> the <font face="Courier New, Courier, mono">mdsys.OpenLSServices 
+        </font>table:</p>
+      <p class="bodycopy">For Location Utility Service and Directory Service, 
+        you can keep the URL as http:localhost.</p>
+      <p class="bodycopy">For Presentation Service and Route Service, the URL 
+        should point to the correct Route Server and MapViewer URLs. Therefore, 
+        change it only if you have access to Oracle Location Service.</p>
+      <p class="bodycopy">In <font face="Courier New, Courier, mono">dbms_network_acl_admin.drop_acl('xxx.xml')</font>, 
+        you can leave it as is for this tutorial.</p>
+      <p class="bodycopy"> C<span class="bodycopy">hange the URL in access control 
+        list (ACL) definitions (the <font face="Courier New, Courier, mono">assign_acl 
+        </font>statement)) to the URLs you chose in the<font face="Courier New, Courier, mono"> 
+        INSERT INTO </font>statements for the Presentation Service and Route Service. 
+        Change this only if you have access to Oracle Location Service.</span></p>
+      <p class="bodycopy"><strong><span class="style1"><img src="images/view_image.gif" name="t30102" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"> 
+        </span></strong></p>
+      <p class="bodycopy">&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>3.</b></td>
+    <td colspan="2" width="602" class="bodycopy"> 
+      <p>In SQL*Plus, run the <font face="Courier New, Courier, mono">olscreate.sql 
+        </font>script.</p>
+      <pre><font face="Courier New, Courier, mono"><b>sqlplus / as sysdba
+</b></font><b><font face="Courier New, Courier, mono">@olscreate.sql
+
+</font></b><span class="bodycopy">The screenshot shows only a part of the output.</span><b><font face="Courier New, Courier, mono"></font><font face="Courier New, Courier, mono"></font></b></pre>
+      <p><b><font face="Courier New, Courier, mono"><strong><span class="style1"><img src="images/view_image.gif" name="t30102a" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></strong></font></b><b><font face="Courier New, Courier, mono"></font><font face="Courier New, Courier, mono"></font></b></p>
+      <p class="bodycopy">Quit SQL*Plus.</p>
+      <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t3">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t3b"></a>Update the<font face="Courier New, Courier, mono"> 
+  test.java</font> File</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy"><span class="bodycopy">In the <font face="Courier New, Courier, mono">$CLIENT_DIR/src/oracle/spatial/ws/svrproxy/Test.java</font> 
+        file, do the following:</span></p>
+      <p class="bodycopy">Change the URL (localhost, port) in:</p>
+      <p class="bodycopy"><font face="Courier New, Courier, mono"><b>myPort.setEndpoint(&quot;http://localhost:8888/SpatialWS-SpatialWS-context-root/SpatialWSSoapHttpPort&quot;);</b></font></p>
+      <p class="bodycopy"><b>Note:</b> For the tutorial, you may keep it as &quot;localhost:8888&quot;.</p>
+      <p class="bodycopy">Edit occurrences of the following to specify an appropriate 
+        username and password:</p>
+      <p class="bodycopy"><font face="Courier New, Courier, mono"><b>myPort.setUsername(user);<br>
+        myPort.setPassword(&quot;welcome&quot;);</b></font></p>
+      <p class="bodycopy">Because you have already created users SpatialWsUser0 
+        ... SpatialWsUser3, you might not need to make any changes. Also, note 
+        that some of the tests perform loops, for performance measurements.</p>
+      <p><img src="images/view_image.gif" name="t30201" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><font color="#FF0000" class="bodycopy"></font></p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t3">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t3c"></a>Compile and Run Code</p>
+<p class="bodycopy">The OpenLS-based demo presents the processing of the following 
+  OpenLS request types:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink">GeocodeRequest</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink">PortrayMapRequest</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink">DetermineRouteRequest</td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink">DirectoryRequest</td>
+  </tr>
+</table>
+<p><span class="bodycopy">When you compile and run the OpenLS Java demo, it makes 
+  a SOAP call to execute Directory Service requests, and generates Directory Service 
+  responses.</span></p>
+<p><span class="bodycopy">Perform the following steps to run the OpenLS demo.</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>1.</b></td>
+    <td colspan="2" width="602" class="bodycopy">
+      <p>In a new terminal window, start the OC4J server. Enter the following 
+        commands:</p>
+      <pre><font face="Courier New, Courier, mono"><b>cd &lt;jdevhome directory&gt;/bin
+</b></font><b><font face="Courier New, Courier, mono">./oc4j -start
+</font></b></pre>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">Compile and run code.</p>
+      <p class="bodycopy"> For a sample YP request (Linux systems):</p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>cd $CLIENT_HOME/src
+</b></font><span class="bodycopy"><b><font face="Courier New, Courier, mono">./compileAndRunClient.sh runyp</font></b> </span></pre>
+      <p class="bodycopy">The following screenshot shows only a part of the output. 
+      </p>
+      <p><img src="images/view_image.gif" name="t30301" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t3">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t3e"></a>Run the OpenLS SQL Demos</p>
+<p class="bodycopy">For OpenLS, there is a SQL interface as well as a SOAP interface 
+  (which has already been demonstrated in the previous steps). </p>
+<p class="bodycopy">The input files are <font face="Courier New, Courier, mono">olsloc_01.sql</font>, 
+  <font face="Courier New, Courier, mono">olsdir_02.sql</font>, <font face="Courier New, Courier, mono">olsdir_03.sql</font>, 
+  and so on until <font face="Courier New, Courier, mono">olsdir_11.sql</font>, 
+  <font face="Courier New, Courier, mono">olsmap_02.sql</font>, <font face="Courier New, Courier, mono">olsmap_03.sql</font>, 
+  and <font face="Courier New, Courier, mono">olsroute_01.sql</font>. The input 
+  files are included in the <font face="Courier New, Courier, mono">wsclient.jar 
+  </font>file and can be accessed from the <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data 
+  </font>folder. The outputs can be generated as the corresponding log files (<font face="Courier New, Courier, mono">olsloc_01.log</font>, 
+  <font face="Courier New, Courier, mono">olsdir_02.log</font>,<font face="Courier New, Courier, mono"> 
+  olsdir_03.log</font>, and so on until <font face="Courier New, Courier, mono">olsdir_11.log</font>, 
+  <font face="Courier New, Courier, mono">olsmap_02.log</font>, <font face="Courier New, Courier, mono">olsmap_03.log</font>, 
+  and <font face="Courier New, Courier, mono">olsroute_01.log</font>) by executing 
+  SQL*Plus from <font face="Courier New, Courier, mono">$CLIENT_HOME/src/data</font>. 
+</p>
+<p class="bodycopy">The input/output file contents as per the OpenLS request types 
+  are described below:</p>
+<table border="1" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink">&nbsp;</td>
+    <td  class="bodylink" width="245"><b>Input</b></td>
+    <td  class="bodylink" width="245"><b>Output</b></td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="40"><b>GeocodeRequest</b></td>
+    <td height="40"  class="bodylink" width="245"><font face="Courier New, Courier, mono">olsloc_01.sql</font> 
+      is an example that requests from Geocode two addresses in San Francisco.<br>
+      <br>
+    </td>
+    <td height="40"  class="bodylink" width="245"><font face="Courier New, Courier, mono">olsloc_01.log</font> 
+      is the response containing the geocoded latitude/longitude along with the 
+      address.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="45"><b>PortrayMapRequest</b></td>
+    <td height="45"  class="bodylink" width="245">
+      <p><font face="Courier New, Courier, mono">olsmap_02.sql</font> and<font face="Courier New, Courier, mono"> 
+        olsmap_03.sql</font> are examples to request maps, by size and file format, 
+        for bounding boxes or center point <br>
+        and scale. Displayed map layers can be specified.</p>
+      <p><b>Note:</b> In order to execute these inputs<br>
+        and generate the corresponding outputs,<br>
+        users need to have access to Oracle Location Service.<br>
+      </p>
+    </td>
+    <td height="45"  class="bodylink" width="245"><font face="Courier New, Courier, mono">olsmap_02.log</font> 
+      and <font face="Courier New, Courier, mono">olsmap_03.log</font> are responses 
+      to the map requests.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="45"><b>DetermineRouteRequest</b></td>
+    <td height="45"  class="bodylink" width="245">
+      <p><font face="Courier New, Courier, mono">olsroute_01.sql</font> is an 
+        example request for a route, including route geometry, between two addresses. 
+        Based on the route geometry, directory requests can be performed, subsequently.<br>
+      </p>
+      <p><b>Note:</b> In order to execute these inputs<br>
+        and generate the corresponding outputs,<br>
+        users need to have access to Oracle Location Service.<br>
+      </p>
+    </td>
+    <td height="45"  class="bodylink" width="245"><font face="Courier New, Courier, mono">olsroute_01.log</font> 
+      is the response to the route request.</td>
+  </tr>
+  <tr valign="top"> 
+    <td colspan="2"  class="bodylink" height="45"><b>DirectoryRequest</b></td>
+    <td height="45"  class="bodylink" width="245">
+      <p><font face="Courier New, Courier, mono">olsdir_02.sql</font>, <font face="Courier New, Courier, mono">olsdir_03.sql</font>, 
+        and <font face="Courier New, Courier, mono">olsdir_04.sql </font>are examples 
+        of querying businesses/points of interest within a country, state, city, 
+        <br>
+        or postal code. Further restrictions include business ID, name, and phone 
+        number.</p>
+      <p><font face="Courier New, Courier, mono">olsdir_05.sql</font>, <font face="Courier New, Courier, mono">olsdir_06.sql</font>, 
+        <font face="Courier New, Courier, mono">olsdir_07.sql</font>, <font face="Courier New, Courier, mono">olsdir_08.sql</font>, 
+        <font face="Courier New, Courier, mono">olsdir_09.sql</font>, and<font face="Courier New, Courier, mono"> 
+        olsdir_11.sql</font> are examples that add categorization <br>
+        requirements to the queries for businesses/points of interest. A request 
+        can contain any number of categories within any number of categorization 
+        frameworks (such as the SIC code).<br>
+      </p>
+      <p><br>
+        <font face="Courier New, Courier, mono">olsdir_10.sql</font> is an example 
+        that adds a bounding box to the queries for businesses/points of interest. 
+        Note that &quot;nearest&quot;, &quot;within distance&quot;, &quot;within 
+        circle&quot;, and &quot;within polygon&quot; are also possible.<br>
+      </p>
+    </td>
+    <td height="45"  class="bodylink" width="245">
+      <p><font face="Courier New, Courier, mono">olsdir_02.log</font>, <font face="Courier New, Courier, mono">olsdir_03.log</font>, 
+        and <font face="Courier New, Courier, mono">olsdir_04.log </font>display 
+        a list of businesses satisfying the query criteria.</p>
+      <p>&nbsp;</p>
+      <p><font face="Courier New, Courier, mono">olsdir_05.log</font>, <font face="Courier New, Courier, mono">olsdir_06.log</font>, 
+        <font face="Courier New, Courier, mono">olsdir_07.log</font>, <font face="Courier New, Courier, mono">olsdir_08.log</font>, 
+        <font face="Courier New, Courier, mono">olsdir_09.log</font>, and <font face="Courier New, Courier, mono">olsdir_11.log 
+        </font>display a list of businesses satisfying the query criteria.</p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <p><font face="Courier New, Courier, mono">olsdir_10.log</font> displays 
+        list of businesses satisfying the query criteria.</p>
+    </td>
+  </tr>
+</table>
+<p class="bodycopy">To generate <font face="Courier New, Courier, mono">olsloc_01.log 
+  </font>and <font face="Courier New, Courier, mono">olsmap_02.log</font> files, 
+  perform the following:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"> 
+      <p class="bodycopy">Enter the following commands: </p>
+      <pre class="bodycopy"><font face="Courier New, Courier, mono"><b>cd $CLIENT_HOME/src/data
+</b></font><b><font face="Courier New, Courier, mono">sqlplus mdsys/oracle
+
+spool olsloc_01.log
+@olsloc_01.sql
+spool off</font></b></pre>
+      <p class="bodycopy"><b><font face="Courier New, Courier, mono">        </font></b>As mentioned in the table above, <font face="Courier New, Courier, mono">olsloc_01.sql</font> 
+        is an example that requests from Geocode two addresses in San Francisco. 
+        You can view the spooled output log file, <font face="Courier New, Courier, mono">olsloc_01.log</font>, 
+        from the<font face="Courier New, Courier, mono"> $CLIENT_HOME/src/data</font> 
+        directory. The screenshot shows only a part of the output.</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="t30401" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"><b><font face="Courier New, Courier, mono"></font></b><b><font face="Courier New, Courier, mono"></font></b><b><font face="Courier New, Courier, mono"></font></b></p>
+      <p class="bodycopy"><b><font face="Courier New, Courier, mono"></font></b></p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>2.</b></td>
+    <td colspan="2" width="602" class="bodycopy"> 
+      <p>Similarly, you can run <font face="Courier New, Courier, mono">olsmap_02.sql</font>, 
+        which is an example of the PortrayMapRequest request type. You can run 
+        this only if you have access to Oracle Location Service and you provided 
+        its URL in the <font face="Courier New, Courier, mono">olscreate.sql </font>script.</p>
+      <p>The screenshot shows the content of the<font face="Courier New, Courier, mono"> 
+        olsmap_02.log </font>file.</p>
+      <p><img src="images/view_image.gif" name="t30402" border="1" class="imgborder_off" id="htmldbt01s02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>Similarly, you can run all the other input SQL files such as <font face="Courier New, Courier, mono">olsroute_01.sql</font> 
+        (only if you have access to Oracle Location Service), or <font face="Courier New, Courier, mono">olsdir_03.sql</font> 
+        files and generate the corresponding output files.</p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b>3.</b></td>
+    <td colspan="2" width="602" class="bodycopy"> 
+      <p><font face="Courier New, Courier, mono" class="bodycopy">Stop the OC4J 
+        server. Enter the following commands:</font></p>
+      <pre><font face="Courier New, Courier, mono"><b>cd &lt;Jdev directory&gt;\bin
+</b></font><b><font face="Courier New, Courier, mono">./oc4j -shutdown -port 23791 -password admin</font></b></pre>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t3">Back to Topic</a></p>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List</a></p>
+<h4>
+  <p class="navheader"><a name="s"></a>Summary</p>
+</H4>
+<p><SPAN class=bodycopy>In this tutorial, you learned how to:</SPAN></p>
+<table border="0" cellspacing="0" cellpadding="1" width="343">
+  <tr valign="top"> 
+    <td width="18" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodycopy" width="321">Run the Web Feature Service 
+      (WFS) Demos</td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="18"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodycopy" width="321">Run the Catalog Services for 
+      the Web (CSW) Demos</td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy" width="18"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy" width="321">Run the Open Location Services 
+      (OpenLS) Demos</td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h4 class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" class="bodycopy" onMouseOver="hideAllImages()"> <b><font color="#FF0000">Move 
+  your mouse over this icon to hide all screenshots.</font></b></h4>
+<p>&nbsp; </p>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>
+</html>

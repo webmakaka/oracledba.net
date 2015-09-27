@@ -1,0 +1,709 @@
+<html>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+.style1 {font-weight: bold}
+-->
+</style>
+<title>Using the Data Recovery Advisor</title>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<link href="../library/otn_new.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+<!--
+.style15 {font-family: "Courier New", Courier, mono}
+.style17 {font-family: "Courier New", Courier, mono; font-weight: bold; }
+.style19 {
+	color: #FF0000;
+	font-size: 14px;
+}
+.style23 {color: #000000}
+-->
+</style>
+<body bgcolor="#ffffff" text="#000000">
+<h3 class="topstoryhead">Using the Data Recovery Advisor</h3>
+<h4 class="navheader">Purpose</h4>
+<p class="bodycopy">This tutorial shows you how you can use the Data Recovery Advisor to diagnose and repair data failures. You can work through several scenarios (see below). </p>
+<p class="navheader">Time to Complete</p>
+<p class="bodycopy">Approximately 60 minutes </p>
+<h4 class="navheader"><b><a name="t"></a>Topics</b></h4>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tbody> 
+    <tr valign="top">
+      <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+      <td width="324" class="bodylink"><a href="#o">Overview</a></td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodylink"><a href="#sce">Scenarios</a></td>
+    </tr>
+
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodylink"><a href="#p">Prerequisites</a></td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="boldbodycopy"> <a href="#t1" class="bodylink">Repairing a &quot;down&quot; Database with Enterprise Manager</a> </td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="boldbodycopy"> <a href="#t2" class="bodylink">Repairing Block Corruption with Enterprise Manager</a></td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="boldbodycopy"><a href="#t3" class="bodylink">Repairing a &quot;down&quot; Database with RMAN Command-Line</a> </td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodylink"><p><a href="#cl">Cleanup</a></p>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td class="bodylink"><p><a href="#s">Summary</a></p>
+      </td>
+    </tr>
+  </tbody> 
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"></a></a> 
+  <b><span class="style1"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. 
+
+
+
+<strong> (Caution: This action loads all screenshots simultaneously, so response time may be slow depending on your Internet connection.)</strong> </font><font color="#ff0000"></font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor 
+  over an individual icon in the following steps to load and view only the screenshot 
+  associated with that step. You can hide an individual  screenshot by clicking it. </p>
+<p class="bodycopy">&nbsp;</p>
+<h3 class="Overview"><a name="o"></a><span class="navheader">Overview</span></h3>
+<p class="boldbodycopy">What Is the Data Recovery Advisor?</p>
+<p class="bodycopy"> The Data Recovery Advisor is a tool that helps you to diagnose and repair data failures and corruptions. The Data Recovery Advisor analyzes failures based on symptoms and intelligently determines optimal repair strategies. The tool can also automatically repair diagnosed failures. </p>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+
+<h3 class="Overview"><a name="sce"></a><span class="navheader">Scenarios</span></h3>
+<p class="boldbodycopy">1. Repairing a &quot;down&quot; Database with Enterprise Manager</p>
+<p class="bodycopy">The first scenario assumes that  your database is &quot;down.&quot; In a production environment, this would be a highly critical situation, which you have to resolve as quickly as possible to &quot;save the business.&quot; You attempt to re-open the database, but this fails. You then use the Data Recovery Advisor from  Enterprise Manager (EM) DB Control  to diagnose the failures. The diagnosis reveals inaccessibility of two data files. For the first data file issue, you use the manual repair option  (rename a data file). This issue could have resulted from a DBA executing the <span class="style15">ALTER DATABASE ... RENAME FILE</span> <span class="style15">...</span> command and the System Administrator neglecting to properly rename the data file in the operating system. </p>
+<p class="bodycopy">After fixing the first data file issue by renaming the file, you again request repair advice from the Data Recovery Advisor. For the second data file issue, you use the automated repair option to recover the lost data file. Finally, you check that the database is up and running again. </p>
+<p class="boldbodycopy">2. Repairing Block Corruption with Enterprise Manager</p>
+<p class="bodycopy">In this scenario, you encounter a few corrupted blocks. You utilize the Data Recovery Advisor, which selects block media recovery as the optimal recovery strategy (rather than full database or data file recovery). </p>
+<p class="boldbodycopy">3. Repairing a &quot;down&quot; Database with RMAN Command Line </p>
+<p class="bodycopy">This scenario is identical to the first one, but you go through the steps of diagnosing and repairing failures with RMAN commands.</p>
+
+
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class=navheader><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before you perform this tutorial, you should: </p>
+<table border="0" cellpadding="1" cellspacing="0" width="650">
+  <tbody>
+    <tr valign="top">
+      <td class="bodycopy" width="25"><b> 1.</b></td>
+      <td colspan="2"><p class="bodycopy">Install the database by completing the
+          <a href="../../install/dbinst/dbinst.htm">Installing Oracle Database 11<i>g</i> on Linux </a>
+        tutorial. </p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 2.</b></td>
+      <td colspan="2"><p class="bodycopy">Download and unzip the <a href="files/dra.zip">dra.zip</a> file into your working directory.</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 3.</b></td>
+      <td colspan="2"><p class="bodycopy">In a terminal window, navigate into  your working directory and execute the following command: </p>
+        <pre class="bodycopy"><strong class="style17">./dra_setup.sh </strong></pre>
+        <p class="bodycopy"><img src="images/view_image.gif" name="dra_setup" border="1" class="imgborder_off" id="dra_setup" onClick="hideImage(this)" onMouseOver="showImage(this)"> </p>
+        <p class="bodycopy">&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><strong>4. </strong></td>
+      <td colspan="2"><span class="bodycopy">Note that you will be working with one scenario at a time, but you do not have to choose them sequentially. Each scenario has its own additional setup that produces failures, and the remaining steps have to be completed to repair the failures.</span></td>
+    </tr>
+  </tbody>
+</table>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h3 class="Install"></h3>
+<h3 class="Install"><a name="t1" id="t1"></a><span class="navheader">Repairing a &quot;down&quot; Database with Enterprise Manager</span></h3>
+<p class="bodycopy">To diagnose and repair a &quot;down&quot; database, perform 
+the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b>1.</b></td>
+    <td colspan="2"><p class="bodycopy">To set up a data failure and shut down the database,  use a terminal window, navigate into  your working directory, and execute the following command: </p>
+      <p class="bodycopy"><strong class="style17">./dra1_setup.sh</strong></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="dra1_setup" border="1" class="imgborder_off" id="dra1_setup" onClick="hideImage(this)" onMouseOver="showImage(this)"> </p>
+      <p class="bodycopy">The <span class="style15">users01.dbf</span> data file is deleted and the <span class="style15">example01.dbf</span> file renamed. You will diagnose and repair these failures  by using both  manual repair and automated repair options.</p>
+      <p class="bodycopy">&nbsp; </p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Enter the following URL to log in to Enterprise Manager Database Control (change the <span class="style15">&lt;hostname&gt;</span> to <strong>localhost</strong> or your specific hostname). </p>
+      <pre class="bodycopy style15"><b>https://&lt;hostname&gt;:1158/em</b></pre>
+      <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">As described in scenario 1, you encounter a &quot;down&quot; database. Your task is to diagnose the failure and repair it as quickly as possible. Click <strong>Startup</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra04" border="1" class="imgborder_off" id="dra04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+ <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 4.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Enter the following details, and click <strong>OK</strong>. </p>
+      <p class="bodycopy">Host Credentials <br>Username: <b>oracle<br>
+            </b>Password: <b>oracle</b></p>
+      <p class="bodycopy">Database Credentials <br>
+        Username: <b>sys<br>
+        </b>Password: <b>oracle <br>
+		</b>Connect as:<b> SYSDBA</b></p>
+      <p><img src="images/view_image.gif" name="dra05" border="1" class="imgborder_off" id="dra05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp;</p></td>
+  </tr>
+ <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 5.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Click <strong>Yes</strong> on the Startup/Shutdown Confirmation page. </p>
+      <p><img src="images/view_image.gif" name="dra06" border="1" class="imgborder_off" id="dra06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+ <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 6. </b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">View the progress page. </p>
+      <p><img src="images/view_image.gif" name="dra07" border="1" class="imgborder_off" id="dra07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+ <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 7. </b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Note that the database is now in a mounted state. Click <strong>View Details</strong> for more information. </p>
+      <p><img src="images/view_image.gif" name="dra08" border="1" class="imgborder_off" id="dra08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+ <tr valign="top">
+   <td class="bodycopy"><strong>8.</strong></td>
+   <td colspan="2"><p class="bodycopy">View the database change status details and error messages, and click <strong>OK</strong>.</p>
+    <p><img src="images/view_image.gif" name="dra09" border="1" class="imgborder_off" id="dra09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp; </p></td>
+ </tr>
+ <tr valign="top">
+   <td class="bodycopy"><strong>9.</strong></td>
+   <td colspan="2"><p class="bodycopy">Click <strong>Perform Recovery</strong> to diagnose the failures and perform a repair. </p>
+    <p class="bodycopy"><img src="images/view_image.gif" name="dra10" border="1" class="imgborder_off" id="dra10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p class="bodycopy">&nbsp;</p></td>
+ </tr>
+ <tr valign="top">
+   <td class="bodycopy"><b> 10.</b></td>
+   <td colspan="2"><p class="bodycopy">On the Database Login page, enter the following details, and click <strong>Login</strong>. </p>
+       <p class="bodycopy">Database Credentials <br>
+      Username: <b>sys<br>
+      </b>Password: <b>oracle <br>
+    </b>Connect as:<b> SYSDBA</b></p>
+       <p><img src="images/view_image.gif" name="dra002" border="1" class="imgborder_off" id="dra002" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+       <p>&nbsp;</p></td>
+ </tr>
+ <tr valign="top">
+   <td class="bodycopy"><strong>11.</strong></td>
+   <td colspan="2"><p class="bodycopy">Enter the following details, and click <strong>Continue</strong>. </p>
+       <p class="bodycopy">Username: <b>oracle<br>
+       </b>Password: <b>oracle</b></p>
+       <p><img src="images/view_image.gif" name="dra12" border="1" class="imgborder_off" id="dra12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+       <p>&nbsp;</p></td>
+ </tr>
+ <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 12.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Scroll down to the bottom of the page and make sure the following credentials are available. Then scroll up to the top of the page and click <strong>Advise and Recover</strong>. </p>
+      <p class="bodycopy">Username: <b>oracle<br>
+      </b>Password: <b>oracle </b></p>
+      <p><img src="images/view_image.gif" name="dra13" border="1" class="imgborder_off" id="dra13" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+ <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 13.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">When the database didn't open, the Data Recovery Advisor automatically diagnosed the problem. View the result of this diagnosis. Click the + icon under Failure Description to view  more details. </p>
+      <p><img src="images/view_image.gif" name="dra14" border="1" class="imgborder_off" id="dra14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+ <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 14.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">To view suggested repair strategies, leave all failures selected and click <strong>Advise</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra15" border="1" class="imgborder_off" id="dra15" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><strong>15.</strong></td>
+    <td colspan="2"><p class="bodycopy">The Manual Actions page appears, in which  the Data Recovery Advisor prompts you to consider manual repairs. <strong>Do not select Continue.</strong> Perform the next step. </p>
+      <p><img src="images/view_image.gif" name="dra16" border="1" class="imgborder_off" id="dra16" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 16.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">This demo assumes that the <span class="style15">example01.dbf</span> data file was renamed by error. In a terminal window, enter the following commands to manually repair the failure:</p>
+      <p class="bodycopy">a) To navigate into the directory that contains your data files, enter: <span class="style17">cd $ORACLE_BASE/oradata/orcl</span></p>
+      <p class="bodycopy">b) To view the content of the directory, enter: <span class="style17">ls</span> </p>
+      <p class="bodycopy">c) To rename the erroneous <span class="style15">example01</span> data file, enter: <span class="style17">mv example01.dbf.old example01.dbf</span></p>
+      <p class="bodycopy">d) To view your corrected file name, enter: <span class="style17">ls</span></p>
+      <p class="bodycopy">e) To exit from the terminal window, enter: <span class="style17">exit </span> </p>
+      <p><img src="images/view_image.gif" name="dra17" border="1" class="imgborder_off" id="dra17" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+   <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 17.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Return to the Manual Actions page in Enterprise Manager. Click <strong>Re-assess Failures</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra18" border="1" class="imgborder_off" id="dra18" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+     <p>&nbsp;</p></td>
+  </tr>
+   <tr valign="top">
+      <td class="bodycopy"><strong>18.</strong></td>
+      <td colspan="2"><p class="bodycopy">The Data Recovery Advisor revalidates all failures and closes the ones that you manually repaired. Click  the '+' icon under Failure Description to expand the node and to see any other outstanding failures.</p>
+        <p><img src="images/view_image.gif" name="dra19" border="1" class="imgborder_off" id="dra19" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+   <tr valign="top">
+      <td class="bodycopy"><strong>19.</strong></td>
+      <td colspan="2"><p class="bodycopy">Note that the failure which you manually repaired is closed, but there is still another open failure. Click <strong>Advise</strong>. </p>
+        <p><img src="images/view_image.gif" name="dra20" border="1" class="imgborder_off" id="dra20" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+   <tr valign="top">
+      <td class="bodycopy"><strong>20.</strong></td>
+      <td colspan="2"><p class="bodycopy">Click <strong>Continue with Advise</strong>. </p>
+        <p><img src="images/view_image.gif" name="dra21" border="1" class="imgborder_off" id="dra21" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+   <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 21.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">The Data Recovery Advisor generates an  RMAN repair script. Click <strong>Continue</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra22" border="1" class="imgborder_off" id="dra22" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+ 
+  
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 22.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">On the Review page, you can review the failure and the repair script which will address this failure. Click <strong>Submit Recovery Job</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra23" border="1" class="imgborder_off" id="dra23" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 23.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Wait for the repair execution to complete. When the Data Recovery Advisor is finished, it displays the Repair Results page. Review all repair results. Click the vertical scroll bar.</p>
+      <p><img src="images/view_image.gif" name="dra24" border="1" class="imgborder_off" id="dra24" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 24.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Click and drag the vertical scroll bar until you reach the end. Note, that after a successful repair, the database is opened. Click <strong>OK.</strong></p>
+      <p><img src="images/view_image.gif" name="dra25" border="1" class="imgborder_off" id="dra25" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+    <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 25.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">Enterprise Manager displays the Login page. Enter the following details, and 
+        click<b> Login.</b><br>
+        <br>
+User Name: <b>sys<br>
+</b>Password: <b>oracle</b><br>
+Connect as: <b>SYSDBA</b> </p>
+      <p><img src="images/view_image.gif" name="dra002" border="1" class="imgborder_off" id="dra002" onClick="hideImage(this)" onMouseOver="showImage(this)"> </p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 26.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">The Availability page appears. Click the <strong>Home</strong> tab. </p>
+      <p><img src="images/view_image.gif" name="dra27" border="1" class="imgborder_off" id="dra27" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 27.</b></td>
+    <td colspan="2" width="621"> 
+      <p class="bodycopy">On the Database Instance home page, confirm that the database instance is up and running. (If a page similar to this does not immediately appear, wait a couple of minutes and refresh the page. Also note that the graphic elements may change before the production release of the software). </p>
+      <p class="bodycopy">Click <strong>Logout</strong>, because you completed repairing a down database by executing both a manual and an automated repair. </p>
+      <p><img src="images/view_image.gif" name="dra28" border="1" class="imgborder_off" id="dra28" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+
+    </td>
+  </tr>
+
+
+ 
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h3 class="navheader"><a name="t2" id="t2"></a><span class="navheader">Repairing Block Corruption with Enterprise Manager</span></h3>
+<p class="bodycopy">To diagnose and repair block corruption, perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tbody> 
+  <tr valign="top">
+    <td height="87"><strong>1.</strong></td>
+    <td><p class="bodycopy">To set up block corruptions in your <span class="style15">example01.dbf</span> data file, use a terminal window, navigate into your working directory, and execute the following command: </p>
+      <p class="bodycopy"><strong class="style17">./dra2_setup.sh</strong></p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="dra2_01" border="1" class="imgborder_off" id="dra2_01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="bodycopy  style23">Block corruption errors typically appear in this form to application users. DBAs  can see the same error on the Enterprise Manager DB Control home page (see several steps below). However, there is a slight delay, due to internal processing between error discovery and Enterprise Manager displaying the error. </p>
+      <p class="bodycopy">&nbsp; </p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="87"><b> 2.</b></td>
+    <td> 
+      <p class="bodycopy">Enter the following URL to log in to Enterprise Manager Database Control (change the &lt;hostname&gt; to localhost or your specific hostname). </p>
+      <p class="bodycopy"><b>https://&lt;hostname&gt;:1158/em</b></p>
+      <p>&nbsp;</p>
+      </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 3.</b></td>
+    <td> 
+      <p class="bodycopy">To log in to Enterprise Manager, enter the following details, and click<b> Login.</b><br>
+          <br>
+  User Name: <b>sys<br>
+  </b>Password: <b>oracle</b><br>
+  Connect as: <b>SYSDBA</b> </p>
+      <p><img src="images/view_image.gif" name="dra002" border="1" class="imgborder_off" id="dra002" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+      </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 4.</b></td>
+    <td> 
+      <p>Click the <strong>Availability</strong> tab .</p>
+      <p><img src="images/view_image.gif" name="dra2_04" border="1" class="imgborder_off" id="dra2_04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b> 5.</b></td>
+    <td> 
+      <p> Click <strong>Perform Recovery</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra2_05" border="1" class="imgborder_off" id="dra2_05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>6.</b></td>
+    <td> 
+      <p>On the Perform Recovery page, you see that the Data Recovery Advisor detected the corrupted blocks. Click <strong>Advise and Recover</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra2_06" border="1" class="imgborder_off" id="dra2_06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>7.</b></td>
+    <td> 
+      <p>Click  the + icon under Failure Description to expand the node for more details.</p>
+      <p><img src="images/view_image.gif" name="dra2_07" border="1" class="imgborder_off" id="dra2_07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><strong>8.</strong></td>
+    <td><p>View the details of the block corruption. Leave all failures selected and click <strong>Advise</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra2_08" border="1" class="imgborder_off" id="dra2_08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><strong>9.</strong></td>
+    <td><p>View the repair script and click <strong>Continue</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra2_09" border="1" class="imgborder_off" id="dra2_09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><strong>10.</strong></td>
+    <td><p>On the Review page, you can review the failures and the suggested repairs. Click <strong>Submit Recovery Job</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra2_10" border="1" class="imgborder_off" id="dra2_10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><strong>11.</strong></td>
+    <td><p>You should receive a confirmation that your job was created successfully. Click<strong> View Results</strong>. </p>
+      <p><img src="images/view_image.gif" name="dra2_11a" border="1" class="imgborder_off" id="dra2_11a" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+      </td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><strong>12.</strong></td>
+    <td><p>Confirm that your job executed successfully, and click the <strong>Database</strong> tab on the top-right part of the page. </p>
+      <p><img src="images/view_image.gif" name="dra2_12" border="1" class="imgborder_off" id="dra2_12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><strong>13.</strong></td>
+    <td><p> View  the block corruption alerts on the Database Instance home page.
+ DBAs monitor this page regularly, so they would be able to see the block corruption alerts (which appear with a slight delay).</p>
+      <p><img src="images/view_image.gif" name="dra2_13b" border="1" class="imgborder_off" id="dra2_13b" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><strong>14.</strong></td>
+    <td><p>To confirm that the block corruption is repaired, execute the following commands:</p>
+      <p class="style15"><strong>sqlplus sys/oracle as sysdba<br>
+      select * from hr.regions;</strong></p>
+      <p><img src="images/view_image.gif" name="dra2_14" border="1" class="imgborder_off" id="dra2_14" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style19">&nbsp;</p></td>
+  </tr>
+  </tbody> 
+</table>
+<p align="right"><a href="#t2" class="bodylink">Back to Topic</a></p>
+
+
+<h3 class="navheader"><a name="t3" id="t3"></a><span class="navheader">Repairing a &quot;down&quot; Database with RMAN Command-Line</span></h3>
+<p class="bodycopy">To diagnose and repair a &quot;down&quot; database, perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650" class="bodycopy">
+  <tbody> 
+  <tr valign="top">
+    <td height="87"><strong>1.</strong></td>
+    <td><p class="bodycopy">To set up a data failure and shut down the database, use a terminal window, navigate into your working directory and execute the following command: </p>
+      <p class="bodycopy"><strong class="style17">./dra1_setup.sh</strong></p>
+      <p class="bodycopy">The <span class="style15">users01.dbf</span> data file is deleted and the <span class="style15">example01.dbf</span> file renamed.  You will diagnose and repair these failures,  by using both  manual repair and automated repair options.</p>
+      <p class="bodycopy">When you see the following lines, you know that your setup is completed:</p>
+      <p class="bodycopy"><img src="images/view_image.gif" name="dra301" border="1" class="imgborder_off" id="dra301" onClick="hideImage(this)" onMouseOver="showImage(this)"><br> 
+        </p>
+      <p class="bodycopy"></p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="87"><b> 2.</b></td>
+    <td> 
+      <p class="bodycopy">Because you find your database in a &quot;down&quot; state, you try to start it with the following commands: </p>
+      <p class="style17">sqlplus / as sysdba <br>
+	  startup</p>
+      <p>Note that the database is mounted and has a data file error.</p>
+      <p class="style15"><img src="images/view_image.gif" name="dra302" border="1" class="imgborder_off" id="dra302" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p class="style15">&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 3.</b></td>
+    <td> 
+      <p class="bodycopy">Exit SQL*Plus and start RMAN with the following commands: </p>
+      <p class="style17">exit<br>
+	  rman target / nocatalog</p>
+      <p class="style15"><img src="images/view_image.gif" name="dra303" border="1" class="imgborder_off" id="dra303" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><span class="style15"><br>
+      </span> </p></td>
+  </tr>
+   <tr valign="top"> 
+    <td width="25" height="50"><b> 4.</b></td>
+    <td> 
+      <p class="bodycopy">List failures and failure details by executing the following commands:</p>
+      <p class="bodycopy"><span class="style17">LIST FAILURE;<br>
+	  LIST FAILURE DETAIL;</span></p>
+      <p class="bodycopy">You can enter commands in uppercase or lowercase. </p>
+      <p class="style15"><img src="images/view_image.gif" name="dra304" border="1" class="imgborder_off" id="dra304" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>Note: While working with beta versions of the software, your output might vary from the proceeding screenshot. </p>
+      <p><br>
+      </p></td>
+  </tr> 
+  <tr valign="top"> 
+    <td width="25" height="50"><b> 5.</b></td>
+    <td> 
+      <p>Enter the following command to diagnose the failure:</p>
+      <p class="style17">ADVISE FAILURE;</p>
+      <p class="style15"><img src="images/view_image.gif" name="dra305" border="1" class="imgborder_off" id="dra305" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p><strong>You will return to this window after the next step.</strong></p>
+      <p>&nbsp; </p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b> 6.</b></td>
+    <td> 
+      <p>This demo assumes that the <span class="style15">example01.dbf</span> data file was renamed by error. Open another terminal window and enter the following commands to manually repair a failure.</p>
+      <p class="bodycopy">a) To navigate into the directory that contains your data files, enter: <span class="style17">cd $ORACLE_BASE/oradata/orcl</span></p>
+      <p class="bodycopy">b) To view the content of the directory, enter: <span class="style17">ls</span> </p>
+      <p class="bodycopy">c) To rename the erroneous <span class="style15">example01</span> data file, enter: <span class="style17">mv example01.dbf.old example01.dbf</span></p>
+      <p class="bodycopy">d) To view your corrected file name, enter: <span class="style17">ls</span></p>
+      <p class="bodycopy">e) To exit from the terminal window, enter: <span class="style17">exit </span> </p>
+      <p class="style15"><img src="images/view_image.gif" name="dra306" border="1" class="imgborder_off" id="dra306" onClick="hideImage(this)" onMouseOver="showImage(this)"> </p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>7.</b></td>
+    <td> 
+      <p>Return to your RMAN window and enter the following command to see the results of your manual repair:</p>
+      <p class="style17">ADVISE FAILURE;  </p>
+      <p class="style15"><img src="images/view_image.gif" name="dra307" border="1" class="imgborder_off" id="dra307" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" height="51"><b>8.</b></td>
+    <td> 
+      <p>Enter the following command to view the repair script:</p>
+      <p class="style17">REPAIR FAILURE PREVIEW;</p>
+      <p class="style15"><span class="style15"><img src="images/view_image.gif" name="dra308" border="1" class="imgborder_off" id="dra308" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p class="style15"><span class="style15"><br>
+      </span> </p></td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><strong>9.</strong></td>
+    <td><p>Enter the following commands to initiate an automated repair, to restart your database, and to exit RMAN:</p>
+      <p class="style17">REPAIR FAILURE;
+      <p><span class="style15">. . . Do you really want to execute the above repair (enter YES or NO)?</span><span class="style17"> YES</span></p>
+      <p><span class="style15">. . . Do you want to open the database (enter YES or NO)? <strong>YES</strong></span></p>
+      <p><span class="style17"><strong>exit</strong></span><br>
+      </p>
+      <p class="bodycopy">The partial output can look like this: </p>
+      <p class="bodycopy"><span class="style15"><img src="images/view_image.gif" name="dra309a" border="1" class="imgborder_off" id="dra309a" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p class="style15"><img src="images/view_image.gif" name="dra309b" border="1" class="imgborder_off" id="dra309b" onClick="hideImage(this)" onMouseOver="showImage(this)"><br>
+        <br>
+      </p>
+      </td>
+  </tr>
+  <tr valign="top">
+    <td height="51"><strong>10.</strong></td>
+    <td bordercolor="#000000"><p>Enter the  following commands in SQL*Plus, to test that your database is up and running:</p>
+      <p><span class="style17">sqlplus / as sysdba<br>
+	  select open_mode from v$database;<br>
+	  exit</span></p>
+      <p class="style15"><img src="images/view_image.gif" name="dra310" border="1" class="imgborder_off" id="dra310" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  </tbody> 
+</table>
+<p align="right"><a href="#t2" class="bodylink">Back to Topic</a></p>
+
+<h4>
+  <p class="navheader"><a name="cl"></a>Cleanup</p>
+</H4>
+<p class="bodycopy">When you are finished with this OBE or when you wish to start again with the <a href="#p">Prerequisites</a>, execute the following command:
+</p>
+<table width="650" border="0" cellpadding="1" cellspacing="0" class="bodycopy">
+  <tbody>
+    <tr valign="top">
+      <td height="51"><strong>1.</strong></td>
+      <td bordercolor="#000000"><p>Enter the following commands in a terminal window:</p>
+          <p><span class="style17">./dra_cleanup.sh</span></p>
+          <p>A partial output follows: </p>
+          <p class="style15"><img src="images/view_image.gif" name="cleanup1" border="1" class="imgborder_off" id="cleanup1" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+
+<h4>
+  <p class="navheader"><a name="s"></a>Summary</p>
+</H4>
+<p class="bodycopy">In this tutorial, you learned how to:</p>
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr valign="top">
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="325" colspan="2" class="bodycopy">Repair a &quot;down&quot; Database with Enterprise Manager </td>
+  </tr>
+  <tr valign="top">
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Repair Block Corruption with Enterprise Manager </td>
+  </tr>
+ <tr valign="top">
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Repair a &quot;down&quot; Database with RMAN Command Line  </td>
+  </tr>
+  
+  <tbody>
+  </tbody>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a></p>
+<h3 class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="hideAllImages()">  <b><font color="#ff0000">Place the cursor over this icon to hide all screenshots.</font></b>
+</h3>
+<h4 align="left">
+  <p align="left"> 
+  </p>
+</h4>
+<div align="right"></div>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+preLoadImages();
+//-->
+</script>
+
+<h4 align="left">
+  <p align="left"> 
+  </p>
+</h4>
+<div align="right"></div>
+<h4>
+  <p></p>
+  <h3>&nbsp;</h3>
+  <h4>&nbsp;</h4>
+  <h4>&nbsp;</h4>
+</h4>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+preLoadImages();
+//-->
+</script>
+</html>

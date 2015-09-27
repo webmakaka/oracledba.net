@@ -1,0 +1,435 @@
+<html>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+.style4 {font-family: "Courier New", Courier, mono}
+.style7 {font-size: 12px}
+-->
+</style>
+<title>Analyzing Data Dictionary Corruption Using Support Workbench</title>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style11 {color: #000000}
+.style12 {
+	color: #FF0000;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<h3 align="left" class="topstoryhead"><span class="bodylink"> </span>Analyzing Data Dictionary Corruption Using Support Workbench</h3>
+<h4 class=Purpose><span class="navheader">Purpose</span></h4>
+<p class="bodycopy">This tutorial describes how you analyze a data dictionary corruption using Support Workbench.</p>
+<p class="navheader">Time to Complete</p>
+<p class="bodycopy">Approximately 30 minutes</p>
+<h4 class=Topic><span class="navheader"><a name="t"></a>Topics</span></h4>
+<p class="bodycopy">This tutorial discusses the following:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#o">Overview</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#p">Prerequisites</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t1" class="bodylink">Setting Up a Data Dictionary Corruption</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t2" class="bodylink">Creating a Dictionary Integrity Check </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t3" class="bodylink">Reviewing the Active Incident </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t4" class="bodylink">Creating a Package of the Problem </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t5" class="bodylink">Cleanup</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy"><a href="#s">Summary</a></td>
+  </tr>
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" name="print" width=24
+height=24 border=0 onMouseOver="showAllImages()"><font  color="#FF0000"><b></b></font><b><span class="style7"><font color="#ff0000" face="Arial, Helvetica, sans-serif"> Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. (Caution: This action loads all screenshots simultaneously, so, depending on your Internet connection, may result in a slow response time.) </font><font color="#ff0000"></font></span></b></p>
+<p><span class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over an individual icon in the following steps to load and view only the screenshot associated with that step. You can hide an individual screenshot by clicking it. </span></p>
+<h3 class="navheader"><a name="o" id="o"></a>Overview</h3>
+<p class="bodycopy"> The Enterprise Manager Support Workbench (Support Workbench) is a
+facility that enables you to investigate, report, and in some cases,
+repair problems (critical errors), all with an easy-to-use graphical
+interface. The Support Workbench provides a self-service means for you
+to gather first-failure diagnostic data, obtain a support request
+number, and upload diagnostic data to Oracle Support with a minimum of
+effort and in a very short time, thereby reducing time-to-resolution
+for problems. The Support Workbench also recommends and provides easy
+access to Oracle advisors that help you repair SQL-related problems,
+data corruption problems, and more.</p>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before starting this tutorial, you should first complete the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="590">
+  <tbody>
+    <tr valign="top">
+      <td width="15" class="bodycopy"><b>1.</b></td>
+      <td colspan="2" class="bodylink"><p>Install Oracle Database 11<i>g</i>. </p>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>2.</b></td>
+      <td colspan="2" class="bodylink"><p>Download and unzip the <a href="files/swkbnch.zip">swkbnch.zip</a> files into your working directory. </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"></h3>
+<h3 class="navheader"><a name="t1" id="t1"></a>Setting Up a Data Dictionary Corruption </h3>
+<p class="bodycopy">In this tutorial, you analyze a data dictionary corruption and then use support workbench to analyze the problem and then package it to sent to Oracle support. In this section, you setup the problem. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">Open a terminal window. From the directory you unzipped the files to,  execute the following command to create a data dictionary corruption </p>
+        <pre class="bodycopy style4"><b>./corr_setup.sh</b></pre>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="corr_setup" border="1" class="imgborder_off" id="corr_setup" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"></h3>
+<h3 class="navheader"><a name="t2" id="t2"></a>Creating a Dictionary Integrity Check </h3>
+<p class="bodycopy"><span class="bodycopy">To begin analyzing the problem, you can trigger a health check on the data dictionary by creating a dictionary integrity check. Perform the following steps:</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">Open a browser and enter the following URL:</p>
+        <pre class="bodycopy"><b>http://&lt;hostname&gt;:1158/em</b></pre>
+        <p class="bodycopy">Enter <b>sys</b> as the username, specify the password <strong>oracle</strong>, select <strong>SYSDBA</strong> for Connect As and then click <b>Login</b>.</p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="login" border="1" class="imgborder_off" id="login" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">From the home page, scroll down and under Related Links, select <strong>Advisor Central</strong>.</p>
+        <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ddchk01" border="1" class="imgborder_off" id="ddchk01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tbody> 
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      3.</b></td>
+    <td> 
+      <p class="bodycopy"> Select the <strong>Checkers</strong> tab. </p>
+      <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ddchk02" border="1" class="imgborder_off" id="ddchk02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td><p class="bodycopy"> Click <strong>Dictionary Integrity Check</strong>. </p>
+        <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ddchk03" border="1" class="imgborder_off" id="ddchk03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      5.</b></td>
+    <td> 
+      <p class="bodycopy">Enter <strong>DicoCheck1</strong> for the Value of the Parameter Run Name and click <strong>OK</strong>. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ddchk04" border="1" class="imgborder_off" id="ddchk04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td><p class="bodycopy">The check ran successfully. To view the details, select the <strong>DicoCheck1</strong> Run from the list and click <strong>Details</strong>. </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ddchk05" border="1" class="imgborder_off" id="ddchk05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 
+      7.</b></td>
+    <td> 
+      <p class="bodycopy">You can see some data corruption. In particular, you see the following finding: &quot;SQL dictionary health check: invalid column number 9 on object TAB$ failed&quot;. This corresponds to a row in the TAB$ that references HR.OBETABLE. Click the <strong>Database</strong> breadcrumb. </p>
+      <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="ddchk06" border="1" class="imgborder_off" id="ddchk06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  
+  </tbody> 
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="t3" id="t3"></a>Reviewing the Active Incident </h3>
+<p class="bodycopy"><span class="bodycopy">In this section, you investigate the problem further. Perform the following steps: </span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tbody>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 1.</b></td>
+      <td><p class="bodycopy">From the home page, review the Alerts section. You see that you have a new critical alert (Data Failure) for the previously detected corruption. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="prob00" border="1" class="imgborder_off" id="prob00" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 2.</b></td>
+      <td><p class="bodycopy">Switch to your terminal window and executed the following commands:</p>
+        <pre class="bodycopy style4"><strong>sqlplus / as sysdba
+alter system flush shared_pool;
+alter system flush buffer_cache;
+select * from hr.obetable;</strong></pre>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="prob01" border="1" class="imgborder_off" id="prob01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">Notice that you receive a end-of-file on communication channel error. This means that something is definitely wrong. You will now investigate the problem. </p>
+          <p class="bodycopy">&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 3.</b></td>
+      <td><p class="bodycopy">Switch back to Enterprise Manager and notice that you have an Active Incident in the Diagnostic Summary section of the Home page. Select the number link. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="prob02" border="1" class="imgborder_off" id="prob02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 4.</b></td>
+      <td><p class="bodycopy">On the Support Workbench Problems page, you should see a new Active Incident whose Description is similar to ORA 7445 [qcstda()+515]. Select the + to expand the details for the problem. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="prob03" border="1" class="imgborder_off" id="prob03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p class="bodycopy">&nbsp;</p>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 5.</b></td>
+      <td><p class="bodycopy">Click the incident number. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="prob04" border="1" class="imgborder_off" id="prob04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 6.</b></td>
+      <td><p class="bodycopy">The Incident Details page appears. Make note of the incident number. In the Application Information section, you see that the statement for SQL Text '<span class="style4">select * from hr.obetable</span>' is what caused the incident. You also see two dump files generated. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="prob05" border="1" class="imgborder_off" id="prob05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"><span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="t4" id="t4"></a>Creating a Package of the Problem </h3>
+<p class="bodycopy">If the problem is something you can not fix, you need to notify Oracle Support of the problem. Oracle Support wants to gather as much detail as possible to figure out what the problem is so they can report it effectively to development. To do this, you can package your problem so that it can be sent to Oracle Support. Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">On the Problem Details page, In the Investigate and Resolve section, select <strong>Quick Package.</strong> </p>
+        <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg01" border="1" class="imgborder_off" id="pkg01" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tbody>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 2.</b></td>
+      <td><p class="bodycopy">On the Create New Package window, select <strong>No</strong> for Send to Oracle Support. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg02" border="1" class="imgborder_off" id="pkg02" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 3.</b></td>
+      <td><p class="bodycopy">When the page is refreshed, click <strong>Next</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg03" border="1" class="imgborder_off" id="pkg03" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 4.</b></td>
+      <td><p class="bodycopy">The incidents to be packaged are listed, click <strong>Next</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg04" border="1" class="imgborder_off" id="pkg04" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 5.</b></td>
+      <td><p class="bodycopy  style11">The manifest details are shown. Click <strong>Next</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg05" border="1" class="imgborder_off" id="pkg05" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 6.</b></td>
+      <td><p class="bodycopy  style11">Make sure Immediately is selected and click <strong>Submit</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg06" border="1" class="imgborder_off" id="pkg06" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 7.</b></td>
+      <td><p class="bodycopy  style11">The package is being generated.</p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg07" border="1" class="imgborder_off" id="pkg07" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 8.</b></td>
+      <td><p class="bodycopy  style11">The package file has been successfully generated. Click <strong>OK</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg08" border="1" class="imgborder_off" id="pkg08" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 9.</b></td>
+      <td><p class="bodycopy  style11">To view the package, in the Summary section, click <strong>Yes</strong> under Packaged. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg09" border="1" class="imgborder_off" id="pkg09" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 10.</b></td>
+      <td><p class="bodycopy  style11">Select the file that was generated and click <strong>View</strong>. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg10" border="1" class="imgborder_off" id="pkg10" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 11.</b></td>
+      <td><p class="bodycopy  style11">On the Packaging Details page, select the <strong>Files</strong> tab. </p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg11" border="1" class="imgborder_off" id="pkg11" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 12.</b></td>
+      <td><p class="bodycopy  style11">The list of files included in the package are displayed<strong></strong>. This package can now be sent to Oracle Support for further analysis.</p>
+          <p class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="pkg12" border="1" class="imgborder_off" id="pkg12" onClick="hideImage(this)" onMouseOver="showImage(this)"></p>
+          <p>&nbsp;</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="t5" id="t5"></a>Cleanup</h3>
+<p class="bodycopy">After analying the problem you realize that the number of columns for OBETABLE is wrong in TAB$. To fix the issue, you need to update the TAB$ and close your problem. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td class="bodycopy"><b> 1.</b></td>
+    <td><p class="bodycopy">Switch back to your terminal window and execute the following script:</p>
+      <pre class="style4 bodycopy"><strong>./corr_fix.sh</strong></pre>
+      <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="cleanup01" border="1" class="imgborder_off" id="cleanup01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tbody>
+    <tr valign="top">
+      <td class="bodycopy"><b> 2.</b></td>
+      <td><p class="bodycopy">Switch to Enterprise Manager and select the link next to Problems in Package.</p>
+        <pre class="style4 bodycopy"><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="cleanup02" border="1" class="imgborder_off" id="cleanup02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></pre>
+        <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td width="25" class="bodycopy"><b> 3.</b></td>
+      <td width="597"><p class="bodycopy">Select the checkbox in front of the problem and click <strong>Close</strong>. </p>
+          <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="cleanup03" border="1" class="imgborder_off" id="cleanup03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 4.</b></td>
+      <td><p class="bodycopy">To confirm, click <strong>Yes</strong>. </p>
+          <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="cleanup04" border="1" class="imgborder_off" id="cleanup04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+          <p>&nbsp;</p></td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> 5.</b></td>
+      <td><p class="bodycopy">The incidents have been closed. </p>
+          <p><span class="bodycopy"><img src="images/view_image.gif" alt="Move your mouse over this icon to see the image" name="cleanup05" border="1" class="imgborder_off" id="cleanup05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+          <p>&nbsp;</p></td>
+    </tr>
+  </tbody>
+</table>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<h3 class="navheader"><a name="s" id="s"></a>Summary</h3>
+<p><span class=bodycopy>In this tutorial, you've learned how to:<span class="style12"> </span></span></p>
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Create a Dictionary Integrity Check </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Review and investigate an active incident </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Create a package of a problem</td>
+  </tr>
+  <tbody>
+  </tbody>
+</table>
+<p align="right"> <span class="bodylink"><a href="#t">Back to Topic List</a></span></p>
+<p><span class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="noscreenshots" width=24
+height=24 border=0 onMouseOver="hideAllImages()"></span></span><b class="bodycopy"><font color="#FF0000">Move your mouse over this icon to hide all screenshot</font></b></p>
+<h3>&nbsp;</h3>
+<h4>&nbsp;</h4>
+<h4>&nbsp;</h4>
+</body>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>
+</html>

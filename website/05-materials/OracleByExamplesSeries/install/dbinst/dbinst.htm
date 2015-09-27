@@ -1,0 +1,304 @@
+<html>
+<head>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<title>Installing Oracle Database 11g on Linux</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<title>
+Installing Oracle Database 10<em>g</em> on Windows</title>
+<style type="text/css">
+<!--
+.style1 {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+}
+.style3 {font-weight: bold}
+.style5 {font-family: "Courier New", Courier, mono}
+-->
+</style>
+<body bgcolor="#FFFFFF" text="#000000">
+<h3 class="topstoryhead">Installing Oracle Database 11<i>g</i> on Linux </h3>
+<h4 class=navheader>Purpose</h4>
+<p class="bodycopy">In this tutorial, you learn how to install Oracle Database 11<i>g</i> 
+  on Linux.</p>
+<h4 class=navheader><a name="t"></a>Topics</h4>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16" name="Image1"></td>
+    <td colspan="2" class="bodycopy" width="339"><a href="#o">Overview</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy" width="339"><a href="#i" class="bodylink">Installing 
+      Oracle Database 11<i>g</i> on Linux </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><a href="#t1" class="bodylink">Testing Your Installation</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16" name="Image1"></td>
+    <td colspan="2" class="bodycopy"><a href="#s">Summary</a></td>
+  </tr>
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"> 
+  <b><span class="style3"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place 
+  the cursor over this icon to</font><font color="#ff0000"> load and view all 
+  the screenshots for this tutorial. <font color="#ff0000"> </font>  (Caution: This action loads all screenshots simultaneously, so response time may be slow depending on your Internet connection.) </font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over 
+  an individual icon in the following steps to load and view only the screenshot 
+  associated with that step. You can hide an individual screenshot by clicking 
+  it.</p>
+<h3 class=navheader><a name="o"></a>Overview</h3>
+<p class="bodycopy">Using the Oracle Universal Installer, you<span class="bodycopy"> 
+  </span> install the Oracle Database 11<i>g</i> software and create a database.<br>
+</p>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class=navheader><a name="i"></a>Installing Oracle Database 11<i>g</i> on Linux </h3>
+<p> <span class="bodycopy">To install the Oracle software, you must use the Oracle Universal 
+  installer.</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">For this installation, you need either the DVDs or a 
+        downloaded version of the DVDs. In this tutorial, you install from the 
+        downloaded version. From the directory where the DVD files were unzipped, 
+        open a terminal window and enter the following:</p>
+      <pre class="bodycopy style1">./runInstaller.sh </pre>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="dbinst01" border="1" class="imgborder_off" id="dbinst01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">The product you want  to install is <strong>Oracle Database 11g</strong>. Make sure the product is selected and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst01" border="1" class="imgborder_off" id="ndbinst01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 2.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">You will perform a basic installation with a starter 
+        database. Enter <strong>orcl</strong> for the Global Database Name and 
+        <strong>oracle</strong> for  Database Password and Confirm Password. 
+        Then, click <strong>Next</strong>. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst02" border="1" class="imgborder_off" id="ndbinst02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td><p class="bodycopy">You need to specify your Inventory directory. The location should be set to <b>/u01/app/oracle/oraInventory</b>. Accept the default Operating System group name, <b>oinstall</b>. Then, click <b>Next</b>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst03" border="1" class="imgborder_off" id="ndbinst03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 4.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">The installer now verifies that the system meets all 
+        the minimum requirements for installing and configuring the chosen product. 
+        Please correct any reported errors before continuing. 
+        When the check successfully completes, click 
+        <b>Next</b>.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst10" border="1" class="imgborder_off" id="ndbinst10" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td><p class="bodycopy">Oracle Configuration Manager allows you to associate your configuration information with your Metalink account. You can choose to enable it on this window. Then, click <b>Next.</b></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst05" border="1" class="imgborder_off" id="ndbinst05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 5.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">Review the Summary window to verify what is to be installed. 
+        Then, click <b>Install</b>.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst06" border="1" class="imgborder_off" id="ndbinst06" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 6. </b></td>
+    <td width="600"> 
+      <p class="bodycopy">The progress window appears.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst07" border="1" class="imgborder_off" id="ndbinst07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 7.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">The Configuration Assistants window appears.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst07a" border="1" class="imgborder_off" id="ndbinst07a" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 8.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">Your database is now being created.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst08" border="1" class="imgborder_off" id="ndbinst08" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 9.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">When the database has been created, you can unlock the 
+        users you want to use. Click <strong>OK</strong>. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="dbinst10" border="1" class="imgborder_off" id="dbinst10" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 10.</b></td>
+    <td width="600"> 
+      <p><span class="bodycopy">You need to execute <b>orainstRoot.sh</b> and</span><span class="bodycopy"><b> root.sh </b> as the <b>root</b> user. </span></p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="dbinst11" border="1" class="imgborder_off" id="dbinst11" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p
+    >
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 11.</b></td>
+    <td><p><span class="bodycopy">Open a terminal window and enter the following commands. Follow the prompts as instructed. </span></p>
+        <pre><font face="Courier New, Courier, mono"><b>su -
+&lt;rootpassword&gt;
+cd /u01/app/oracle/oraInventory
+./orainstRoot.sh
+cd ../product/11.1.0/db_1
+./root.sh
+exit
+exit</b></font></pre>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="dbinst12" border="1" class="imgborder_off" id="dbinst12" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p
+    ></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 12.</b></td>
+    <td><p><span class="bodycopy">Switch back to the Universal Installer and click <strong>OK</strong>. </span></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="dbinst13" border="1" class="imgborder_off" id="dbinst13" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p
+    ></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 13.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">Click <b>Exit</b>. Click <strong>Yes</strong> to confirm exit.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="ndbinst09" border="1" class="imgborder_off" id="ndbinst09" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p
+    >
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class=navheader><a name="t1" id="t1"></a>Testing Your Installation </h3>
+<p> <span class="bodycopy">To test that your installation completed successfully, perform the following steps: </span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="600"><p class="bodycopy">Open a browser and enter the following URL:</p>
+        <p class="bodycopy"><strong>https://&lt;hostname&gt;:1158/em</strong></p>
+        <p class="bodycopy">where <span class="style5">&lt;</span><em>hostname</em><span class="style5">&gt;</span> should be changed to your machine name, IP address, or localhost. </p>
+        <p class="bodycopy">Because Enterprise Manager Database Control is a secure site, you need a certificate. Select the <strong>Accept this certificate permanently</strong> option, and then click <strong>OK</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="testem01" border="1" class="imgborder_off" id="testem01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">Enter <strong>system</strong> as the User Name and <strong>oracle</strong> as the Password, and then click <strong>Login</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="testem02" border="1" class="imgborder_off" id="testem02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td width="600"><p class="bodycopy">The Database Control Home Page appears. Your installation was successful. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="testem03" border="1" class="imgborder_off" id="testem03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<p align="left" class="navheader"><a name="s"></a><strong>Summary</strong></p>
+<p><SPAN class=bodycopy>In this tutorial, you learned how to install and test the Oracle Database 11<em>g</em> installation on Linux. </SPAN></p>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h4 class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" class="bodycopy" onMouseOver="hideAllImages()"> 
+  <b><font color="#FF0000">Move your mouse over this icon to hide all screenshots.</font></b></h4>
+<p class="bodycopy">&nbsp;</p>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>

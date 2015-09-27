@@ -1,0 +1,726 @@
+<html>
+<head>
+<title>Managing DICOM Format Data in Oracle database 11g</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<title>Building .NET Applications Using Oracle Developer Tools For Visual Studio .NET</title>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style3 {font-weight: bold}
+.style4 {font-family: "Courier New", Courier, mono; font-weight: bold; }
+.style5 {color: #FF0000}
+.style9 {font-weight: bold}
+-->
+</style>
+</head>
+<body>
+<h3 align="left"><span class="topstoryhead">Managing DICOM Format Data in Oracle 
+  Database 11<i>g </i></span></h3>
+<h4 class="navheader">Purpose</h4>
+<p><span class="bodycopy">This tutorial describes how to 
+
+
+upload, store, manipulate, and export medical image data inside the Oracle Database using Oracle Multimedia. </span></p>
+<h4 class="navheader">Time to Complete </h4>
+<p class="bodycopy">Approximately 30 minutes </p>
+<h4 class="navheader"><b><a name="t"></a>Topics</b></h4>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#o"> Overview</a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#p"> Prerequisites</a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="boldbodylink"><a href="#t1"  class="bodylink">Creating a Directory Object for Import and Export </a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="boldbodylink"><a href="#t2" class="bodylink">Creating a Table with an ORDDicom Column </a> </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="boldbodylink"><a href="#t3" class="bodylink">Importing Medical Images </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t4" class="bodylink">Retrieving Object Attributes </a> </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t4g" class="bodylink">Retrieving DICOM Metadata </a> </td>
+  </tr>
+  <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t5" class="bodylink">Creating Thumbnails and Changing Formats</a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t6" class="bodylink">Making Anonymous Copies of DICOM Objects</a> </td>
+  </tr>
+   <tr valign="top"> 
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodylink"><a href="#t7" class="bodylink">Checking the Conformance of DICOM Objects</a> </td>
+  </tr>
+   <tr valign="top">
+     <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+     <td colspan="2" class="boldbodylink"><a href="#t8" class="bodylink">Exporting Images</a> </td>
+   </tr>
+   <tr valign="top">
+     <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+     <td colspan="2" class="boldbodylink"><a href="#t9" class="bodylink">Cleaning Up </a> </td>
+   </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#s"> Summary </a></td>
+  </tr>
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"> <b><span class="style3"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place the cursor over this icon to</font><font color="#ff0000"> load and view all the screenshots for this tutorial. 
+
+
+<strong> (Caution: This action loads all screenshots simultaneously, so response time may be slow depending on your Internet connection.)</strong> </font><font color="#ff0000"></font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over an individual icon in the following steps to load and view only the screenshot associated with that step. You can hide an individual screenshot by clicking it.</p>
+<h3 class="navheader"><a name="o"></a>Overview</h3>
+<p> <span class="bodycopy"></span><span class="bodycopy">Oracle </span><span class="bodycopy">Multimedia DICOM enables Oracle Database to store, manage, and retrieve DICOM format medical images and other objects integrated  with other enterprise information. Oracle Multimedia DICOM extends Oracle Database reliability, availability, and data management to media objects in medical applications. </span></p>
+<p class="bodycopy">Oracle Multimedia DICOM supports Digital Imaging and Communications in Medicine (DICOM), the standard for medical images.</p>
+<p class="bodycopy">This tutorial provides simple PL/SQL examples that upload, store, manipulate, and export medical image data inside a database using Oracle Multimedia. </p>
+<p class="bodycopy"> Oracle Multimedia stores DICOM format data in database tables 
+  with columns of <font color="blue"><span style="color: blue;"><font color="#000000">the</font></span></font> 
+  <span class="style1"><font color="#339966"><span style="color: rgb(51, 153, 102);"><font color="#000000">ORDDicom</font></span></font></span> 
+  type. An example of an <span class="style1"><font color="#339966"><span style="color: rgb(51, 153, 102);"><font color="#000000">ORDDicom</font></span></font></span> 
+  object in a database table is illustrated in the following diagram.</p>
+<p class="bodycopy"><img src="images/dicomdiag.gif" width="449" height="274"></p>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="p"></a>Prerequisites</h3>
+<p class="bodycopy">Before you perform this tutorial, you should: </p>
+<table border="0" cellpadding="1" cellspacing="0" width="650">
+  <tbody>
+    <tr valign="top">
+      <td class="bodycopy" width="25"><b> <b>1.</b></b></td>
+      <td colspan="2">
+      <p class="bodycopy"> Install Oracle Database Release 11.1 with Oracle Multimedia.</p>
+    </td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b> <b>2.</b></b></td>
+      <td colspan="2">
+      <p class="bodycopy"> Install Oracle Database 11<i>g</i> products (from the 
+        Companion CD).</p>
+    </td>
+    </tr>
+    <tr valign="top">
+      <td class="bodycopy"><b>3.</b></td>
+      
+    <td colspan="2" class="bodylink">Download and unzip the <a href="files/dicom.zip"><font face="Courier New, Courier, mono">dicom.zip</font></a> 
+      file into a working directory.</td>
+    </tr>
+  </tbody>
+</table>
+<P align="right" class=bodycopy><a href="#t" class="bodylink">Back to Topic List</a></P>
+<h3 class="navheader"><a name="t1" id="t1"></a>Creating a Directory Object for Import and Export </h3>
+<p class="bodycopy"> To avoid unnecessary database connects, create the directory object and grants required for import and export activities. Perform the following steps:</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"><p class="bodycopy">You need to make sure that the <span class="style1">PM</span> user is unlocked and that the user has the <span class="style1">create any directory</span> privilege. Open a SQL*Plus session, and execute the following commands:</p>
+      <pre class="bodycopy"><span class="style4"><font face="Courier New, Courier, mono">sqlplus sys/&lt;syspassword&gt;@&lt;sid&gt; as sysdba
+alter user PM identified by PM account unlock;
+grant create any directory to PM;</font>
+</span></pre>
+      <p class="bodycopy"><span class="style4"><br>
+      </span></p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy">Now you can create the directory object as the <span class="style1">PM</span> user. From your SQL*Plus session, execute the following commands:</p>
+        
+      <pre class="bodycopy"><span class="style4">connect PM/PM@&lt;Sid&gt;
+create or replace directory IMAGEDIR as '&lt;file_directory&gt;';</span></pre>
+        
+      <p class="bodycopy">Here, <span class="style1">&lt;file_directory&gt;</span> 
+        is the location where all the scripts/files you need for this tutorial 
+        are located. This could be something like <span class="style1">/home/oracle/dicom</span>. 
+        Note: if this directory doesn't exist, you need to create it. </p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t2" id="t2"></a>Creating a Table with an ORDDicom Column </h3>
+<p class="bodycopy"><span class="bodycopy"> This tutorial uses a simple table 
+  with four columns: an integer identifier ( id ), an ORDSYS.ORDDicom object ( 
+  dicom ), an ORDSYS.ORDImage object ( imageThumb ), and another ORDSYS.ORDDicom 
+  object ( anonDicom ). Note that all Oracle-provided multimedia objects and procedures 
+  are defined in the ORDSYS schema. </span> Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602"><p class="bodycopy">From your SQL*Plus session, execute the following commands: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@create_dicom_table</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">create_dicom_table.sql</span> code is as follows:</p>
+        <pre class="style1 bodycopy">set echo on;<br>
+drop table medical_image_table;<br>
+create table medical_image_table <br>             (id          integer primary key, <br>              dicom       ordsys.orddicom,<br>              imageThumb  ordsys.ordimage, <br>              anonDicom   ordsys.orddicom);</pre>        
+        <p><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="create_table" border="1" class="imgborder_off" id="create_table" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List</a></p>
+<h3 class="navheader"><a name="t3" id="t3"></a>Importing Medical Images </h3>
+<p class="bodycopy">This topic describes the loading of medical images from the 
+  database file system into the newly created table named <span class="style1">medical_image_table</span>. 
+  Note that in most cases you will want to load your data using SQL*Loader rather 
+  than the ORDDicom import method that this example shows.</p>
+<p class="bodycopy">Create a PL/SQL procedure <span class="style1">image_import()</span> 
+  that inserts a new row into <span class="style1">medical_image_table</span>, 
+  imports the DICOM data in file name into the newly created ORDDICOM object, 
+  and then extracts DICOM attributes into the metadata attribute based on the 
+  default mapping document and into the UID attributes of the ORDDICOM object. 
+  Note that the default mapping document, <span class="style1">ordcmmp.xml</span>, 
+  is loaded during installation. It is possible to create a customized mapping 
+  document and to extract attributes into a separate XML document, but that topic 
+  is beyond the scope of this tutorial.</p>
+<p class="bodycopy">Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"><p class="bodycopy">From your SQL*Plus session, enter the following commands: </p>
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@create_import_procedure</font></strong><strong></strong></span></pre>
+      <p class="bodycopy">The <span class="style1">create_import_procedure.sql</span> code is as follows:</p>
+      <pre class="bodycopy style1">-- Set Data Model Repository<br>execute ordsys.ord_dicom.setDataModel();<br>
+create or replace procedure image_import(dest_id number, filename varchar2) is<br>  dcm ordsys.orddicom;<br>begin<br>   delete from medical_image_table where id = dest_id;<br>   insert into medical_image_table (id, dicom, imageThumb, anonDicom) <br>   values (dest_id, ordsys.orddicom(&lsquo;file&rsquo;, &lsquo;IMAGEDIR&rsquo;, filename, 0), <br>           ordsys.ordimage.init(), ordsys.orddicom()) <br>   returning dicom into dcm;<br>   dcm.import(1);<br>
+   update medical_image_table set dicom=dcm where id=dest_id;
+   commit;<br>end;<br>/
+show errors;</pre>
+      <p><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="create_proc" border="1" class="imgborder_off" id="create_proc" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy"> Now you can execute the newly created procedure to import the sample DICOM file. From your SQL*Plus session, enter the following commands: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">execute image_import(1,'179.dcm')</font></strong><font face="Courier New, Courier, mono">;</font></span></pre>
+        <p><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="import_image" border="1" class="imgborder_off" id="import_image" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List</a></p>
+<p class="navheader"><a name="t4" id="t4"></a>Retrieving Object Attributes</p>
+<p class="bodycopy">When you called the import method in the previous topic, you 
+  passed the parameter 1 specifying that you should invoke the <font face="Courier New, Courier, mono">setProperties</font> 
+  method on import.&nbsp; <font face="Courier New, Courier, mono">setProperties</font> 
+  is the method that tells Oracle Multimedia to parse the DICOM data and extract 
+  DICOM metadata into ORDDicom object attributes.&nbsp; Certain frequently accessed 
+  attributes such as the ones you are querying here (<font face="Courier New, Courier, mono">SOP_INSTANCE_UID</font>, 
+  <font face="Courier New, Courier, mono">SOP_CLASS_UID</font>, and so on) are 
+  stored in specific ORDDicom object attributes.&nbsp; In addition, all DICOM 
+  metadata contained in the DICOM binary data is extracted into an XML document 
+  that adheres to your default metadata mapping document.&nbsp; The resulting 
+  XML metadata document is stored in the ORDDicom metadata attribute and is available 
+  for indexing and querying.</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t4b"> Retrieve <font face="Courier New, Courier, mono">SOP_INSTANCE_UID</font></a> 
+    </td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t4c">Retrieve <font face="Courier New, Courier, mono">SOP_CLASS_UID</font></a> 
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t4d">Retrieve <font face="Courier New, Courier, mono">STUDY_INSTANCE_UID</font></a> 
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t4e">Retrieve <font face="Courier New, Courier, mono">SERIES_INSTANCE_UID</font></a> 
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodylink"><a href="#t4f">Retrieve content length (number 
+      of bytes of DICOM content)</a> </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List</a></p>
+<p class="boldbodycopy"><a name="t4b" id="t4b"></a>Retrieve <font face="Courier New, Courier, mono">SOP_INSTANCE_UID</font></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">This query retrieves the Service-Object Pair Instance 
+        UID from the ORDDicom object attribute. This data was extracted from the 
+        DICOM binary data when <font face="Courier New, Courier, mono">setProperties</font> 
+        was called.&nbsp; From your SQL*Plus session, execute the following script: 
+      </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@sop_instance_uid</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">sop_instance_uid.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">select id, <br>       t.dicom.getSOPInstanceUID() as SOP_Instance_UID <br>from medical_image_table t;</pre>
+        <p class="bodycopy style9 style1"><br>
+            <span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="sop_instance_uid" border="1" class="imgborder_off" id="sop_instance_uid" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></p>        <pre class="bodycopy style1">&nbsp;</pre>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t4">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t4c" id="t4c"></a>Retrieve <font face="Courier New, Courier, mono">SOP_CLASS_UID</font></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy"><span class="bodycopy">This query retrieves the Service-Object 
+        Pair Class UID from the ORDDicom object attribute. This data was extracted 
+        from the DICOM binary data when <font face="Courier New, Courier, mono">setProperties</font> 
+        was called.</span> From your SQL*Plus session, execute the following script: 
+      </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@sop_class_uid</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">sop_class_uid.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">select id, <br>       t.dicom.getSOPClassUID() as SOP_Class_UID<br>from medical_image_table t;</pre>
+        <p class="bodycopy style9 style1"><br>
+            <span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="sop_class_uid" border="1" class="imgborder_off" id="sop_class_uid" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></p>        <pre class="bodycopy style1">&nbsp;</pre>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t4">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t4d" id="t4d"></a>Retrieve<font face="Courier New, Courier, mono"> 
+  STUDY_INSTANCE_UID</font></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">This query retrieves the Study Instance UID from the 
+        ORDDicom object attribute.&nbsp; This data was extracted from the DICOM 
+        binary data when <font face="Courier New, Courier, mono">setProperties</font> 
+        was called. From your SQL*Plus session, execute the following script: 
+      </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@study_instance_uid</font></strong><font face="Courier New, Courier, mono"><strong></strong></font></span></pre>
+        <p class="bodycopy">The <span class="style1">study_instance_uid.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">select id, <br>       t.dicom.getStudyInstanceUID() as Study_Instance_UID <br>from medical_image_table t;</pre>
+        <p class="bodycopy style9 style1"><br>
+            <span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="study_instance_uid" border="1" class="imgborder_off" id="study_instance_uid" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></p>        
+        <pre class="bodycopy style1">&nbsp;</pre>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t4">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t4e" id="t4e"></a>Retrieve <font face="Courier New, Courier, mono">SERIES_INSTANCE_UID</font></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy"><span class="bodycopy">This query retrieves the Series 
+        Instance UID from the ORDDicom object attribute. This data was extracted 
+        from the DICOM binary data when <font face="Courier New, Courier, mono">setProperties</font> 
+        was called.</span> From your SQL*Plus session, execute the following script: 
+      </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@series_instance_uid</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">series_instance_uid.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">select id, <br>       t.dicom.getSeriesInstanceUID() as Series_Instance_UID<br>from medical_image_table t;</pre>
+        <p class="bodycopy style9 style1">            <span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="series_instance_uid" border="1" class="imgborder_off" id="series_instance_uid" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></p>
+        <pre class="bodycopy style1">&nbsp;</pre>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t4">Back to Topic</a></p>
+<p class="boldbodycopy"><a name="t4f" id="t4f"></a>Retrieve Content Length (Number 
+  of Bytes of DICOM content)</p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy">This query retrieves the length of the DICOM binary 
+        data stored in the source attribute. From your SQL*Plus session, execute 
+        the following script: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@content_length</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">content_length.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">select id,<br>       t.dicom.getcontentlength() as content_Length <br>from medical_image_table t;</pre>
+      <p class="bodycopy style9 style1">            <span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="content_length" border="1" class="imgborder_off" id="content_length" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></p>        
+        <pre class="bodycopy style1">&nbsp;</pre>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t4">Back to Topic</a></p>
+<p class="navheader"><a name="t4g" id="t4g"></a>Retrieving DICOM Metadata</p>
+<p class="bodycopy">Patient Name, Patient ID, and Modality are some of the many 
+  DICOM standard attributes that were embedded in the DICOM image and extracted 
+  into an XML document when <font face="Courier New, Courier, mono">setProperties</font> 
+  was called during import.&nbsp;Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2" width="602">
+      <p class="bodycopy"><span class="bodycopy"> This query shows how you can 
+        extract information from the extracted XML metadata document.</span> From 
+        your SQL*Plus session, execute the following script: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@patient_info</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">patient_info.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">select id, <br>        extractValue(t.dicom.metadata, <br>        '/DICOM_OBJECT/*[@name=&quot;Patient''s Name&quot;]/VALUE', <br>        'xmlns=http://xmlns.oracle.com/ord/dicom/metadata_1_0') as &quot;PATIENT_NAME&quot;, <br>        extractValue(t.dicom.metadata, <br>        '/DICOM_OBJECT/*[@name=&quot;Patient ID&quot;]', <br>        'xmlns=http://xmlns.oracle.com/ord/dicom/metadata_1_0') as &quot;PATIENT_ID&quot;, <br>        extractValue(t.dicom.metadata, <br>        '/DICOM_OBJECT/*[@name=&quot;Modality&quot;]', <br>        'xmlns=http://xmlns.oracle.com/ord/dicom/metadata_1_0') as &quot;MODALITY&quot; <br>from medical_image_table t;</pre>
+        <p class="bodycopy style9 style1">            <span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="patient_info" border="1" class="imgborder_off" id="patient_info" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></p>
+        <pre class="bodycopy style1">&nbsp;</pre>
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List </a></p>
+<p class="navheader"><a name="t5" id="t5"></a>Creating Thumbnails and Changing Formats</p>
+<p class="bodycopy">This topic illustrates some image processing operations that can be invoked within the database. To create a JPEG thumbnail image from a DICOM image, a new ORDImage object is generated from the ORDDicom object and then processed. To do this, you describe the desired properties of the new ORDImage object. For example, the following description generates a JPEG thumbnail image of size 75x100 pixels: &lsquo;<span class="style1">fileformat=jfif fixedscale=75 100</span>&rsquo;.</p>
+<p class="bodycopy">The following example defines <span class="style1">generate_thumb()</span> 
+  that populates the <span class="style1">imageThum</span>b column of <span class="style1">medical_image_table</span> 
+  with identifier <span class="style1">source_id</span> and generates an ORDImage 
+  in the column by executing <span class="style1">processCopy</span>&rsquo;ing on the ORDDicom 
+  in the source row.</p>
+<p class="bodycopy">Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">To create the <font face="Courier New, Courier, mono">generate_thumb</font> 
+        procedure, execute the following script from your SQL*Plus session: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@create_thumbnail_procedure</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">create_thumbnail_procedure.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">-- Set Data Model Repository<br>execute ordsys.ord_dicom.setDataModel();<br>
+create or replace procedure generate_thumb(source_id number, verb varchar2) is<br>    dcmSrc    ordsys.orddicom;<br>    imgDst    ordsys.ordimage;<br>begin<br>  select dicom, imageThumb into dcmSrc, imgDst from medical_image_table <br>         where id = source_id for update;<br>  dcmSrc.processCopy(verb, imgDst);<br>
+  update medical_image_table set imageThumb = imgDst where id = source_id;
+  commit;<br>end;<br>/
+show errors;</pre>
+        <p><span class="bodycopy style9 style1"><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="create_thumbnail_proc" border="1" class="imgborder_off" id="create_thumbnail_proc" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy">From your SQL*Plus session, execute the following script: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@create_thumbnail_image</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">create_thumbnail_image.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">-- Create a JPEG thumbnail image for our test DICOM<br>execute generate_thumb(1, 'fileformat=jfif fixedscale=75 100');</pre>
+        <p><span class="bodycopy style9 style1"><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="create_thumbnail_image" border="1" class="imgborder_off" id="create_thumbnail_image" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List </a></p>
+<h4>
+  <p class="navheader"><a name="t6" id="t6"></a>Making Anonymous Copies of DICOM Objects</p>
+</H4>
+<p class="bodycopy">This topic shows how to protect patient privacy by making 
+  DICOM objects anonymous. To make DICOM objects anonymous, create a new DICOM 
+  object with certain user-specifiable DICOM attributes either removed or overwritten 
+  in the new DICOM binary data and the associated ORDDicom object metadata. An 
+  XML anonymity definition document specifies which DICOM objects should be removed 
+  or replaced and what action should be taken to anonymize each attribute. A default 
+  anonymity definition document, <font face="Courier New, Courier, mono">ordcman.xml</font>, 
+  is loaded during installation. It is beyond the scope of this tutorial to describe 
+  customizing an anonymity definition document. For the purposes of this tutorial, 
+  the default anonymity definition document is used. </p>
+<p class="bodycopy">The following example defines <span class="style1">generate_anon()</span> 
+  that populates the <font face="Courier New, Courier, mono">anonDicom</font> 
+  column of <span class="style1">medical_image_table</span> with identifier <span class="style1">source_id</span> 
+  and generates an ORDDicom in the column by invoking <span class="style1">makeAnonymous()</span> 
+  on the DICOM in the source row.</p>
+<p class="bodycopy">Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">To create the <font face="Courier New, Courier, mono">generate_anon 
+        </font>procedure, execute the following script from your SQL*Plus session: 
+      </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@create_anonimage_proc</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">create_anonimage_proc.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">-- Set Data Model Repository<br>execute ordsys.ord_dicom.setDataModel();<br>
+create or replace procedure generate_anon(source_id number) is<br>    dcmSrc    ordsys.orddicom;<br>    anonDst   ordsys.orddicom;<br>    dest_sop_inst_uid varchar2(128) := '1.2.3';<br>
+begin<br>  select dicom, anonDicom into dcmSrc, anonDst from medical_image_table <br>         where id = source_id for update;<br>  dcmSrc.makeAnonymous(dest_sop_inst_uid, anonDst);<br>  update medical_image_table set anonDicom = anonDst where id = source_id;<br>  commit;<br>end;<br>/<br>show errors;</pre>
+        <p><span class="bodycopy style9 style1"><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="create_anonimage_proc" border="1" class="imgborder_off" id="create_anonimage_proc" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></span></p>
+        <p class="bodycopy"> You should replace the temporary UID for the dest_sop_instance_uid variable in generate_anon with a globally-unique UID. Note, the procedure will run if you don&rsquo;t do this, but you should then destroy the resulting anonymous DICOM image. </p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2">
+      <p class="bodycopy"> Generate an anonymous copy of your test DICOM. Execute 
+        the following command from your SQL*Plus session: </p>
+        
+      <pre class="bodycopy"><span class="bodycopy style1"><strong><font face="Courier New, Courier, mono">execute generate_anon(1);</font></strong></span></pre>
+        <p><span class="bodycopy style9 style1"><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="execute_generate_anon" border="1" class="imgborder_off" id="execute_generate_anon" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td colspan="2"><p class="bodycopy"> You can now review the results. Execute the following script from your SQL*Plus session: </p>
+        
+      <pre class="bodycopy"><span class="bodycopy style1"><strong><font face="Courier New, Courier, mono">@select_anonimage</font></strong></span></pre>
+        <p><span class="bodycopy style9 style1"><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="select_anonimage" border="1" class="imgborder_off" id="select_anonimage" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List </a></p>
+<h4>
+  <p class="navheader"><a name="t7" id="t7"></a>Checking the Conformance of DICOM Objects</p>
+</H4>
+<p class="bodycopy">The sample code in this topic shows how to check the conformance 
+  of DICOM data against a set of user-specified conformance rules. Conformance 
+  rules are specified in one or more constraint definition documents, which are 
+  XML documents that specify attribute relationships and semantic constraints 
+  that cannot be expressed by the DICOM metadata schema. A default constraint 
+  definition document, <span class="style1">ordcmct.xml</span>, is loaded during 
+  installation. It is beyond the scope of this tutorial to describe customizing 
+  constraint definition documents. For the purposes of this tutorial, the default 
+  constraint definition document is used. </p>
+<p class="bodycopy">The following example checks the conformance of the DICOM 
+  column of <span class="style1">medical_image_table</span> with identifier <span class="style1">source_id</span> 
+  by invoking is<span class="style1">ConformanceValid()</span> on the DICOM in 
+  the source row.</p>
+<p class="bodycopy"><span class="style5"></span>  Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">Check to see if the DICOM image conforms with the constraint 
+        rules. Execute the following script from your SQL*Plus session: </p>
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@check_object_conform</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">check_object_conform.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">-- Set Data Model Repository<br>execute ordsys.ord_dicom.setDataModel();<br>
+select id, t.dicom.isconformanceValid('OracleOrdObject') as conformant <br>from medical_image_table t;</pre>
+        <p><span class="bodycopy style9 style1"><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="check_object_conform" border="1" class="imgborder_off" id="check_object_conform" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></span></p>
+        <p class="bodycopy">&nbsp; </p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">If the DICOM image does not conform to the constraint 
+        definitions, a message or messages are inserted into a table viewable 
+        by querying the <span class="style1">ORDDCM_CONFORMANCE_VLD_MSGS</span> 
+        view. This view lists the constraint messages generated during constraint 
+        validation. Execute the following script from your SQL*Plus session: </p>
+        
+      <pre class="bodycopy"><span class="bodycopy style1"><strong><font face="Courier New, Courier, mono">@review_conform_msgs</font></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">review_conform_msgs.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">describe orddcm_conformance_vld_msgs;<br>select * from orddcm_conformance_vld_msgs;</pre>
+        <p><span class="bodycopy style9 style1"><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="review_conform_msgs" border="1" class="imgborder_off" id="review_conform_msgs" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodycopy"><a href="#t">Back to Topic List </a></p>
+<p align="left" class="navheader"><a name="t8" id="t8"></a>Exporting Images</p>
+<p align="left" class="bodycopy"> This topic shows how to export DICOM data from the database to the file system on the database server. Exporting DICOM data from the database with Oracle Multimedia&rsquo;s export method requires that the database writes to the database server&rsquo;s file system. Writing to the file system requires granting write permission to your user (the PM user) on the directory object where you wish to write your output DICOM file. Perform the following steps: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">Create a procedure that will export the DICOM data to 
+        a file in the <font face="Courier New, Courier, mono">IMAGEDIR</font> 
+        directory. Execute the following script from your SQL*Plus session: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@create_export_proc</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">create_export_proc.sql</span> code is as follows:</p>
+        <pre class="bodycopy style1">create or replace procedure dicom_export (source_id number, filename varchar2) as<br>  dcmSrc ordsys.orddicom;<br>begin<br>  select dicom into dcmSrc from medical_image_table where id = source_id;<br>  dcmSrc.export('FILE', 'IMAGEDIR', filename);<br>end;<br>/<br>show errors;</pre>
+        <p><span class="bodycopy style9 style1"><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="create_export_proc" border="1" class="imgborder_off" id="create_export_proc" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></span></p>
+        <p class="bodycopy">&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2"><p class="bodycopy">Now you can execute the procedure.  Execute the following command from your SQL*Plus session: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">execute dicom_export(1, 'dicom_orig.dcm');</font></strong></span></pre>
+        <p><span class="bodycopy style9 style1"><span class="bodycopy"><span class="style4"><span class="navheader"><img src="images/view_image.gif" name="execute_dicom_export" border="1" class="imgborder_off" id="execute_dicom_export" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></span></span></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">To see the file that was created, open another terminal window 
+        and execute the following command from the <font face="Courier New, Courier, mono">IMAGEDIR</font> 
+        directory.</p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">ls -al dicom_orig.dcm</font></strong></span></pre>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<p align="left" class="navheader"><a name="t9" id="t9"></a>Cleaning Up </p>
+<p align="left" class="bodycopy">Perform the following steps to clean up your 
+  environment: </p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td colspan="2"><p class="bodycopy">Execute the following script from your SQL*Plus session as the <strong>PM</strong> user: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@cleanup01</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">cleanup01.sql</span> code is as follows:</p>
+      <pre class="bodycopy style1">drop procedure image_import;<br>drop procedure generate_thumb;<br>drop procedure generate_anon;<br>drop procedure dicom_export;<br>drop table     medical_image_table;
+</pre>
+      <p class="bodycopy">&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 2.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">Log in to SQL*Plus as the <strong><font face="Courier New, Courier, mono">SYS</font></strong> 
+        user:</p>
+        
+      <pre class="bodycopy"><span class="style4">sqlplus sys/&lt;syspassword&gt;@&lt;Sid&gt; as sysdba</span></pre>
+        <p class="bodycopy">&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 3.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">Execute the following script from your SQL*Plus session 
+        as the <strong><font face="Courier New, Courier, mono">SYS</font></strong> 
+        user: </p>
+        
+      <pre class="bodycopy"><span class="style1 bodycopy"><strong><font face="Courier New, Courier, mono">@cleanup02</font></strong><strong></strong></span></pre>
+        <p class="bodycopy">The <span class="style1">cleanup02.sql</span> code is as follows:</p>
+      <pre class="bodycopy style1">drop directory imagedir;
+revoke create any directory from PM;</pre>
+        <p class="bodycopy">&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 4.</b></td>
+    <td colspan="2"><p class="bodycopy">To close your SQL*Plus session, execute the following command:</p>
+        
+      <p class="bodycopy"><font face="courier new,courier"><strong><font face="Courier New, Courier, mono">exit</font></strong>&nbsp;</font></p>
+        <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 5.</b></td>
+    <td colspan="2">
+      <p class="bodycopy">In your SQL*Plus session, navigate to your working directory 
+        and delete the export file, <span class="style1">dicom_orig.dcm</span>, that was created  
+        in <font face="Courier New, Courier, mono">imagedir</font>.</p>
+      <p class="bodycopy"><strong><font face="courier new,courier">rm dicom_orig.dcm</font></strong></p>
+      <p class="bodycopy">If prompted, confirm your deletion.&nbsp;</p>
+    <p class="bodycopy">&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h4 class="navheader"><a name="s"></a>Summary</H4>
+<p><SPAN class=bodycopy>In this tutorial, you learned how to:</SPAN></p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodycopy">Create a directory object for import and export </td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodycopy">Create a table with an ORDDicom column </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2"  class="bodycopy">Import medical images </td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Select and view DICOM attributes </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Create a thumbnail and change formats </td>
+  </tr>
+  <tr valign="top">
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Make anonymous copies of DICOM objects </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Check the conformance of DICOM objects </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="bodycopy">Export images</td>
+  </tr>
+</table>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h4 class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" class="bodycopy" onMouseOver="hideAllImages()"> 
+  <b><font color="#FF0000">Place the cursor over this icon to hide all screenshots.</font></b></h4>
+<p>&nbsp; </p>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>
+</html>

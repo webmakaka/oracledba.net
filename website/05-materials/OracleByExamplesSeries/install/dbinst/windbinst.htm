@@ -1,0 +1,437 @@
+<html>
+<head>
+<link href="../../library/otn_new.css" rel="stylesheet" type="text/css">
+<title>Installing Oracle Database 11g on Windows</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+var obeImages = new Array;
+var eyeglass = new Image;
+ 
+function preLoadImages()
+{
+  eyeglass.src = "images/view_image.gif";
+  images = document.images;
+  // Only load images with class="imgborder_off"
+  for (i = 0; i < images.length; i++)
+  {
+    image = images[i];
+    if (image.className.substr(0, 10) == "imgborder_")
+    {
+        img = new Image;
+        img.id = image.id;
+        img.name = image.name;
+        img.src = "images/" + image.name + ".gif";
+        obeImages[img.name] = img;
+    }
+  }
+}
+ 
+function showImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    newImg = obeImages[obj.name];
+    obj.src = newImg.src;
+    if (obj.border > 0)
+    {
+      obj.className = "imgborder_on";
+    }
+  }
+}
+ 
+function hideImage(obj)
+{
+  if (obj.className.substr(0, 10) == "imgborder_")
+  {
+    obj.src = eyeglass.src;
+    obj.className = "imgborder_off";
+  }
+}
+ 
+function showAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    showImage(imgs[i]);
+  }
+}
+ 
+function hideAllImages()
+{
+  imgs = document.images;
+  for (i=0; i < imgs.length; i++)
+  {
+    hideImage(imgs[i]);
+  }
+}
+//-->
+</script>
+<title>
+Installing Oracle Database 10
+<em>g</em> on Windows</title>
+<style type="text/css">
+<!--
+.style1 {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+}
+.style3 {font-weight: bold}
+.style5 {font-family: "Courier New", Courier, mono}
+-->
+</style>
+<body bgcolor="#FFFFFF" text="#000000">
+<h3 class="topstoryhead">Installing Oracle Database 11<i>g</i> on Windows </h3>
+<h4 class=navheader>Purpose</h4>
+<p class="bodycopy">In this tutorial, you learn how to install Oracle Database 11<i>g</i> 
+  on Windows.</p>
+<h4 class=navheader><a name="t"></a>Topics</h4>
+<p class="bodycopy">This tutorial covers the following topics:</p>
+<table border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16" name="Image1"></td>
+    <td colspan="2" class="bodycopy" width="339"><a href="#o">Overview</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy" width="339"><a href="#i" class="bodylink">Installing 
+      the Oracle Database 11<i>g</i> Software </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><a href="#i" class="bodylink">Creating a Listener </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><a href="#i" class="bodylink">Creating a Database </a></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td colspan="2" class="boldbodycopy"><a href="#t1" class="bodylink">Testing Your Installation</a></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16" name="Image1"></td>
+    <td colspan="2" class="bodycopy"><a href="#s">Summary</a></td>
+  </tr>
+</table>
+<h4 class="navheader">Viewing Screenshots</h4>
+<p class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" onMouseOver="showAllImages()"> 
+  <b><span class="style3"><font color="#ff0000" face="Arial, Helvetica, sans-serif">Place 
+  the cursor over this icon to</font><font color="#ff0000"> load and view all 
+  the screenshots for this tutorial. <font color="#ff0000"> </font>  (Caution: This action loads all screenshots simultaneously, so response time may be slow depending on your Internet connection.) </font></span></b></p>
+<p class="bodycopy"><b>Note: </b>Alternatively, you can place the cursor over 
+  an individual icon in the following steps to load and view only the screenshot 
+  associated with that step. You can hide an individual screenshot by clicking 
+  it.</p>
+<h3 class=navheader><a name="o"></a>Overview</h3>
+<p class="bodycopy">Using the Oracle Universal Installer, you<span class="bodycopy"> 
+  </span> install the Oracle Database 11<i>g</i> software and create a database.<br>
+</p>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class=navheader><a name="i"></a>Installing the Oracle Database 11<i>g</i> Software </h3>
+<p> <span class="bodycopy">To install the Oracle software, you must use the Oracle Universal 
+  installer.</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top"> 
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">For this installation, you need either the DVDs or a 
+        downloaded version of the DVDs. In this tutorial, you install from the 
+        downloaded version. From the directory where the DVD files were unzipped, 
+        open Windows Explorer and double-click on <span class="style5"><strong>setup.exe</strong></span> from the <span class="style5">\db\Disk1</span> directory. </p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">The product you want  to install is <strong>Oracle Database 11g</strong>. Make sure the product is selected and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbinst01" border="1" class="imgborder_off" id="windbinst01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 3.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">You will perform a custom installation. Click  <strong>Advanced Installation</strong> and click <strong>Next</strong>. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbinst02" border="1" class="imgborder_off" id="windbinst02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td><p class="bodycopy">If this is your first install, you need to specify your Inventory directory. The location should be set to <b>/u01/app/oraInventory</b>. Accept the default Operating System group name, <b>oinstall</b>. Then, click <b>Next</b>.</p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td><p class="bodycopy">You want to install the Real Application Testing component so you need to perform a custom install. Select <strong>Custom</strong> and click <b>Next</b>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbinst03" border="1" class="imgborder_off" id="windbinst03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 7.</b></td>
+    <td><p class="bodycopy">Accept the install location defaults and click <b>Next.</b></p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbinst04" border="1" class="imgborder_off" id="windbinst04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 8.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">The list of Product Components appears. Scroll down the list. In addition to the defaults, you want to select the <strong>Real Application Testing</strong> and click <strong>Next</strong>. </p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbinst05" border="1" class="imgborder_off" id="windbinst05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 10.</b></td>
+    <td><p class="bodycopy">At this time, you only want to install the software. Select <strong>Install database Software only</strong> and  click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbinst06" border="1" class="imgborder_off" id="windbinst06" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 11.</b></td>
+    <td><p class="bodycopy">Review the Summary window to verify what is to be installed. Then, click <b>Install</b>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbinst07" border="1" class="imgborder_off" id="windbinst07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 12. </b></td>
+    <td width="600"> 
+      <p class="bodycopy">The progress window appears.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbinst08" border="1" class="imgborder_off" id="windbinst08" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td class="bodycopy"><b> 16.</b></td>
+    <td width="600"> 
+      <p class="bodycopy">Click <b>Exit</b>. Click <strong>Yes</strong> to confirm exit.</p>
+      <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbinst09" border="1" class="imgborder_off" id="windbinst09" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+      <p>&nbsp;</p
+    >
+    </td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class=navheader><a name="i"></a>Creating a Listener</h3>
+<p> <span class="bodycopy">Before you create the database, a listener needs to exist. Perform the following steps to create a listener:</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="600"><p class="bodycopy">From your terminal window, enter the following:</p>
+        <pre class="bodycopy style1">netca</pre>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">Make sure that <strong>Listener Configuration</strong> is selected and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="winnetca01" border="1" class="imgborder_off" id="winnetca01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td width="600"><p class="bodycopy">Select <strong>Add</strong>  and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="winnetca02" border="1" class="imgborder_off" id="winnetca02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td><p class="bodycopy">Accept the default Listener name and  click <b>Next</b>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="winnetca03" border="1" class="imgborder_off" id="winnetca03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td><p class="bodycopy">Accept the default Selected Protocol and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="winnetca04" border="1" class="imgborder_off" id="winnetca04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td width="600"><p class="bodycopy">Accept the standard port of 1521 and click <b>Next</b>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="winnetca05" border="1" class="imgborder_off" id="winnetca05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 7.</b></td>
+    <td><p class="bodycopy">Select <strong>No</strong> to not configure another listener and click <strong>Next</strong>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="winnetca06" border="1" class="imgborder_off" id="winnetca06" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 8.</b></td>
+    <td width="600"><p class="bodycopy">Click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="winnetca07" border="1" class="imgborder_off" id="winnetca07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 9.</b></td>
+    <td><p class="bodycopy">Click <strong>Finish</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="winnetca08" border="1" class="imgborder_off" id="winnetca08" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p><span class="bodycopy">The listener has been created. </span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class=navheader><a name="i"></a>Creating a Database </h3>
+<p> <span class="bodycopy">Perform the following steps to create your database:</span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="600"><p class="bodycopy">From your terminal window, enter the following:</p>
+        <pre class="bodycopy style1">dbca</pre>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">At the Database Configuration Assistant: Welcome window, click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca01" border="1" class="imgborder_off" id="windbca01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td width="600"><p class="bodycopy">Select <strong>Create a Database </strong> and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca02" border="1" class="imgborder_off" id="windbca02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 4.</b></td>
+    <td><p class="bodycopy">Select <strong>General Purpose or Transaction Processing</strong> and click <b>Next</b>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca03" border="1" class="imgborder_off" id="windbca03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 5.</b></td>
+    <td><p class="bodycopy">Enter a Global Database name, in this case, <strong>orcl.us.oracle.com</strong>, and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca04" border="1" class="imgborder_off" id="windbca04" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 6.</b></td>
+    <td width="600"><p class="bodycopy">You do want to configure Enterprise Manager. Accept the defaults and click <b>Next</b>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca05" border="1" class="imgborder_off" id="windbca05" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 7.</b></td>
+    <td><p class="bodycopy">Select the option <strong>Use the Same Administrative Password for All Accounts</strong>, enter a password and confirm password, then click <strong>Next</strong>.</p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca06" border="1" class="imgborder_off" id="windbca06" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 8.</b></td>
+    <td width="600"><p class="bodycopy">Accept the default Storage option and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca07" border="1" class="imgborder_off" id="windbca07" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 9.</b></td>
+    <td><p class="bodycopy">Accept the default database file location and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca08" border="1" class="imgborder_off" id="windbca08" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 10.</b></td>
+    <td><p class="bodycopy">Accept the default recovery configuration and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca09" border="1" class="imgborder_off" id="windbca09" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 11.</b></td>
+    <td><p class="bodycopy">Select the <strong>Sample Schemas</strong> check box and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca10" border="1" class="imgborder_off" id="windbca10" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 12.</b></td>
+    <td><p class="bodycopy">Accept the defaults and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca11" border="1" class="imgborder_off" id="windbca11" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 14.</b></td>
+    <td><p class="bodycopy">Accept the default security settings and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca12" border="1" class="imgborder_off" id="windbca12" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 15.</b></td>
+    <td><p class="bodycopy">Accept the default and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca13" border="1" class="imgborder_off" id="windbca13" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 16.</b></td>
+    <td><p class="bodycopy">Accept the default storage settings and click <strong>Next</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca14" border="1" class="imgborder_off" id="windbca14" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 17.</b></td>
+    <td><p class="bodycopy">Click <strong>Finish</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca15" border="1" class="imgborder_off" id="windbca15" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><p><b> 18</b><b>.</b></p>
+    </td>
+    <td><p class="bodycopy">Review the components that will be configured when the database is created and click <strong>OK</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca16" border="1" class="imgborder_off" id="windbca16" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 19.</b></td>
+    <td><p class="bodycopy">The progress window appears. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca17" border="1" class="imgborder_off" id="windbca17" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 20.</b></td>
+    <td><p class="bodycopy">Once the database is created, click <strong>Exit</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="windbca18" border="1" class="imgborder_off" id="windbca18" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p class="bodycopy">Your database has been created.</p>
+        <p>&nbsp; </p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<h3 class=navheader><a name="t1" id="t1"></a>Testing Your Installation </h3>
+<p> <span class="bodycopy">To test that your installation completed successfully, perform the following steps: </span></p>
+<table border="0" cellspacing="0" cellpadding="1" width="650">
+  <tr valign="top">
+    <td width="25" class="bodycopy"><b> 1.</b></td>
+    <td width="600"><p class="bodycopy">Open a browser and enter the following URL:</p>
+        <p class="bodycopy"><strong>https://&lt;hostname&gt;:1158/em</strong></p>
+        <p class="bodycopy">where <span class="style5">&lt;</span><em>hostname</em><span class="style5">&gt;</span> should be changed to your machine name, IP address, or localhost. </p>
+        <p class="bodycopy">Because Enterprise Manager Database Control is a secure site, you need a certificate. Select the <strong>Accept this certificate permanently</strong> option, and then click <strong>OK</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="wintest01" border="1" class="imgborder_off" id="wintest01" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp; </p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 2.</b></td>
+    <td><p class="bodycopy">Enter <strong>system</strong> as the User Name and <strong>oracle</strong> as the Password, and then click <strong>Login</strong>. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="wintest02" border="1" class="imgborder_off" id="wintest02" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+  <tr valign="top">
+    <td class="bodycopy"><b> 3.</b></td>
+    <td width="600"><p class="bodycopy">The Database Control Home Page appears. Your installation was successful. </p>
+        <p class="bodycopy"><span class="navheader"><img src="images/view_image.gif" name="wintest03" border="1" class="imgborder_off" id="wintest03" onClick="hideImage(this)" onMouseOver="showImage(this)"></span></p>
+        <p>&nbsp;</p></td>
+  </tr>
+</table>
+<p align="right" class="bodylink"><a href="#t">Back to Topic List</a></p>
+<p align="left" class="navheader"><a name="s"></a><strong>Summary</strong></p>
+<p><SPAN class=bodycopy>In this tutorial, you learned how to install and test the Oracle Database 11<em>g</em> installation on Windows. </SPAN></p>
+<p align="right"><a href="#t" class="bodylink">Back to Topic List</a> </p>
+<h4 class="bodycopy"><img src="images/view_image.gif" width="24" height="24" align="absmiddle" class="bodycopy" onMouseOver="hideAllImages()"> 
+  <b><font color="#FF0000">Move your mouse over this icon to hide all screenshots.</font></b></h4>
+<p class="bodycopy">&nbsp;</p>
+<script language="JavaScript" type="text/JavaScript">
+
+<!--
+
+preLoadImages();
+
+//-->
+
+</script>

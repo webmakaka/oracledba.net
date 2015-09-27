@@ -1,0 +1,72 @@
+SQL> @flada_historical.sql
+SQL> REM "******************************************* "
+SQL> REM "For demo purposes ONLY:"
+SQL>
+SQL> connect hr/Ora-4-you
+Connected.
+SQL>
+SQL> set echo on
+SQL> set serveroutput on
+SQL> -- set verify on
+SQL> set term on
+SQL> set lines 200
+SQL> set pages 44
+SQL> set pause on
+SQL>
+SQL> /*== Now you decide to execute a query with the values from 15 minutes ago ==*/
+SQL> /*== Press [Enter] to execute the query ==*/
+SQL>
+SQL> SELECT employee_id, last_name, salary
+  2  FROM   hr.employees
+  3  AS OF TIMESTAMP (SYSTIMESTAMP - INTERVAL '15' MINUTE)
+  4  WHERE  last_name = 'Fox';
+
+EMPLOYEE_ID LAST_NAME                     SALARY  
+----------- ------------------------- ----------  
+        170 Fox                             9600  
+
+SQL>
+SQL> pause  Press [Enter] to continue...
+Press [Enter] to continue...
+
+SQL>
+SQL> /*== You realize that all the updates were mistakes ==*/
+SQL> /*== Revert to the original values from 15 minutes ago ==*/
+SQL>
+SQL> UPDATE hr.employees
+  2  SET    salary =
+  3         (SELECT  salary FROM hr.employees
+  4         AS OF TIMESTAMP (SYSTIMESTAMP - INTERVAL '15' MINUTE)
+  5         WHERE  last_name = 'Fox')
+  6  WHERE  last_name = 'Fox'
+  7  /
+
+1 row updated.
+
+SQL> COMMIT
+  2  /
+
+Commit complete.
+
+SQL> pause  Press [Enter] to continue...
+Press [Enter] to continue...
+
+SQL>
+SQL> /*== Confirm that the original values are restored with this previous DML statement ==*/
+SQL> /*== Press [Enter] to execute the query ==*/
+SQL>
+SQL> SELECT employee_id, last_name, salary
+  2  FROM   hr.employees
+  3  WHERE  last_name = 'Fox'
+  4  /
+
+EMPLOYEE_ID LAST_NAME                     SALARY  
+----------- ------------------------- ----------  
+        170 Fox                             9600  
+
+SQL>
+SQL> pause  Press [Enter] to continue...
+Press [Enter] to continue...
+
+SQL>
+
