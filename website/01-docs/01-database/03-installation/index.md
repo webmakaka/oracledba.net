@@ -6,8 +6,8 @@ permalink: /database/installation/
 
 # Oracle DataBase Installation
 
-## Single-Instance Architecture
 
+# Single-Instance Architecture
 
 <br/>
 
@@ -33,7 +33,7 @@ permalink: /database/installation/
 </ul>
 
 
-<br/>
+<br/><br/>
 
 # Distributed System Architectures:
 
@@ -43,12 +43,12 @@ permalink: /database/installation/
 ### Real Application Cluster (RAC):
 
 <ul>
-	<li><a href="https://en.wikibooks.org/wiki/RAC_Attack_-_Oracle_Cluster_Database_at_Home/RAC_Attack_12c/Create_VirtualBox_VM">RAC Attack - Oracle Cluster Database at Home/RAC Attack 12c/Create VirtualBox VM</a></li>
+	<li><a href="https://en.wikibooks.org/wiki/RAC_Attack_-_Oracle_Cluster_Database_at_Home/RAC_Attack_12c/Create_VirtualBox_VM" rel="nofollow">RAC Attack - Oracle Cluster Database at Home/RAC Attack 12c/Create VirtualBox VM</a></li>
 
-	<li><a href="http://www.lab128.com/rac12_installation_using_vb/article_text.html">Oracle RAC 12c Database on Linux Using VirtualBox (GUI, Sharde Virtual Disk)</a></li>
+	<li><a href="http://www.lab128.com/rac12_installation_using_vb/article_text.html" rel="nofollow">Oracle RAC 12c Database on Linux Using VirtualBox (GUI, Sharde Virtual Disk)</a></li>
 
-	<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle11gRAC/CLUSTER_12.shtml">Building an Inexpensive Oracle RAC 11g R2 on Linux - (RHEL 5)</a></li>
+	<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle11gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 11g R2 on Linux - (RHEL 5)</a></li>
 
-	<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle10gRAC/CLUSTER_12.shtml">Building an Inexpensive Oracle RAC 10g R2 on Linux - (RHEL 5.3 / iSCSI)</a></li>
+	<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle10gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 10g R2 on Linux - (RHEL 5.3 / iSCSI)</a></li>
 
 </ul>

@@ -1,11 +1,11 @@
 ---
 layout: page
-title: Backup и Restore Oracle DataBase
+title: Backup and Restore Oracle DataBase
 permalink: /database/backup-and-restore/
 ---
 
 
-## Backup и Restore Oracle DataBase
+## Backup and Restore Oracle DataBase
 
 
 <ul>

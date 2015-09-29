@@ -77,7 +77,7 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
 
 
 <ul>
-    <li><a href="/docs/oracle-database/beginning/database/certification-exam-questions-examples/">Oracle DataBase Certification Exam Questions Examples</a></li>
+    <li><a href="/database/certification/examples/">Oracle DataBase Certification Exam Questions Examples</a></li>
 
 </ul>
 
