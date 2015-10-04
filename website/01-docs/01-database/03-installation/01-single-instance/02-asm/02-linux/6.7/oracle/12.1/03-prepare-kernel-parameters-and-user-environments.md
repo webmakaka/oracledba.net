@@ -8,21 +8,19 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare-kerne
 
 
 
-Перед тем как вносить изменения в конфигурационные файлы, рекомедуется сделать их резервные копии:
+Backup current config files:
 
 
 	# {
-	cp /etc/sysctl.conf /etc/sysctl.conf.bkp
-	cp /etc/security/limits.conf /etc/security/limits.conf.bkp
-	cp /etc/pam.d/login /etc/pam.d/login.bkp
-	cp /etc/profile /etc/profile.bkp
+	cp /etc/sysctl.conf /etc/sysctl.conf.bkp.$(date +%Y-%m-%d)
+	cp /etc/security/limits.conf /etc/security/limits.conf.bkp.$(date +%Y-%m-%d)
+	cp /etc/pam.d/login /etc/pam.d/login.bkp.$(date +%Y-%m-%d)
+	cp /etc/profile /etc/profile.bkp.$(date +%Y-%m-%d)
 	}
 
 
-### Создание пользователей и групп
 
-Создаем группы:
-
+### Creating users and groups
 
 	# groupadd -g 1000 oinstall
 	# groupadd -g 1001 dba
@@ -46,7 +44,7 @@ Error Messages
 https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 
 
-Создаем пользователя oracle12, сообщаем, что он будет находиться в группах dba и oinstall и домашним каталогом у него будет /home/oracle
+We create user oracle12 and add user to groups. Home folder for this user will be /home/oracle12
 
 
 	# useradd \
@@ -56,7 +54,7 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 	-m oracle12
 
 
-Добавляю пользователя еще и в группы
+Add created user in additional groups:
 
 	# usermod -a -G oper oracle12
 
@@ -67,21 +65,20 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 
 <br/>
 
-Устанавливаем пароль для пользователе oracle12
+Setup password for user oracle12
 
 	# passwd oracle12
 
 
 <br/>
 
-### Изменение параметров ядра и параметров учетной записи с правами администратора базы данных
+### Change kernel parameters and back profile for user oracle12
 
 
-1) Отредактируйте файл  /etc/sysctl.conf
+1) Now we edit file  /etc/sysctl.conf
 
 
-Рекомендуется закомментировать (поставить перед ними знак #) имеющиеся параметры kernel.shmmax и kernel.shmall. Далее они будут добавлены в качестве параметров вместе с остальными параметрами Oracle. Для этого выполните следующие команды:
-
+I recommend to comment next parameters by 2 next command:
 
 	# sed -i.gres "s/kernel.shmmax/#kernel.shmmax/g" /etc/sysctl.conf
 	# sed -i.gres "s/kernel.shmall/#kernel.shmall/g" /etc/sysctl.conf
@@ -96,15 +93,13 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 
 <br/>
 
-
-Количество байт отперативной памяти, можно узнать командой
-
+Bytes of RAM you could get with command
 
 	# free -b
 	4152623104 / 2 = 2076311552
 
 
-Добавьте в конец файла /etc/sysctl.conf следующие параметры ядра.
+In the end of file /etc/sysctl.conf add:
 
 
 	############################################
@@ -129,12 +124,12 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 
 
 
-2) Отредактируйте файл  /etc/security/limits.conf
+2) Edit file /etc/security/limits.conf
 
 	# vi /etc/security/limits.conf
 
 
-Добавьте следующие строки
+Add next:
 
 	############################################
 	#### Settings required for Oracle 12
@@ -149,11 +144,11 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 	############################################
 
 
-3) Отредактируйте файл  /etc/pam.d/login
+3)  Edit file /etc/pam.d/login
 
 	# vi /etc/pam.d/login
 
-Добавьте следующие строки
+Add next:
 
 	############################################
 	#### Settings required for Oracle 12
@@ -163,18 +158,18 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 
 
 
-4) Отредактируйте файл /etc/profile
+4) Edit file /etc/profile
 
 	# vi /etc/profile
 
 
-Перед
+Before
 
 	unset i
 	unset pathmunge
 
 
-Добавьте
+Add next:
 
 	###########################################
 	#### Shell limits for Oracle 12 user accounts
@@ -185,18 +180,19 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 	############################################
 
 
-
-Применить параметры ядра без перезагрузки можно следующей командой:
+Apply kernel parameter to working server you could by next command:
 
 	# sysctl -p
 
 
+5) Edit file /home/oracle/.bash_profile
 
-5) Отредактируйте файл /home/oracle12/.bash_profile
 
 	# su - oracle12
 
-	$ vi /home/oracle12/.bash_profile
+<br/>
+
+	$  vi /home/oracle/.bash_profile
 
 
 После  
@@ -204,8 +200,7 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 	# User specific environment and startup programs
 
 
-Добавьте
-
+Add next
 
 	#### Oracle Parameters ###########################
 
@@ -232,7 +227,7 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 	#### Oracle Parameters ###########################
 
 
-Применить переменные, определенные в файле .bash_profile к текущей сессии bash можно следующей командой:
+Apply new parameters to current session you could by next command:
 
 	$ source ~/.bash_profile
 
@@ -249,11 +244,11 @@ https://docs.oracle.com/html/E10880_02/giinstaller_errormessages.htm
 
 	$ chmod +x ~/asm.sh
 
-Чтобы использовались переменные указанные в файле asm.sh достаточно выполнить команы:
+For using environment variables for ASM, execute next command:
 
 	$ . asm.sh
 
-Проверка:
+Check:
 
 	$ echo $ORACLE_SID
 	+ASM

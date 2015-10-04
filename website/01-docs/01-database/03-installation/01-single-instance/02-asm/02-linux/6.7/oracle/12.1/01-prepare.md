@@ -24,7 +24,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare/
 
 
 
- Устанавливаю значение hostname для сервера
+Setup hostname for server
 
     # vi /etc/sysconfig/network
 
@@ -34,4 +34,4 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare/
     HOSTNAME=moscow.localdomain
 
 
-**После переименования, лучше перезагрузить сервер или каким-то способом применить изменения, или иначе в конфигах будет прописано что-то не то и придется их потом еще и править**
+**After this steps i recommend to reboot server**

@@ -20,11 +20,11 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/oracle-databa
 	$ cd /tmp/oracle/12.1/database/
 
 
-Определите системную переменную DISPLAY следующим образом.
+<br/>
 
 	$ export DISPLAY=192.168.1.5:0.0
 
-В данном случае 192.168.1.5 - ip адрес компьютера, с которого происходит процесс управления установкой.
+<br/>
 
 	$ ./runInstaller
 

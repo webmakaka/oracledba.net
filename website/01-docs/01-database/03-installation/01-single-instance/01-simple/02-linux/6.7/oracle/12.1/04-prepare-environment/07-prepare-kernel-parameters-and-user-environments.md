@@ -27,7 +27,7 @@ Backup current config files:
 	# groupadd -g 1002 oper
 
 
-We create user oracle12 and add user to groups. Home foler for this user will be /home/oracle
+We create user oracle12 and add user to groups. Home folder for this user will be /home/oracle12
 
 	# useradd \
 	-g oinstall \
@@ -64,7 +64,7 @@ I recommend to comment next parameters by 2 next command:
 
 <br/>
 
-Bytes of RAM you could get with command^
+Bytes of RAM you could get with command
 
 	# free -b
 	4152623104 / 2 = 2076311552

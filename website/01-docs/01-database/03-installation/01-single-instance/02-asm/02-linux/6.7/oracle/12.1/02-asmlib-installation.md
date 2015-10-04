@@ -8,8 +8,8 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/asmlib-instal
 
 <br/>
 
-Обязательные для установки пакеты:  
-http://oracle-dba.ru/database/installation/single-instance/simple/linux/6.4/oracle/12.1/install-mandatory-packages/
+
+ <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/install-mandatory-packages/">Mandatory packages should be installed</a>
 
 
 <br/><br/>
@@ -31,20 +31,20 @@ http://oracle-dba.ru/database/installation/single-instance/simple/linux/6.4/orac
 
 <br/>
 
-### Доп пакеты понадобились:
+### Additional packages needs for ASM:
 
     # yum install -y nfs-utils.x86_64
 
 
 <br/>
 
-### Необходимо установить 3 пакета для ASM:
+### Next packages should be installed for ASM:
 
-Необходимо с сайта Oracle:
+From Oracle website we need:
 
 http://www.oracle.com/technetwork/server-storage/linux/asmlib/rhel6-1940776.html
 
-Скачать: oracleasmlib-*.x86_64.rpm
+Package: oracleasmlib-*.x86_64.rpm
 
 
     # cd /tmp
@@ -59,9 +59,6 @@ http://www.oracle.com/technetwork/server-storage/linux/asmlib/rhel6-1940776.html
 
 <br/>
 
-Проверяем инсталлированные пакеты:
+Check:
 
     # rpm -qa | grep oracleasm
-    oracleasm-support-2.1.8-1.el6.x86_64
-    oracleasmlib-2.0.4-1.el6.x86_64
-    kmod-oracleasm-2.0.8-5.el6_7.x86_64

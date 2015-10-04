@@ -15,7 +15,7 @@ On linux you could copy distrib with next command:
 
 	# scp marley@192.168.1.5:/oracle/linuxamd64_12c_database_*.zip /tmp/oracle/12.1/
 
-To setup right permissions Далее нужно назначить владельцем скачанных архивов пользователя oracle12
+To setup right permissions:
 
 	# chown -R oracle12:oinstall /tmp/oracle/12.1/linuxamd64_12c_database_*.zip
 
@@ -26,7 +26,7 @@ To setup right permissions Далее нужно назначить владел
 ### Login on server as user oracle12.
 
 	# su - oracle12
-	$ cd /tmp
+	$ cd /tmp/oracle/12.1/
 
 And extract archives:
 

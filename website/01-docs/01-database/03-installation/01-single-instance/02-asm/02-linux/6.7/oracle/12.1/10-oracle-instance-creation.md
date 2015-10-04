@@ -7,10 +7,9 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/oracle-instan
 # <a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7 with ASM and GRID]</a>: Oracle instance creation
 
 
-Определите системную переменную DISPLAY следующим образом (если она не поределена).
-
 	$ export DISPLAY=192.168.1.5:0.0
 
+<br/>
 
 	$ dbca
 
@@ -20,15 +19,6 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/oracle-instan
 
 <img src="http://img.oradba.net/oracle-database-installation/asm/linux/6.7/oracle/12.1/04-oracle-instance-creation/oracle-instance-creation_02.png" border="0" alt="oracle database software installation"><br/><br/>
 
-
-<br/><br/>
-
-В режиме Advanced, можно более оптимально настроить параметры. Исключить из установки лишнее. Например, JVM, Enterprise Manager, Multimedia. Можно выделить побольше ресурсов памяти.  
-http://oracle-dba.ru/database/installation/single-instance/simple/linux/6.4/oracle/12.1/oracle-instance-creation/
-
-
-
-<br/><br/>
 
 <img src="http://img.oradba.net/oracle-database-installation/asm/linux/6.7/oracle/12.1/04-oracle-instance-creation/oracle-instance-creation_03.png" border="0" alt="oracle database software installation"><br/><br/>
 
@@ -44,7 +34,7 @@ http://oracle-dba.ru/database/installation/single-instance/simple/linux/6.4/orac
 <br/>
 <br/>
 
-Узнать порт подключения к EM:
+To get EM connection port:
 
 	SQL> select dbms_xdb_config.gethttpsport() from dual;
 
@@ -54,15 +44,13 @@ http://oracle-dba.ru/database/installation/single-instance/simple/linux/6.4/orac
 
 
 
-Можно подключиться к EM:  
+For connect to EM:  
 https://192.168.1.11:5500/em/
 
 
 <br/>
 
-### После инсталляционные шаги
-
-
+### Steps after installation
 
 	$ vi /etc/oratab
 
@@ -71,7 +59,7 @@ https://192.168.1.11:5500/em/
 	+ASM:/u01/oracle/grid/12.1:N
 	orcl12:/u01/oracle/database/12.1:N
 
-меняю на
+replace on:
 
 	+ASM:/u01/oracle/grid/12.1:Y
 	orcl12:/u01/oracle/database/12.1:Y

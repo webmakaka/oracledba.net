@@ -9,10 +9,6 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/asm-diskgroup
 
 
 
-
-
-Для запуска консоли для работы с ASM дисками, выполните команду (если нужно)
-
 	$ asmca
 
 
@@ -32,7 +28,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/asm-diskgroup
 
 
 
-Просто получить какую-то информацию о дисковых группах
+To get some information about disk groups:
 
 	$ asmcmd
 

@@ -9,7 +9,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/grid-installa
 
 
 
-Войдите в систему пользователем, от имени которого будет будет происходить инсталляция базы данных.
+Login as oracle12 user
 
 	# su - oracle12
 
@@ -17,7 +17,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/grid-installa
 
 	$ . asm.sh
 
-Проверка:
+Check:
 
 	$ echo $ORACLE_SID
 	+ASM
@@ -27,11 +27,11 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/grid-installa
 	$ cd /tmp/oracle/12.1/grid
 
 
-Определите системную переменную DISPLAY следующим образом.
+<br/>
 
 	$ export DISPLAY=192.168.1.5:0.0
 
-В данном случае 192.168.1.5 - ip адрес компьютера, с которого происходит процесс управления установкой.
+<br/>
 
 	$ ./runInstaller
 
@@ -93,7 +93,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/grid-installa
 
 <br/>
 
-### Проверка работы служб crsctl
+### crsctl checks
 
 
 	$ crsctl check has

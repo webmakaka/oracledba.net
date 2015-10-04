@@ -8,7 +8,8 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare-asm-d
 
 
 
-В каталоге /u01 будет храниться программное обеспечения для работы с базами данных (Database Software). Файлы данных будут храниться на ASM.
+Database Software we will store in /u01  
+Data Files we will store in ASM.
 
 
     # ls /dev/sd*
@@ -16,7 +17,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare-asm-d
     /dev/sda1  /dev/sdb   /dev/sdd  /dev/sdf  /dev/sdh
 
 
-Создаем разделы на дисках
+Creating partition on disks
 
     # fdisk /dev/sdb
     # fdisk /dev/sdc
@@ -65,7 +66,6 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare-asm-d
     /dev/sda2  /dev/sdc   /dev/sdd1  /dev/sdf   /dev/sdg1
 
 
-На первый диск устанавливается DataBase Software. Остальные диски планируется использовать в качестве хранилища ASM
 
     # mkfs.ext4 /dev/sdb1
 
@@ -83,7 +83,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare-asm-d
 
 <br/>
 
-### Настройка конфигурации для работы в ASM
+### Setup ASM config
 
     # /etc/init.d/oracleasm configure
 
@@ -109,7 +109,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare-asm-d
 
 
 <br/>
-Маркируем диски как ASM диски:
+Mark ASM disks:
 
 
     # /etc/init.d/oracleasm createdisk ASMDISK1 /dev/sdc1
@@ -124,7 +124,8 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare-asm-d
 
 
 <br/>
-// Посмотреть список дисков
+
+// Get list ASM Disks
 
     # /etc/init.d/oracleasm listdisks
     ASMDISK1
@@ -135,11 +136,13 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare-asm-d
     ASMDISK6
 
 <br/>
-// файл логов
+
+// Log file
 
     # less /var/log/oracleasm
 
 <br/>
-// В некоторых случаях, необходимо перестартовать oracleasm
+
+// For restart
 
     # /etc/init.d/oracleasm restart
