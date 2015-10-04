@@ -8,7 +8,6 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare/
 
 <br/>
 
-
 	# vi /etc/hosts
 
 <br/>

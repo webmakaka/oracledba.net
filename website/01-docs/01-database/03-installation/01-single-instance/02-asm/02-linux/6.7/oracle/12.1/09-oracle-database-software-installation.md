@@ -7,7 +7,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/oracle-databa
 # <a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7 with ASM and GRID]</a>: Oracle DataBase SoftWare Installation
 
 
-Войдите в систему пользователем, от имени которого будет будет происходить инсталляция базы данных.
+Login as oracle12 user.
 
 	# su - oracle12
 

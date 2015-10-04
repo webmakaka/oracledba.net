@@ -7,9 +7,7 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare-kerne
 # <a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7 with ASM and GRID]</a>: Configure system users and kernel parameters
 
 
-
 Backup current config files:
-
 
 	# {
 	cp /etc/sysctl.conf /etc/sysctl.conf.bkp.$(date +%Y-%m-%d)

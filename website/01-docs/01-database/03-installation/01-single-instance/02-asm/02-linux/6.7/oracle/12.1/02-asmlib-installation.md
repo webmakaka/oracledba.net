@@ -8,7 +8,6 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/asmlib-instal
 
 <br/>
 
-
  <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/install-mandatory-packages/">Mandatory packages should be installed</a>
 
 
