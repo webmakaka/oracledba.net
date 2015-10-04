@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Oracle RAC 12.1 ISCSI + ASM - Инсталляция ASMLIB на узлах кластера
-permalink: /docs/oracle-database/installation/oracle-database-installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/asmlib-installation/
+permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/asmlib-installation/
 ---
 
 # [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Инсталляция ASMLIB на узлах кластера
@@ -17,8 +17,7 @@ permalink: /docs/oracle-database/installation/oracle-database-installation/distr
 </table>
 
 
-From Oracle Linux 6 onward, the oracleasm kernel driver is built into UEK, so it doesn't need to be installed separately.
-
+В Oracle Linux 6 oracleasm kernel driver встроены в ядро UEK и как следствиет не требует инсталляции.
 
 Необходимо с сайта Oracle:
 
@@ -45,11 +44,9 @@ http://www.oracle.com/technetwork/server-storage/linux/asmlib/rhel6-1940776.html
     oracleasm-support-2.1.8-1.el6.x86_64
     oracleasmlib-2.0.4-1.el6.x86_64
 
-<!--
 
-Не уверен, что нужен следующий пакет. Если не будет работать, поставьте и его.
+
+Если используется Centos, RedHat а не OEL, нужно еще установить:.
 
     # yum install -y \
     kmod-oracleasm.x86_64
-
--->

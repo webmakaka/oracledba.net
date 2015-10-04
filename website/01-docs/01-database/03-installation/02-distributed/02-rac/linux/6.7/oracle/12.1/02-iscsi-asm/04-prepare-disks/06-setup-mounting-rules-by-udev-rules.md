@@ -1,11 +1,11 @@
 ---
 layout: page
 title: Oracle RAC 12.1 ISCSI + ASM - Настройка правил монтирования SCSI дисков на узлах кластера с помощью правил Udev
-permalink: /docs/oracle-database/installation/oracle-database-installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-mounting-rules-by-uder-rules/
+permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-mounting-rules-by-uder-rules/
 ---
 
-
 # [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Настройка правил монтирования SCSI дисков на узлах кластера с помощью правил Udev
+
 
 
 ### Вариант монтирования дисков с помощью udev правил
@@ -51,18 +51,21 @@ permalink: /docs/oracle-database/installation/oracle-database-installation/distr
 
 <br/>
 
+### Создание файла с правилами Udev
 
 	# echo "options=-g" > /etc/scsi_id.config
 
 
-<br/>
+**Следующую команду выполняю на rac1**
+
+
 
 	i=1
 	cmd="/sbin/scsi_id -g -u -d"
 	for disk in sdc sdd sde sdf sdg sdh sdi ; do
 	         cat <<EOF >> /etc/udev/rules.d/99-oracle-asmdevices.rules
 	KERNEL=="sd?1", BUS=="scsi", PROGRAM=="$cmd /dev/\$parent", \
-	 RESULT=="`$cmd /dev/$disk`", NAME="asm-disk$i", OWNER="oracle12", GROUP="dba", MODE="0660"
+	 RESULT=="`$cmd /dev/$disk`", NAME="iscsi-disk$i", OWNER="oracle12", GROUP="asmadmin", MODE="0660", SYMLINK+="mapper/iscsi-disk$i"
 	EOF
 	         i=$(($i+1))
 	done
@@ -73,7 +76,7 @@ permalink: /docs/oracle-database/installation/oracle-database-installation/distr
 	# scp /etc/udev/rules.d/99-oracle-asmdevices.rules root@rac2:/etc/udev/rules.d/99-oracle-asmdevices.rules
 
 
-<br/>
+Перезагрузка правил Udev
 
 	# /sbin/udevadm control --reload-rules
 	# /sbin/start_udev
@@ -82,12 +85,28 @@ permalink: /docs/oracle-database/installation/oracle-database-installation/distr
 <br/>
 
 
-	# ls /dev/asm*
-	/dev/asm-disk1  /dev/asm-disk3  /dev/asm-disk5  /dev/asm-disk7
-	/dev/asm-disk2  /dev/asm-disk4  /dev/asm-disk6
+	# ls /dev/mapper/iscsi*
+	/dev/mapper/iscsi-disk1  /dev/mapper/iscsi-disk4  /dev/mapper/iscsi-disk7
+	/dev/mapper/iscsi-disk2  /dev/mapper/iscsi-disk5
+	/dev/mapper/iscsi-disk3  /dev/mapper/iscsi-disk6
+
+
+Проверить можно следующей командой на rac1 и rac2, что диски правильно подмонтировались.
+
+	# ls -l /dev/disk/by-id/
 
 
 <!--
+
+
+Почитать здесь:
+
+http://www.linuxtopia.org/online_books/rhel6/rhel_6_virtualization/rhel_6_virtualization_sect-Virtualization-Virtualized_block_devices-Configuring_persistent_storage_in_Red_Hat_Enterprise_Linux_5.html
+
+
+
+РАБОТАЕТ, ПОЭТОМУ И НЕ УДАЛИЛ.
+
 
 Make SCSI Devices Trusted
 
@@ -150,31 +169,3 @@ Restart UDEV Service
 <br/>
 
 -->
-
-### Eсли использовался вариант 2: С помощь udev правил
-
-
-    # /etc/init.d/oracleasm createdisk ASMDISK1 /dev/asm-disk1
-    # /etc/init.d/oracleasm createdisk ASMDISK2 /dev/asm-disk2
-    # /etc/init.d/oracleasm createdisk ASMDISK3 /dev/asm-disk3
-    # /etc/init.d/oracleasm createdisk ASMDISK4 /dev/asm-disk4
-    # /etc/init.d/oracleasm createdisk ASMDISK5 /dev/asm-disk5
-    # /etc/init.d/oracleasm createdisk ASMDISK6 /dev/asm-disk6
-    # /etc/init.d/oracleasm createdisk ASMDISK7 /dev/asm-disk7
-
-    Marking disk "ASMDISK" as an ASM disk:                        [  OK  ]
-
-
-
-<br/>
-
-На второй ноде тоже нужно создавать разделы на подмонтированных дисках?
-Так и сделал. И даже установку запустил. Установка завершилась ошибкой, очень похожей на ту, что и ошибки при использовании Device Mapper.
-
-
-Попробую установить этим способо позднее.  
-Консультации были бы кстати.
-
-Почитать здесь:
-
-http://www.linuxtopia.org/online_books/rhel6/rhel_6_virtualization/rhel_6_virtualization_sect-Virtualization-Virtualized_block_devices-Configuring_persistent_storage_in_Red_Hat_Enterprise_Linux_5.html

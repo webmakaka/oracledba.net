@@ -33,6 +33,19 @@ permalink: /database/installation/
 </ul>
 
 
+<br/>
+
+## Videos: How to Install Oracle:
+
+<br/>
+
+<ul>
+	<li><a href="http://vimeo.com/15590578">How to install Oracle 11gR2 on Windows 7 using vmware</a></li>
+	<li><a href="http://vimeo.com/17254090">How to install Oracle 10g on Oracle Solaris 10</a></li>
+
+</ul>
+
+
 <br/><br/>
 
 # Distributed System Architectures:

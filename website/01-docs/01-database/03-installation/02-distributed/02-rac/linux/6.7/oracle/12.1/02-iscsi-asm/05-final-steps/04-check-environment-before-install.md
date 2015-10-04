@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Oracle RAC 12.1 ISCSI + ASM - Проверка конфигурации кластера перед инсталляцией RAC
-permalink: /docs/oracle-database/installation/oracle-database-installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/check-environment-before-install/
+permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/check-environment-before-install/
 ---
 
 # [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Проверка конфигурации кластера перед инсталляцией RAC
@@ -15,6 +15,10 @@ permalink: /docs/oracle-database/installation/oracle-database-installation/distr
 	</tr>
 </table>
 
+
+Возможно, что лучше скачать с сайта Oracle последнюю версию «Oracle Cluster Verification Utility»  
+
+http://www.oracle.com/technetwork/products/clustering/downloads/cvu-download-homepage-099973.html
 
 
 <br/>

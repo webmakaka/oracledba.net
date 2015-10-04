@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Инсталляция Oracle Active DataGuard 12.1 в операционной системе Centos 6.7
-permalink: /docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/
+permalink: /database/installation/distributed/dataguard/linux/6.7/oracle/12.1/
 ---
 
 
@@ -79,11 +79,11 @@ db_unique_name - это уникальное имя для каждого экз
 
 <ul>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/info-about-env/">Описание системы, которое будет настраиваться</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/info-about-env/">Описание системы, которое будет настраиваться</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/prepare-env/">Предварительные шаги по настройке environment</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/prepare-env/">Предварительные шаги по настройке environment</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/prepare-instance/">Предварительные шаги по настройке параметров instance</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/prepare-instance/">Предварительные шаги по настройке параметров instance</a></li>
 
 </ul>
 
@@ -96,27 +96,27 @@ db_unique_name - это уникальное имя для каждого экз
 
 <ul>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/create-foder-structure-like-on-primary/">Создание каталогов на standby, котырые есть на primary</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/create-foder-structure-like-on-primary/">Создание каталогов на standby, котырые есть на primary</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/copy-passwords-file/">Копирование файла паролей с primary на standby</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/copy-passwords-file/">Копирование файла паролей с primary на standby</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/startup-instance-on-standby/">Стартую instance на standby</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/startup-instance-on-standby/">Стартую instance на standby</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/setup-oracle-network-services/">Настройка сетевых служб Oracle для создания дупликата primary на standby</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/setup-oracle-network-services/">Настройка сетевых служб Oracle для создания дупликата primary на standby</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/setup-instance-parameters-to-work-in-dataguard/">Настройка параметров instance на primary для работы в DataGuard конфигурации</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/setup-instance-parameters-to-work-in-dataguard/">Настройка параметров instance на primary для работы в DataGuard конфигурации</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/standby-redologs-on-primary-instance/">Создание standby redologs на primary</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/standby-redologs-on-primary-instance/">Создание standby redologs на primary</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/rman-connection-check/">Проверка подключения RMAN к обоим Instance</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/rman-connection-check/">Проверка подключения RMAN к обоим Instance</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/run-rman-script-for-duplicate-instance/">Создание rman скрипта для создания дупликата primary и его выполнение</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/run-rman-script-for-duplicate-instance/">Создание rman скрипта для создания дупликата primary и его выполнение</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/post-duplicate-steps-on-standby/">Настройка параметров Instance после создания дупликата на standby</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/post-duplicate-steps-on-standby/">Настройка параметров Instance после создания дупликата на standby</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/check-redo-apply/">Проверка применения redo</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/check-redo-apply/">Проверка применения redo</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/queries/">Запросы для получения данных о работе DataGuard</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/queries/">Запросы для получения данных о работе DataGuard</a></li>
 
 </ul>
 
@@ -127,12 +127,12 @@ db_unique_name - это уникальное имя для каждого экз
 
 <ul>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/broker/setup/">Установка брокера (DGMGRL)</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/broker/setup/">Установка брокера (DGMGRL)</a></li>
 
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/broker/switchover-listener-config/">Переконфигурирование Listener для Switchover</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/broker/switchover-listener-config/">Переконфигурирование Listener для Switchover</a></li>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/broker/switchover/">Switchover (переключение ролей между primary и standby instance)</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/broker/switchover/">Switchover (переключение ролей между primary и standby instance)</a></li>
 
 </ul>
 
@@ -143,7 +143,7 @@ db_unique_name - это уникальное имя для каждого экз
 
 <ul>
 
-	<li><a href="/docs/oracle-database/installation/oracle-database-installation/distributed/dataguard/linux/6.7/oracle/12.1/backups/">BACKUPы на DataGuard</a></li>
+	<li><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/backups/">BACKUPы на DataGuard</a></li>
 
 </ul>
 
@@ -155,11 +155,11 @@ db_unique_name - это уникальное имя для каждого экз
 
 
 <ul>
-	<li><a href="https://pierreforstmanndotcom.wordpress.com/2014/11/28/create-a-physical-standby-database-with-oracle-12-1-0-2-and-rman-active-duplication/">[ENG] Create a physical standby database with Oracle 12.1.0.2 and RMAN active duplication</a></li>
+	<li><a href="https://pierreforstmanndotcom.wordpress.com/2014/11/28/create-a-physical-standby-database-with-oracle-12-1-0-2-and-rman-active-duplication/" rel="nofollow">[ENG] Create a physical standby database with Oracle 12.1.0.2 and RMAN active duplication</a></li>
 
-	<li><a href="http://habrahabr.ru/post/120495/">[HabraHabr] Еще раз про Oracle standby</a></li>
+	<li><a href="http://habrahabr.ru/post/120495/" rel="nofollow">[HabraHabr] Еще раз про Oracle standby</a></li>
 
-	<li><a href="http://docs.oracle.com/cd/B19306_01/server.102/b14239/toc.htm">[ENG] Data Guard Concepts and Administration</a></li>
+	<li><a href="http://docs.oracle.com/cd/B19306_01/server.102/b14239/toc.htm" rel="nofollow">[ENG] Data Guard Concepts and Administration</a></li>
 
-	<li><a href="http://docs.oracle.com/cd/B28359_01/server.111/b28294/rcmbackp.htm">[ENG] Creating a Standby Database with Active Database Duplication</a></li>
+	<li><a href="http://docs.oracle.com/cd/B28359_01/server.111/b28294/rcmbackp.htm" rel="nofollow">[ENG] Creating a Standby Database with Active Database Duplication</a></li>
 </ul>

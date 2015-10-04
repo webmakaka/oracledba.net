@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Oracle RAC 12.1 SHARED FILE SYSTEM - Создание пользователя oracle12 и административных групп
-permalink: /docs/oracle-database/installation/oracle-database-installation/distributed/rac/linux/6.7/oracle/12.1/shared-file-system/users-and-groups-creation/
+permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-file-system/users-and-groups-creation/
 ---
 
 
@@ -13,7 +13,6 @@ permalink: /docs/oracle-database/installation/oracle-database-installation/distr
 
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
-
 
 <tr>
 <td style="color: rgb(255, 255, 255);" bgcolor="#386351" width="14%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>Server:</strong></span></td>

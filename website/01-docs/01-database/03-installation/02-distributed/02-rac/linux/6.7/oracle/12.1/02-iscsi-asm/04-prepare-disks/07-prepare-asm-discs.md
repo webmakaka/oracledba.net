@@ -1,6 +1,7 @@
 ---
 layout: page
-title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кластера, маркировка дисков как ASM /docs/oracle-database/installation/oracle-database-installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/prepare-asm-discs/
+title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кластера, маркировка дисков как ASM
+permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/prepare-asm-discs/
 ---
 
 
@@ -25,7 +26,7 @@ title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кл
 <br/>
 
     Default user to own the driver interface []: oracle12
-    Default group to own the driver interface []: dba
+    Default group to own the driver interface []: asmadmin
     Start Oracle ASM library driver on boot (y/n) [n]: y
     Scan for Oracle ASM disks on boot (y/n) [y]: y
     Writing Oracle ASM library driver configuration: done
@@ -73,18 +74,20 @@ title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кл
 ### Маркируем диски как ASM:
 
 
-    # /etc/init.d/oracleasm createdisk ASMDISK1 /dev/mapper/asm-disk1
-    # /etc/init.d/oracleasm createdisk ASMDISK2 /dev/mapper/asm-disk2
-    # /etc/init.d/oracleasm createdisk ASMDISK3 /dev/mapper/asm-disk3
-    # /etc/init.d/oracleasm createdisk ASMDISK4 /dev/mapper/asm-disk4
-    # /etc/init.d/oracleasm createdisk ASMDISK5 /dev/mapper/asm-disk5
-    # /etc/init.d/oracleasm createdisk ASMDISK6 /dev/mapper/asm-disk6
-    # /etc/init.d/oracleasm createdisk ASMDISK7 /dev/mapper/asm-disk7
+Если используется Device Mapper то:
+
+
+    # {
+        /etc/init.d/oracleasm createdisk ASMDISK1 /dev/mapper/iscsi-disk1
+        /etc/init.d/oracleasm createdisk ASMDISK2 /dev/mapper/iscsi-disk2
+        /etc/init.d/oracleasm createdisk ASMDISK3 /dev/mapper/iscsi-disk3
+        /etc/init.d/oracleasm createdisk ASMDISK4 /dev/mapper/iscsi-disk4
+        /etc/init.d/oracleasm createdisk ASMDISK5 /dev/mapper/iscsi-disk5
+        /etc/init.d/oracleasm createdisk ASMDISK6 /dev/mapper/iscsi-disk6
+        /etc/init.d/oracleasm createdisk ASMDISK7 /dev/mapper/iscsi-disk7
+    }
 
     Marking disk "ASMDISK" as an ASM disk:                        [  OK  ]
-
-
-<br/>
 
 
 Посмотреть список дисков
@@ -100,11 +103,8 @@ title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кл
 
 Или так
 
-
     # ls /dev/oracleasm/disks/
     ASMDISK1  ASMDISK2  ASMDISK3  ASMDISK4  ASMDISK5  ASMDISK6  ASMDISK7
-
-
 
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
@@ -117,8 +117,10 @@ title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кл
 </table>
 
 
-	# /etc/init.d/oracleasm scandisks
-    # /etc/init.d/oracleasm listdisks
+Нужно убедиться что диски подмонтированы на всех узлах кластера. И при вводе следующей команды, возвращают следующие данные на обоих узлах.
+
+
+    # oracleasm listdisks
     ASMDISK1
     ASMDISK2
     ASMDISK3
@@ -129,9 +131,46 @@ title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кл
 
 
 
+Если используется Device Mapper то:
 
-Нужно убедиться что диски подмонтированы на всех узлах кластера.
-Если нет, перезагрузить узлы (после установки приоритетов автостарта пакетов, см. ниже)
+    # oracleasm scandisks
+    # oracleasm listdisks
+
+
+
+--------------------
+
+Если используются правила Udev то, нужно явно указать, где лежат эти самые диски:  
+
+    # oracleasm scandisks /dev/mapper/iscsi-disk* --verbose
+    # oracleasm listdisks
+
+
+Я пока не нашел способа, как настроить сканирование дисков без доп параметров. Скорее всего это явно прописывается в файле /etc/sysconfig/oracleasm. Но мне пока не удалось добиться нужно результата.
+
+Поэтому, дополнительно прописываю в cron задание, которое должно быть выполнено при перезагрузке.
+
+--------------------
+
+
+
+<table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
+
+<tr>
+	<td style="color: rgb(255, 255, 255);" bgcolor="#386351" width="14%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>Server:</strong></span></td>
+	<td height="20" bgcolor="#a2bcb1" width="60%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>rac1,rac2</strong></span></td>
+</tr>
+
+</table>
+
+
+    # chkconfig --level 345 crond on
+    # service crond restart
+
+    # crontab -e
+    @reboot /usr/sbin/oracleasm scandisks /dev/mapper/iscsi-disk*
+
+
 
 
 <br/><br/>
@@ -178,7 +217,7 @@ title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кл
     # /usr/sbin/oracleasm configure
     ORACLEASM_ENABLED=true
     ORACLEASM_UID=oracle12
-    ORACLEASM_GID=dba
+    ORACLEASM_GID=asmadmin
     ORACLEASM_SCANBOOT=true
     ORACLEASM_SCANORDER=""
     ORACLEASM_SCANEXCLUDE=""
@@ -191,3 +230,41 @@ title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кл
 Файл логов
 
     # less /var/log/oracleasm
+
+<br/>
+
+    # udevadm info --query=all --name=/dev/iscsi-disk1
+    P: /devices/platform/host3/session1/target3:0:0/3:0:0:1/block/sdc/sdc1
+    N: iscsi-disk1
+    W: 73
+    S: block/8:33
+    S: disk/by-id/scsi-1IET_00040001-part1
+    S: disk/by-path/ip-192.168.3.15:3260-iscsi-ru.oracle-dba:disk4-lun-1-part1
+    S: disk/by-label/ASMDISK1
+    E: UDEV_LOG=3
+    E: DEVPATH=/devices/platform/host3/session1/target3:0:0/3:0:0:1/block/sdc/sdc1
+    E: MAJOR=8
+    E: MINOR=33
+    E: DEVNAME=/dev/iscsi-disk1
+    E: DEVTYPE=partition
+    E: SUBSYSTEM=block
+    E: ID_SCSI=1
+    E: ID_VENDOR=IET
+    E: ID_VENDOR_ENC=IET\x20\x20\x20\x20\x20
+    E: ID_MODEL=VIRTUAL-DISK
+    E: ID_MODEL_ENC=VIRTUAL-DISK
+    E: ID_REVISION=0001
+    E: ID_TYPE=disk
+    E: ID_SERIAL_RAW=1IET     00040001
+    E: ID_SERIAL=1IET_00040001
+    E: ID_SERIAL_SHORT=IET_00040001
+    E: ID_SCSI_SERIAL=beaf41
+    E: ID_BUS=scsi
+    E: ID_PATH=ip-192.168.3.15:3260-iscsi-ru.oracle-dba:disk4-lun-1
+    E: ID_PART_TABLE_TYPE=dos
+    E: ID_FS_LABEL=ASMDISK1
+    E: ID_FS_LABEL_ENC=ASMDISK1
+    E: ID_FS_TYPE=oracleasm
+    E: ID_FS_USAGE=filesystem
+    E: LVM_SBIN_PATH=/sbin
+    E: DEVLINKS=/dev/block/8:33 /dev/disk/by-id/scsi-1IET_00040001-part1 /dev/disk/by-path/ip-192.168.3.15:3260-iscsi-ru.oracle-dba:disk4-lun-1-part1 /dev/disk/by-label/ASMDISK1

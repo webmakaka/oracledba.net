@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Oracle RAC 12.1 ISCSI + ASM - Настройка сервисов отвечающих за синхронизацию времени
-permalink: /docs/oracle-database/installation/oracle-database-installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-actual-time/
+permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-actual-time/
 ---
 
 # [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Настройка сервисов отвечающих за синхронизацию времени
@@ -15,7 +15,7 @@ permalink: /docs/oracle-database/installation/oracle-database-installation/distr
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 <tr>
 	<td style="color: rgb(255, 255, 255);" bgcolor="#386351" width="14%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>Server:</strong></span></td>
-	<td height="20" bgcolor="#a2bcb1" width="60%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>node1, node2, storage</strong></span></td>
+	<td height="20" bgcolor="#a2bcb1" width="60%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>rac1, rac2, storage</strong></span></td>
 </tr>
 </table>
 
@@ -43,7 +43,63 @@ permalink: /docs/oracle-database/installation/oracle-database-installation/distr
 	# service ntpd restart
 
 
+
+<table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
+<tr>
+	<td style="color: rgb(255, 255, 255);" bgcolor="#386351" width="14%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>Server:</strong></span></td>
+	<td height="20" bgcolor="#a2bcb1" width="60%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>rac1</strong></span></td>
+</tr>
+</table>
+
+
+	# cd /etc
+	# cp ntp.conf ntp.conf.bak
+
+	# vi ntp.conf
+
+Оставляю только:
+
+	server rac1-priv-storage
+	restrict rac1-priv-storage mask 255.255.255.255 nomodify notrap noquery
+
+<br/>
+
+	# service ntpd restart
+
+
+<table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
+<tr>
+	<td style="color: rgb(255, 255, 255);" bgcolor="#386351" width="14%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>Server:</strong></span></td>
+	<td height="20" bgcolor="#a2bcb1" width="60%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>rac2</strong></span></td>
+</tr>
+</table>
+
+
+	# cd /etc
+	# cp ntp.conf ntp.conf.bak
+
+	# vi ntp.conf
+
+	Оставляю только:
+
+	server rac2-priv-storage
+	restrict rac2-priv-storage mask 255.255.255.255 nomodify notrap noquery
+
+<br/>
+
+	# service ntpd restart
+
+
 Проверка:
 
+
+	# ntpq -p
+	     remote           refid      st t when poll reach   delay   offset  jitter
+	==============================================================================
+	 rac1-priv-stora .INIT.          16 u    -   64    0    0.000    0.000   0.000
+
+
+<br/>
+
 	# ntpq -pn
-	# ntpq -c peers
+ 	# ntpq -c peers
