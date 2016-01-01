@@ -17,7 +17,13 @@ Unfortunately, i have no any visa to work in the USA, Canada, Europe and if you'
 
 I can work remotely as Java, PL/SQL Developer or admin application servers Wildfly (Jboss), Weblogic and of course i can work with Oracle Database.
 
+Now i work on project as Oracle ADF developer. We develop cloud application with interface <a href="https://www.youtube.com/watch?v=JFdW4_nne0A">like this</a> for retail companies.
+
+
 I think position as <strong>NetCracker Oracle DBA / NetCracker Application Admin</strong> could be interesting for companies, who bought <strong>NetCracker</strong>.
+
+
+I agree for for with salary something about $2000. Earlier i can earn this salary in the Russia. But now i can't.
 
 If my person would be interesting, send me emai.<br/>
 Thanks.
