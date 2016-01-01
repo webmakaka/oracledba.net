@@ -9,6 +9,7 @@ permalink: /job_offer/
 
 When i worked on <strong>NetCracker</strong> (NEC department), i worked with oracle servers from <strong>Russia, Europe, Australia, Canada, America, India</strong>.
 
+
 When i worked on RosBank, i worked with oracle servers from <strong>all regions from Russia</strong>.
 
 
@@ -25,7 +26,9 @@ I think position as <strong>NetCracker Oracle DBA / NetCracker Application Admin
 
 I agree for for with salary something about $2000. Earlier i can earn this salary in the Russia. But now i can't.
 
+
 If my person would be interesting, send me emai.<br/>
+
 Thanks.
 
 <br/>

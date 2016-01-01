@@ -4,8 +4,6 @@ title: Site Map
 permalink: /sitemap/
 ---
 
-Sorry guys, i don't want to translate instruction (what i wrote on russian language) on english. But i hope in the future i'll try to write articles on english.  
-That is open project you can add information to website by pull request to github repository.
 
 
 <br/>
