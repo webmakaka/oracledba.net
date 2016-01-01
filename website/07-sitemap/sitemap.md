@@ -81,15 +81,6 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
 
 </ul>
 
-<br/>
-
-### ORACLE DATABASE 11G ADMINISTRATION II WORKSHOP
-
-<ul>
-    <li><a href="http://oit.scps.nyu.edu/~pallerm/11g/" rel="nofollow">ORACLE DATABASE 11G ADMINISTRATION II WORKSHOP</a></li>
-
-</ul>
-
 
 <br/>
 
