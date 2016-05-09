@@ -1,17 +1,18 @@
-# oracledba.net
+# [ORACLEDBA.NET] (https://oracledba.net) SOURCE CODES
 
+### TO RUN OracleDBA.net on local computer
 
-http://lea.verou.me/2011/10/easily-keep-gh-pages-in-sync-with-master/
+Install Docker, then:
 
-Now, when I use gh-pages, there are only a few more commands that I have to use after the above:
+    $ docker pull marley/centos6-for-dev
+    $ docker run -i -t -p 80:8080 marley/centos6-for-dev /bin/bash
 
-    git checkout gh-pages // go to the gh-pages branch
-    git rebase master // bring gh-pages up to date with master
-    git push origin gh-pages // commit the changes
-    git checkout master // return to the master branch
+RUN Oracle DBA application:
 
-
-
-RUN Oracle DBA by Jekyll
-
+    $ source ~/.bash_profile
+    $ cd /projects
+    $ git clone --depth=1 https://github.com/plsql/oracledba.net
+    $ cd oracledba.net/
+    $ gem install jekyll
     $ jekyll serve --watch  --host 0.0.0.0 --port 8080
+
