@@ -1,5 +1,7 @@
 # [ORACLEDBA.NET] (https://oracledba.net) SOURCE CODES
 
+[![Build Status](https://travis-ci.org/plsql/oracledba.net.svg?branch=gh-pages)](https://travis-ci.org/plsql/oracledba.net)
+
 ### TO RUN OracleDBA.net on local computer
 
 Install Docker, then:
@@ -15,4 +17,3 @@ RUN Oracle DBA application:
     $ cd oracledba.net/
     $ gem install jekyll
     $ jekyll serve --watch  --host 0.0.0.0 --port 8080
-
