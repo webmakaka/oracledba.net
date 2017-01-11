@@ -43,7 +43,18 @@ permalink: /
 
       <div align="left">
       Feedback: <br/><img src="http://img.fotografii.org/a3333333mail.gif" alt="Marley" border="0" />
+
+      <br/>
+
+      <a href="https://gitter.im/oracle-dba-ru/Lobby" rel="nofollow"><img src="https://badges.gitter.im/oracle-dba-ru/Lobby.svg" alt="oracle dba chat room"></a>
+
+      <a href="https://travis-ci.org/plsql/oracledba.net" rel="nofollow"><img src="https://travis-ci.org/plsql/oracledba.net.svg?branch=gh-pages" alt="oracle dba build status"></a>
+
+
+
       </div>
+
+
 
       </div>
       </div>
