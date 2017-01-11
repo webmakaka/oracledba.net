@@ -4,16 +4,16 @@ title: Job Offer
 permalink: /job_offer/
 ---
 
-### Hello! I'm looking for new temporary job on projects.
+# Hello! I'm looking for new temporary job on projects.
 
 
-When i worked on <strong>NetCracker</strong> (NEC department), i worked with oracle servers from <strong>Russia, Europe, Australia, Canada, America, India</strong>.
+When I'm worked on <strong>NetCracker</strong> (NEC department), I'm worked with oracle servers from <strong>Russia, Europe, Australia, Canada, America, India</strong>.
 
 
-When i worked on RosBank, i worked with oracle servers from <strong>all regions from Russia</strong>.
+When I worked on RosBank, I worked with oracle servers from <strong>all regions from Russia</strong>.
 
 
-Unfortunately, i have no any visa to work in the USA, Canada, Europe and if you'll want to suggest me on international project, please help me with visa before.
+Unfortunately, I have no any visa to work in the USA, Canada, Europe and if you'll want to suggest me on international project, please help me with visa before.
 
 
 I can work remotely as Java, PL/SQL Developer or admin application servers Wildfly (Jboss), Weblogic and of course i can work with Oracle Database.
@@ -24,10 +24,10 @@ Now i work on project as Oracle ADF developer. We develop cloud application with
 I think position as <strong>NetCracker Oracle DBA / NetCracker Application Admin</strong> could be interesting for companies, who bought <strong>NetCracker</strong>.
 
 
-I agree for for with salary something about $2000. Earlier i can earn this salary in the Russia. But now i can't.
+I agree for with salary something about $2000. Earlier I can earn this salary in the Russia. But now I can't.
 
 
-If my person would be interesting, send me emai.<br/>
+If my person would be interesting, send me email.<br/>
 
 Thanks.
 

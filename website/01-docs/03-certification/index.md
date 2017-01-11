@@ -9,8 +9,8 @@ permalink: /database/certification/examples/
 
 <div align="center">
 <p>
-<img src="http://img.oradba.net/images/docs/01-oracle-database/01-beginning/08-cert/sql.jpg" border="0">
-<img src="http://img.oradba.net/images/docs/01-oracle-database/01-beginning/08-cert/administration1.jpg" border="0">
+<img src="http://img.oradba.net/images/docs/01-oracle-database/01-beginning/08-cert/sql.jpg" alt="Oracle Oracle DBA Certification" border="0">
+<img src="http://img.oradba.net/images/docs/01-oracle-database/01-beginning/08-cert/administration1.jpg" alt="Oracle Oracle DBA Certification" border="0">
 
 </p>
 
@@ -18,7 +18,7 @@ permalink: /database/certification/examples/
 
 <p>
 
-<img src="http://img.oradba.net/images/docs/01-oracle-database/01-beginning/08-cert/administration2.jpg" border="0">
+<img src="http://img.oradba.net/images/docs/01-oracle-database/01-beginning/08-cert/administration2.jpg" alt="Oracle Oracle DBA Certification" border="0">
 
 </p>
 </div>

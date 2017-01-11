@@ -45,7 +45,11 @@ permalink: /
 
       For that reason, I'm lost skills as Oracle DBA. And don't remember details about many things.
 
-      If you will study oracle technologies and agree to share your knowledge on this website, please write email to me.
+      If you working with oracle technologies and agree to share your knowledge on this website, please write email to me.
+
+      <br/>
+
+      <strong>I'm promise to share linkedin profile on this website to all who will help with this website. May be it can help to find a better job, especially for peope from India, Russia, Ukraine, Belarus, Kazakhstan, may be someone from Africa or Latin America.</strong>
 
 
       </div>
@@ -58,7 +62,7 @@ permalink: /
       <div class="span4">
 
           <a class="twitter-timeline" href="https://twitter.com/hashtag/oracledba" data-widget-id="644839056841412608">#oracledba Tweets</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
 
       </div>
