@@ -13,29 +13,16 @@ permalink: /
     <div class="row-fluid">
       <div class="span8">
 
-      On this website we planning to collect information about Oracle Administration on English.
+      On this website I'm planning to collect information about Oracle Administration on English.
 
       <br/>
       <br/>
 
-      This information needs for us to make our work better. <br/>
-      If you could share your experience with us, please send email.
-
-      <br/>
-      <br/>
-
-      For people who want to work with us, i think we could try to looking for job in Europe, America or Japan as team. That is mutch more interesting for Engineers who living in the India, Brasil, Russia etc.
-
-      <br/>
-      <br/>
-
-      OracleDBA.NET - open source project with codes on github. We working with jekyll technologies. And we use github as hosting our website.
-
-
+      OracleDBA.NET - open source project with codes on github. It works on jekyll technologies.
 
       <div align="center">
 
-      <h3>For people who understand russian language, our main website, is <a href="http://oracle-dba.ru/">oracle-dba.ru</a>.</h3>
+      <h3>People who understand russian language, can read same on <a href="http://oracle-dba.ru/">oracle-dba.ru</a>.</h3>
 
 
       <br/>
@@ -50,6 +37,13 @@ permalink: /
 
       <a href="https://travis-ci.org/plsql/oracledba.net" rel="nofollow"><img src="https://travis-ci.org/plsql/oracledba.net.svg?branch=gh-pages" alt="oracle dba build status"></a>
 
+      <br/><br/>
+
+      <h3>Now I'm working on position Oracle ADF / JET Developer and we develop application like <a href="https://www.youtube.com/watch?v=79QQbQ-PDkM" rel="nofollow">this</a>.</h3>
+
+      For that reason, I'm lost skills as Oracle DBA. And do not remember details about many things.
+
+      If you will study oracle technologies and agree to share you knowlege on this website, please write me on email.
 
 
       </div>
