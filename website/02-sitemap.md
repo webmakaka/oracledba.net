@@ -4,7 +4,7 @@ title: Site Map
 permalink: /sitemap/
 ---
 
-
+# Site Map
 
 <br/>
 
@@ -107,12 +107,8 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
 
 <ul>
     <li><a href="http://javadev.org/docs/appserv/weblogic/12c/installation/">Weblogic 12c Installation on Centos 6.6 x86_64</a></li>
-
     <li><a href="/docs/oracle-application-server/weblogic/weblogic-seminar/">Practicat course for study Oracle Weblogic Server</a></li>
-
-    </ul>
-
-
+</ul>
 
 
 <br/>
