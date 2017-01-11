@@ -13,7 +13,9 @@ permalink: /
     <div class="row-fluid">
       <div class="span8">
 
-      On this website I'm planning to collect information about Oracle Administration on English.
+      Hi! <br/>
+
+      On this website I'm planning to collect information about Oracle Administration on English. (Oracle DB, Weblogic, GoldenGate, Oracle Linux etc)
 
       <br/>
       <br/>
@@ -39,11 +41,11 @@ permalink: /
 
       <br/><br/>
 
-      <h3>Now I'm working on position Oracle ADF / JET Developer and we develop application like <a href="https://www.youtube.com/watch?v=79QQbQ-PDkM" rel="nofollow">this</a>.</h3>
+      <h3>Now I'm working on position Oracle ADF / Oracle JET Developer and we develop application like <a href="https://www.youtube.com/watch?v=79QQbQ-PDkM" rel="nofollow">this</a>.</h3>
 
-      For that reason, I'm lost skills as Oracle DBA. And do not remember details about many things.
+      For that reason, I'm lost skills as Oracle DBA. And don't remember details about many things.
 
-      If you will study oracle technologies and agree to share you knowlege on this website, please write me on email.
+      If you will study oracle technologies and agree to share your knowledge on this website, please write email to me.
 
 
       </div>

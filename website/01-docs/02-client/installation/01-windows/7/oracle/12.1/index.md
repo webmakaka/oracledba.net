@@ -14,7 +14,7 @@ In this document we will describe installation process for Oracle Database Clien
 To correct anything, please write mail to:
 
 <div>
-	<img src="http://img.fotografii.org/a3333333mail.gif" border="0">
+	<img src="http://img.fotografii.org/a3333333mail.gif" alt="Marley" border="0">
 </div>
 
 
