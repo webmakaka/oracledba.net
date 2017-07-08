@@ -5,3 +5,5 @@ permalink: robots.txt
 
 User-agent: *
 Allow: /
+Host: oracledba.net
+Sitemap: http://oracledba.net/sitemap.xml
