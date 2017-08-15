@@ -137,7 +137,7 @@ To correct anything, please write mail to:
 	<li><a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/archivelogs-multiplexing/">Archivelog miltiplexing</a></li>
 
 
-	<li><a href="oracle-change-default-datafile-location">Change default datafile location</a></li>
+	<li><a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/oracle-change-default-datafile-location/">Change default datafile location</a></li>
 
 	<li><a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/oracle-additionals-datafiles/">Extending tablespace (creating additional datafiles for tablespaceses)</a></li>
 
