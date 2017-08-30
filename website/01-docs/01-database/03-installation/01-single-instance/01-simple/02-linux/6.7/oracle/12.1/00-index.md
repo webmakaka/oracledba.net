@@ -66,7 +66,7 @@ To correct anything, please write mail to:
 
 <br/><br/>
 
-## Prepare Oracle Linux for Orace database installation:
+## Prepare Oracle Linux for Oracle database installation:
 
 
 <ul>

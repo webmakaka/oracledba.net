@@ -83,22 +83,26 @@ Additional packages:
 
 <br/>
 
-<h3>Install rlwrap</h3>
+### Install rlwrap
 
-rlwrap - needs to work with arrow in sqlplus and rman:
+rlwrap - needs to work with arrow buttons on keyboard in sqlplus and rman command line:
 
 
-	# yum install -y \
-	readline-devel.x86_64
-
-<br/>
-
-	# cd /tmp
-	# wget http://utopia.knoware.nl/~hlub/uck/rlwrap/rlwrap-0.37.tar.gz
+    # yum install -y \
+    readline-devel.x86_64
 
 <br/>
 
-	# tar zxvf rlwrap-0.37.tar.gz
-	# cd rlwrap-0.37
-	# ./configure
-	# make && make check && make install
+    # yum install -y git
+    # cd /tmp
+    # git clone --depth=1 https://github.com/hanslub42/rlwrap
+
+    # cd rlwrap/
+
+<br/>
+
+    # yum install -y automake
+    # autoreconf --install
+    # automake  --add-missing
+    # ./configure
+    # make && make check && make install

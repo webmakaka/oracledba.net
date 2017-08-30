@@ -27,6 +27,7 @@ permalink: /database/installation/
 <br/>
 
 <ul>
+    <!-- <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">Oracle DataBase 12C Installation on Oracle Linux 6.X</a></li> -->
 	<li><a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Oracle DataBase 12C Installation on Oracle Linux 6.X</a></li>
 	<li><a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">Oracle DataBase 12C Installation on Oracle Linux 6.X (With ASM and GRID)</a></li>
 
