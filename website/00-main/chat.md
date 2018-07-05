@@ -8,7 +8,7 @@ permalink: /chat/
 
 <br/>
 
-### Telegram чат
+### Telegram chat
 
 <br/>
 
