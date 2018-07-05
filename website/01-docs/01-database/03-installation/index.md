@@ -26,6 +26,11 @@ permalink: /database/installation/
 
 <br/>
 
+Easiest way to run docker on linux or mac host, is run oracle 11 inside  <a href="/docker-for-oracle/">docker container</a>. Of course docker should be installed.
+
+
+<br/>
+
 <ul>
     <!-- <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">Oracle DataBase 12C Installation on Oracle Linux 6.X</a></li> -->
 	<li><a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Oracle DataBase 12C Installation on Oracle Linux 6.X</a></li>
@@ -43,9 +48,6 @@ permalink: /database/installation/
 <ul>
 	<li><a href="http://www.scribd.com/fullscreen/76670992?access_key=key-1i65ejvnkmk2b4810nao">ASM 11gR2 Installation & Configuration</a></li>
 </ul>
-
-
-
 
 
 <br/>

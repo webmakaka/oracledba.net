@@ -5,7 +5,7 @@
 
 <br/>
 
-### TO RUN OracleDBA.net on local computer
+### TO RUN OracleDBA.net on local computer (May be deprecated. If it will not work, you can ask sulution in the chat)
 
 Install Docker, then:
 
@@ -16,7 +16,7 @@ RUN Oracle DBA application:
 
     $ source ~/.bash_profile
     $ cd /projects
-    $ git clone --depth=1 https://github.com/plsql/oracledba.net
+    $ git clone --depth=1 https://bitbucket.org/oracle-dba/oracledba.net
     $ cd oracledba.net/
     $ gem install jekyll
     $ jekyll serve --watch  --host 0.0.0.0 --port 8080

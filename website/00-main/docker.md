@@ -4,8 +4,63 @@ title: WebLogic 12.2.1 on Docker Containers
 permalink: /docker-for-oracle/
 ---
 
+# Docker 
+
+<br/>
+
+### Oracle XE 11 inside Docker container
+
+<br/>
+
+Container with Oracle XE 11:  
+https://hub.docker.com/r/alexeiled/docker-oracle-xe-11g/
+
+<br/>
+
+    $ docker pull alexeiled/docker-oracle-xe-11g
+    $ docker run -d --shm-size=2g -p 1521:1521 -p 8080:8080 alexeiled/docker-oracle-xe-11g
+
+<br/>
+
+Now you can connect to DB by SQLDeveloper, for example.
+
+<br/>
+
+**Connection parameters:**
+
+    hostname: localhost
+    port: 1521
+    sid: xe
+    username: system
+    password: oracle
+    
+    username: sys
+    password: oracle
+
+<br/>
+
+**Connect to Oracle Application Express web management console**
+
+    url: http://localhost:8080/apex
+    workspace: internal
+    user: admin
+    password: oracle
+
+<br/>
+
+**You can change password by next command**
+
+<br/>
+
+    alter user system identified by NewPassword;
+
+
+
+<br/>
 
 ### WebLogic 12.2.1 on Docker Containers
+
+<br/>
 
 
 <div align="center">
