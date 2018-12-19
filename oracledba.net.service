@@ -1,0 +1,21 @@
+[Unit]
+Description=oracledba.net
+
+Requires=docker.service
+After=docker.service
+
+[Service]
+
+Restart=always
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill oracledba.net
+ExecStartPre=-/usr/bin/docker rm oracledba.net
+ExecStartPre=-/usr/bin/docker pull marley/oracledba.net:latest
+ExecStart=/bin/sh -c '/usr/bin/docker run --name oracledba.net   \
+ -p 4010:80                        \
+ marley/oracledba.net'
+ExecStop=-/usr/bin/docker kill oracledba.net
+ExecStop=-/usr/bin/docker rm oracledba.net
+
+[Install]
+WantedBy=multi-user.target
