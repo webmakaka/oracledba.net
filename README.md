@@ -1,5 +1,4 @@
-# [ORACLEDBA.NET] (https://oracledba.net) SOURCE CODES
-
+# [ORACLEDBA.NET](https://oracledba.net) SOURCE CODES
 
 <br/>
 
@@ -8,10 +7,9 @@
     # vi /etc/systemd/system/oracledba.net.service
 
 Insert code from oracledba.net.service
-    
-    # systemctl enable oracledba.net.service
-    # systemctl start  oracledba.net.service
-    # systemctl status oracledba.net.service
 
+    # systemctl enable oracledba.net.service
+    # systemctl start oracledba.net.service
+    # systemctl status oracledba.net.service
 
 http://localhost:4010
