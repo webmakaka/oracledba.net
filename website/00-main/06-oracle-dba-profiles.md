@@ -4,27 +4,23 @@ title: Oracle DBA Profiles (for HR)
 permalink: /oracle-dba-profiles/
 ---
 
-
 # Oracle DBA Profiles (for HR)
 
-
 <br/>
 
-**You can add me to your contact list without any hesitations!**  
+**You can add me to your contact list without any hesitations!**
 
-
-<br/>
+<!-- <br/>
 
 <div align="center">
 
     <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
     <script type="IN/MemberProfile" data-id="http://www.linkedin.com/pub/andrey-rodin/58/924/860" data-format="inline" data-related="false"></script>
 
-</div>
+</div> -->
 
 <br/>
 <br/>
-
 
 ### For Oracle DBA
 

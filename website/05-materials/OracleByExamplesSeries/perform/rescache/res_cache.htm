@@ -100,23 +100,23 @@ function hideAllImages()
 <table width="270" border="0" cellpadding="1" cellspacing="0">
   <tbody> 
     <tr valign="top">
-      <td width="16"><img src="images/bullet.gif" width="16" height="16"></td>
+      <td width="16"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
       <td width="218" class="bodylink"><a href="#o">Overview</a></td>
     </tr>
     <tr valign="top">
-      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
       <td class="bodylink"><a href="#p">Prerequisites</a></td>
     </tr>
     <tr valign="top">
-      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
      <td class="boldbodylink"> <a href="#imp" class="bodylink">Implementing SQL Query Result Cache </a> </td>
  	</tr>
     <tr valign="top">
-      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
       <td class="boldbodylink"> <a href="#func" class="bodylink">Using PL/SQL Function Result Cache </a> </td>
     </tr>
     <tr valign="top">
-      <td><img src="images/bullet.gif" width="16" height="16"></td>
+      <td><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
       <td class="bodylink"><a href="#s">Summary</a></td>
     </tr>
   </tbody> 
@@ -162,11 +162,11 @@ PL/SQL functions that are executed frequently.</p>
 <P class="bodycopy style14">You can enable Query Result Cache at the database level using the <span class="style13">RESULT_CACHE_MODE</span> initialization parameter in the database initialization parameter file. The same parameter can also be used at the session level using the <span class="style13">ALTER SESSION</span> command. <span class="style13">RESULT_CACHE_MODE</span> can be set to:</P>
 <UL class="style14">
   <LI>
-    <P class="bodycopy"><span class="style13">AUTO</span> – the optimizer will decide based on a number of factors whether or not to cache the result. Decision factors include the frequency of query execution, the cost of building the result and the frequency of changes against the underlying database objects.</P>
+    <P class="bodycopy"><span class="style13">AUTO</span> ï¿½ the optimizer will decide based on a number of factors whether or not to cache the result. Decision factors include the frequency of query execution, the cost of building the result and the frequency of changes against the underlying database objects.</P>
   <LI>
-    <P class="bodycopy"><span class="style13">MANUAL</span> – (default) you have to add the RESULT_CACHE hint to your queries in order for results to be cached or to be served out of the cache. The RESULT_CACHE hint can also be added in sub queries and in-line views.</P>
+    <P class="bodycopy"><span class="style13">MANUAL</span> ï¿½ (default) you have to add the RESULT_CACHE hint to your queries in order for results to be cached or to be served out of the cache. The RESULT_CACHE hint can also be added in sub queries and in-line views.</P>
   <LI>
-    <P class="bodycopy"><span class="style13">FORCE </span>– results are always stored in the Result Cache Memory if possible.</P>
+    <P class="bodycopy"><span class="style13">FORCE </span>ï¿½ results are always stored in the Result Cache Memory if possible.</P>
 </UL>
 <P class="bodycopy">The use of the SQL Query Result Cache introduces the ResultCache operator in the query execution plan. </P>
 <p class="bodycopy style14">&nbsp;</p>
@@ -341,11 +341,11 @@ PL/SQL functions that are executed frequently.</p>
 <p class="bodycopy">In this tutorial, you learned how to: </p>
 <table border="0" cellpadding="1" cellspacing="0">
   <tr valign="top">
-    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td width="297" colspan="2" class="bodycopy">use the SQL Query Result Cache</td>
   </tr>
   <tr valign="top">
-    <td width="16" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="16" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="bodycopy">use PL/SQL Function Result Cache</td>
   </tr>
   <tbody>

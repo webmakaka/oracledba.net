@@ -95,55 +95,55 @@ upload, store, manipulate, and export medical image data inside the Oracle Datab
 <p class="bodycopy">This tutorial covers the following topics:</p>
 <table border="0" cellspacing="0" cellpadding="1">
   <tr valign="top"> 
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodylink"><a href="#o"> Overview</a> </td>
   </tr>
   <tr valign="top"> 
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodylink"><a href="#p"> Prerequisites</a> </td>
   </tr>
   <tr valign="top"> 
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="boldbodylink"><a href="#t1"  class="bodylink">Creating a Directory Object for Import and Export </a></td>
   </tr>
   <tr valign="top"> 
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="boldbodylink"><a href="#t2" class="bodylink">Creating a Table with an ORDDicom Column </a> </td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="boldbodylink"><a href="#t3" class="bodylink">Importing Medical Images </a></td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="boldbodylink"><a href="#t4" class="bodylink">Retrieving Object Attributes </a> </td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="boldbodylink"><a href="#t4g" class="bodylink">Retrieving DICOM Metadata </a> </td>
   </tr>
   <tr valign="top"> 
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="boldbodylink"><a href="#t5" class="bodylink">Creating Thumbnails and Changing Formats</a></td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="boldbodylink"><a href="#t6" class="bodylink">Making Anonymous Copies of DICOM Objects</a> </td>
   </tr>
    <tr valign="top"> 
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="boldbodylink"><a href="#t7" class="bodylink">Checking the Conformance of DICOM Objects</a> </td>
   </tr>
    <tr valign="top">
-     <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+     <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
      <td colspan="2" class="boldbodylink"><a href="#t8" class="bodylink">Exporting Images</a> </td>
    </tr>
    <tr valign="top">
-     <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+     <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
      <td colspan="2" class="boldbodylink"><a href="#t9" class="bodylink">Cleaning Up </a> </td>
    </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodylink"><a href="#s"> Summary </a></td>
   </tr>
 </table>
@@ -293,27 +293,27 @@ show errors;</pre>
   for indexing and querying.</p>
 <table border="0" cellspacing="0" cellpadding="1">
   <tr valign="top">
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodylink"><a href="#t4b"> Retrieve <font face="Courier New, Courier, mono">SOP_INSTANCE_UID</font></a> 
     </td>
   </tr>
   <tr valign="top">
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodylink"><a href="#t4c">Retrieve <font face="Courier New, Courier, mono">SOP_CLASS_UID</font></a> 
     </td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodylink"><a href="#t4d">Retrieve <font face="Courier New, Courier, mono">STUDY_INSTANCE_UID</font></a> 
     </td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodylink"><a href="#t4e">Retrieve <font face="Courier New, Courier, mono">SERIES_INSTANCE_UID</font></a> 
     </td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodylink"><a href="#t4f">Retrieve content length (number 
       of bytes of DICOM content)</a> </td>
   </tr>
@@ -678,35 +678,35 @@ revoke create any directory from PM;</pre>
 <p><SPAN class=bodycopy>In this tutorial, you learned how to:</SPAN></p>
 <table border="0" cellspacing="0" cellpadding="1">
   <tr valign="top">
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodycopy">Create a directory object for import and export </td>
   </tr>
   <tr valign="top">
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodycopy">Create a table with an ORDDicom column </td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2"  class="bodycopy">Import medical images </td>
   </tr>
   <tr valign="top">
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="bodycopy">Select and view DICOM attributes </td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="bodycopy">Create a thumbnail and change formats </td>
   </tr>
   <tr valign="top">
-    <td width="15" class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td width="15" class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="bodycopy">Make anonymous copies of DICOM objects </td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="bodycopy">Check the conformance of DICOM objects </td>
   </tr>
   <tr valign="top">
-    <td class="bodycopy"><img src="images/bullet.gif" width="16" height="16"></td>
+    <td class="bodycopy"><img src="images/bullet.gif" alt="bullet" width="16" height="16"></td>
     <td colspan="2" class="bodycopy">Export images</td>
   </tr>
 </table>

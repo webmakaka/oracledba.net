@@ -8,7 +8,7 @@ permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/a
 
 <div style="padding:10px; border:thin solid black;">
 
-	<h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
+    <h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
 
     <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
 
@@ -18,28 +18,22 @@ permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/a
 
 # <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Инсталляция Oracle DataBase Server 12.2 в Oracle Linux 7.4]</a>: Настройка автозапуска Oracle после перезагрузки
 
+<br/>
+
+    $ vi /etc/oratab
 
 <br/>
 
-	$ vi /etc/oratab
-
-
-<br/>
-
-	orcl12:/u01/oracle/database/12.2:N
-
+    orcl12:/u01/oracle/database/12.2:N
 
 заменить на
 
-
-	# orcl12:/u01/oracle/database/12.2:N
-	orcl12:/u01/oracle/database/12.2:Y
-
+    # orcl12:/u01/oracle/database/12.2:N
+    orcl12:/u01/oracle/database/12.2:Y
 
 <br/>
 
 ### Создание скрипта, стартующего и останавливающего базу данных при старте и перезапуске операционной системы
-
 
 <!-- Скрипт следующего содержания мы добавим в автозагрузку (выполнив команды после данного скрипта):
 
@@ -47,8 +41,7 @@ permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/a
 <script src="http://gist-it.appspot.com/https://github.com/oradev/oracle-dba-scripts/blob/master/oracle_12R1_startup_and_shutdown_script">
 </script> -->
 
-
-	# cd /tmp
+    # cd /tmp
 
     # vi oracle_12.2_startup_and_shutdown_script
 
@@ -56,7 +49,7 @@ https://bitbucket.org/oracle-dba/oracle-dba-startup-and-shutdown-scripts/src/147
 
 <!-- # wget -O startupOracleDatabase12R1 https://github.com/oradev/oracle-dba-scripts/raw/master/oracle_12R1_startup_and_shutdown_script -->
 
-	# mv oracle_12.2_startup_and_shutdown_script /etc/rc.d/init.d/
-	# chmod +x /etc/rc.d/init.d/oracle_12.2_startup_and_shutdown_script
-	# chkconfig --add oracle_12.2_startup_and_shutdown_script
-	# chkconfig --level 345 oracle_12.2_startup_and_shutdown_script on
+    # mv oracle_12.2_startup_and_shutdown_script /etc/rc.d/init.d/
+    # chmod +x /etc/rc.d/init.d/oracle_12.2_startup_and_shutdown_script
+    # chkconfig --add oracle_12.2_startup_and_shutdown_script
+    # chkconfig --level 345 oracle_12.2_startup_and_shutdown_script on
