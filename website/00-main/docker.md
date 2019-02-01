@@ -1,10 +1,10 @@
 ---
 layout: page
-title: WebLogic 12.2.1 on Docker Containers
+title: Docker Containers and Oracle
 permalink: /docker-for-oracle/
 ---
 
-# Docker 
+# Docker Containers and Oracle
 
 <br/>
 
@@ -12,13 +12,13 @@ permalink: /docker-for-oracle/
 
 <br/>
 
-Container with Oracle XE 11:  
-https://hub.docker.com/r/alexeiled/docker-oracle-xe-11g/
+**Container with Oracle XE 11:**  
+<a href="https://github.com/wnameless/docker-oracle-xe-11g">here</a>
 
 <br/>
 
-    $ docker pull alexeiled/docker-oracle-xe-11g
-    $ docker run -d --shm-size=2g -p 1521:1521 -p 8080:8080 alexeiled/docker-oracle-xe-11g
+    $ docker pull wnameless/oracle-xe-11g
+    $ docker run -d --shm-size=2g -p 1521:1521 -p 8080:8080 wnameless/oracle-xe-11g
 
 <br/>
 
@@ -33,7 +33,7 @@ Now you can connect to DB by SQLDeveloper, for example.
     sid: xe
     username: system
     password: oracle
-    
+
     username: sys
     password: oracle
 
@@ -54,14 +54,11 @@ Now you can connect to DB by SQLDeveloper, for example.
 
     alter user system identified by NewPassword;
 
-
-
 <br/>
 
-### WebLogic 12.2.1 on Docker Containers
+### WebLogic 12.2.1 inside Docker Containers
 
 <br/>
-
 
 <div align="center">
 
@@ -72,4 +69,4 @@ Now you can connect to DB by SQLDeveloper, for example.
 <br/><br/>
 
 Dockerfiles and etc:  
-https://github.com/plsql/docker-for-oracle
+https://bitbucket.org/oracle-dba/docker-for-oracle/src/master/
