@@ -4,12 +4,11 @@ title: Oracle DataBase 12.2 - Oracle Linux 7.4 - Создание виртуал
 permalink: /database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/
 ---
 
-
 <br/>
 
 <div style="padding:10px; border:thin solid black;">
 
-	<h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
+    <h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
 
     <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
 
@@ -19,12 +18,10 @@ permalink: /database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/
 
 # <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Инсталляция Oracle DataBase Server 12.2 в Oracle Linux 7.4]</a>: Создание виртуальной машины VirtualBox для инсталляции базы данных
 
-
 <br/>
 
 О том как инсталлировал virtualbox, переменные и каталоги, смотри  
-<a href="//sysadm.ru/linux/virtual/virtualbox/">здесь</a>
-
+<a href="//sysadm.ru/linux/servers/virtual/virtualbox/">здесь</a>
 
 <br/>
 
@@ -36,11 +33,9 @@ permalink: /database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/
 
     $ vm=vm_oel_7.4_oracle_db_12.2
 
-
-Создаем каталоги для виртуальной машины  и для snapshots
+Создаем каталоги для виртуальной машины и для snapshots
 
     $ mkdir -p ${VM_HOME}/${vm}/snapshots
-
 
 ### Создание и регистрация виртуальной машины:
 
@@ -50,35 +45,25 @@ permalink: /database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/
     --basefolder ${VM_HOME}/${vm} \
     --register
 
-
-
 ### Устанавливаем планку оперативной памяти:
-
 
     $ VBoxManage modifyvm ${vm} --memory 4096
 
-
 ### Подключаю видеокарту на 32 MB:
 
-
     $ VBoxManage modifyvm ${vm} --vram 32
-
 
 ### Снимаю sound карту, вытаскиваем дисковвод:
 
     $ VBoxManage modifyvm ${vm} --floppy disabled --audio none
 
-
 ### Подключаю контроллер жестких дисков (SAS):
-
 
     $ VBoxManage storagectl ${vm} \
     --add sas \
     --name "SAS Controller"
 
-
 ### Создание и подключение жестких дисков:
-
 
 Создаю виртуальные жесткие диски. Размер (size), рекомендуется задавать согласно имеющихся ресурсов. Иначе возможны проблемы и крах виртуальной машины):
 
@@ -90,10 +75,7 @@ permalink: /database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/
     do VBoxManage createhd --filename ${vm}_dsk_dsk$i.vdi --size 40960 --format VDI --variant Standard
     done
 
-
-
 ### Подключаю диски к SAS контроллеру:
-
 
 Подключить 8 дисков 1 командой:
 
@@ -101,18 +83,13 @@ permalink: /database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/
     do let port=$i-1; VBoxManage storageattach ${vm} --storagectl "SAS Controller" --port $port --type hdd --medium ${vm}_dsk_dsk$i.vdi
     done
 
-
-
 ### Подключаю IDE контроллер к которому будет позднее подключен DVD-ROM:
-
 
     $ VBoxManage storagectl ${vm} \
     --add ide \
     --name "IDE Controller"
 
-
 ### Подключаю к IDE контроллеру DVD образ инсталлируемой операционной системы:
-
 
     $ VBoxManage storageattach ${vm} \
     --storagectl "IDE Controller" \
@@ -121,12 +98,9 @@ permalink: /database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/
     --type dvddrive \
     --medium  /mnt/dsk1/oracle/OracleLinux/7.4/V921569-01.iso
 
-
 ### Подключение сетевых интерфейсов:
 
-
 Вариант настройки, когда сервер будет работать на моем компьютере и не должен быть доступен за ее пределами.
-
 
 Понадобился 1 hostonly адаптер для подключения к виртуальной машине по SSH с хоста.
 
@@ -135,8 +109,7 @@ permalink: /database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/
     --nic1 hostonly \
     --hostonlyadapter1 vboxnet0
 
-
-И 1  адаптер с NAT, чтобы компьютер мог выходить в интернет.
+И 1 адаптер с NAT, чтобы компьютер мог выходить в интернет.
 
     $ VBoxManage modifyvm ${vm} \
     --nictype2 82540EM \
@@ -149,7 +122,6 @@ ifconfig на хост машине должен выводить vboxnet0.
 vboxnet0 - виртуальный адаптер хостовой машины.
 
 Если виртуального адаптера нет, нуно его самостоятельно создать.
-
 
     $ VBoxManage hostonlyif create
 
@@ -176,32 +148,24 @@ vboxnet0 - виртуальный адаптер хостовой машины.
 
     $ sudo ifconfig vboxnet0 up
 
-
 Если что-то пошло не так, можно удалить созданный интерфейс командой:
 
     $ VBoxManage modifyvm ${vm} --nic2 none
-
 
 <br/>
 
 ### Определяем порядок устройств, с которых будет произведена попытка стартовать систему:
 
-
     $ VBoxManage modifyvm ${vm} \
     --boot1 disk \
     --boot2 dvd
 
-
 ### Определяем каталог для снапшотов:
-
 
     $ VBoxManage modifyvm ${vm} \
     --snapshotfolder ${VM_HOME}/${vm}/snapshots
 
-
-
 ### Предоставим возможность подключения к машине по RDP:
-
 
     $ VBoxManage modifyvm ${vm} \
     --vrde on \
@@ -210,18 +174,16 @@ vboxnet0 - виртуальный адаптер хостовой машины.
     --vrdeaddress 192.168.1.5 \
     --vrdeport 3389
 
-Здесь мы указываем:  
+Здесь мы указываем:
 
 --vrdeaddress - ip адрес машины, на которой установлен vitrualbox  
 --vrdeauthtype null - аутентификация не требуется.  
 --vrdemulticon on - разрешено множественное подключение к виртуальным машинам.  
---vrdeport - порт к которому можно будет подключиться при старте виртуальной машины.  
-
+--vrdeport - порт к которому можно будет подключиться при старте виртуальной машины.
 
 ### Показать результат созданнойвиртуальной машины:
 
     $ VBoxManage showvminfo ${vm}
-
 
 ### Создание снапшота перед инсталляцией ОС
 
@@ -231,7 +193,6 @@ vboxnet0 - виртуальный адаптер хостовой машины.
 
 ## ВИРТУАЛЬНАЯ МАШИНА ГОТОВА ДЛЯ ИНСТАЛЛЯЦИИ ОПЕРАЦИОННОЙ СИСТЕМЫ
 
-
 Более подробный документ с созданием снапшотов и резервныхкопий виртуальных машин смотри
 <a href="//sysadm.ru/linux/virtual/virtualbox/">здесь</a>
 
@@ -239,12 +200,9 @@ vboxnet0 - виртуальный адаптер хостовой машины.
 
 ### Стартуем виртуальную машину с возможностью подключения по RDP:
 
-
     $ VBoxHeadless --startvm ${vm}
 
-
 Подключаюсь по RDP к виртуальной машине. В Windows это консоль для удаленного подключения mstsc, в linux remmina или rdesktop.
-
 
 Делаю в Ubuntu 12.04
 
@@ -257,6 +215,5 @@ vboxnet0 - виртуальный адаптер хостовой машины.
     -k common  \
     -g  1600x1024 \
     192.168.1.5:3389
-
 
 В первом окне нажимаю tab и дописываю linux text, чтобы инсталляция проходила в удобном для меня режиме. Устанавливать операционную следует на 1 диск.

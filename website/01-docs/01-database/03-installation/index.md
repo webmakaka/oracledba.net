@@ -6,7 +6,6 @@ permalink: /database/installation/
 
 # Oracle DataBase Installation
 
-
 # Single-Instance Architecture
 
 <br/>
@@ -19,15 +18,13 @@ permalink: /database/installation/
 	<li><a href="/database/installation/single-instance/simple/windows/2008/oracle/12.1/">Oracle DataBase 12C Installation on Windows 2008 Server</a></li>
 </ul>
 
-
 <br/>
 
 ## Installation Oracle DataBase on Oracle Linux:
 
 <br/>
 
-Easiest way to run docker on linux or mac host, is run oracle 11 inside  <a href="/docker-for-oracle/">docker container</a>. Of course docker should be installed.
-
+Easiest way to run docker on linux or mac host, is run oracle 11 inside <a href="/docker-for-oracle/">docker container</a>. Of course docker should be installed.
 
 <br/>
 
@@ -38,7 +35,6 @@ Easiest way to run docker on linux or mac host, is run oracle 11 inside  <a href
 
 </ul>
 
-
 <br/>
 
 ## Additional instruction from other Oracle DBA:
@@ -48,7 +44,6 @@ Easiest way to run docker on linux or mac host, is run oracle 11 inside  <a href
 <ul>
 	<li><a href="http://www.scribd.com/fullscreen/76670992?access_key=key-1i65ejvnkmk2b4810nao">ASM 11gR2 Installation & Configuration</a></li>
 </ul>
-
 
 <br/>
 
@@ -62,11 +57,9 @@ Easiest way to run docker on linux or mac host, is run oracle 11 inside  <a href
 
 </ul>
 
-
 <br/><br/>
 
 # Distributed System Architectures:
-
 
 <br/>
 
@@ -75,10 +68,14 @@ Easiest way to run docker on linux or mac host, is run oracle 11 inside  <a href
 <ul>
 	<li><a href="https://en.wikibooks.org/wiki/RAC_Attack_-_Oracle_Cluster_Database_at_Home/RAC_Attack_12c/Create_VirtualBox_VM" rel="nofollow">RAC Attack - Oracle Cluster Database at Home/RAC Attack 12c/Create VirtualBox VM</a></li>
 
-	<li><a href="http://www.lab128.com/rac12_installation_using_vb/article_text.html" rel="nofollow">Oracle RAC 12c Database on Linux Using VirtualBox (GUI, Sharde Virtual Disk)</a></li>
+    <li><a href="http://www.lab128.com/rac12_installation_using_vb/article_text.html" rel="nofollow">Oracle RAC 12c Database on Linux Using VirtualBox (GUI, Sharde Virtual Disk)</a></li>
 
-	<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle11gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 11g R2 on Linux - (RHEL 5)</a></li>
+<!--
 
-	<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle10gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 10g R2 on Linux - (RHEL 5.3 / iSCSI)</a></li>
+Uncomment when idevelopment will accessible
+
+<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle11gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 11g R2 on Linux - (RHEL 5)</a></li>
+
+<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle10gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 10g R2 on Linux - (RHEL 5.3 / iSCSI)</a></li> -->
 
 </ul>
