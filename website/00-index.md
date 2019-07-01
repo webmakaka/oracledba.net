@@ -22,7 +22,7 @@ permalink: /
 
       <br/><br/>
 
-      If it will be interesting, join to our  <a href="/chat/">chat</a>
+      If it will be interesting, or you want to ask anything, join us in the telegram <a href="/chat/">chat</a>
 
     </div>
 
