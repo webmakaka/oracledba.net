@@ -85,7 +85,7 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
 ### Oracle by Example Series: Oracle Database 11g
 
 <ul>
-    <li><a href="/website/05-materials/OracleByExamplesSeries/">Oracle by Example Series: Oracle Database 11g</a></li>
+    <li><a href="/website/02-materials/OracleByExamplesSeries/">Oracle by Example Series: Oracle Database 11g</a></li>
 
 </ul>
 
