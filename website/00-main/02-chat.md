@@ -9,3 +9,11 @@ permalink: /chat/
 <br/>
 
 https://t.me/oracledba_net
+
+<br/>
+
+# Gitter Chat
+
+If Telegram chat is not appropriate for you, you can ask anything in gitter chat. (Need github, gitlab, twitter account).
+
+https://gitter.im/oracle-dba-ru/Lobby

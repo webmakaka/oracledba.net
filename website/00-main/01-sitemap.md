@@ -106,7 +106,7 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
 ### Oracle Weblogic Server
 
 <ul>
-    <li><a href="http://javadev.org/docs/appserv/weblogic/12c/installation/">Weblogic 12c Installation on Centos 6.6 x86_64</a></li>
+    <li><a href="//javadev.org/docs/appserv/weblogic/12c/installation/">Weblogic 12c Installation on Centos 6.6 x86_64</a></li>
     <li><a href="/docs/oracle-application-server/weblogic/weblogic-seminar/">Practicat course for study Oracle Weblogic Server</a></li>
 </ul>
 
@@ -116,5 +116,5 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
 ### Oracle Business Intelligence Enterprise Edition (OBIEE)
 
 <ul>
-    <li><a href="http://www.oracle.com/technetwork/middleware/bi-foundation/obiee-samples-167534.html"  rel="nofollow">Oracle Business Intelligence Enterprise Edition Samples</a></li>
+    <li><a href="http://www.oracle.com/technetwork/middleware/bi-foundation/obiee-samples-167534.html" rel="nofollow">Oracle Business Intelligence Enterprise Edition Samples</a></li>
 </ul>
