@@ -82,6 +82,16 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
 
 <br/>
 
+### Oracle Database Notes for Professionals book
+
+<div align="center">
+    <a href="https://goalkicker.com/OracleDatabaseBook/">
+    <img src="https://goalkicker.com/OracleDatabaseBook/OracleDatabaseGrow.png" border="0" alt="Single"></a>
+</div>
+
+
+<br/>
+
 ### Oracle by Example Series: Oracle Database 11g
 
 <ul>
