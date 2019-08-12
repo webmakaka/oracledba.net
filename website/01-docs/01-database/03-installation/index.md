@@ -6,7 +6,7 @@ permalink: /database/installation/
 
 # Oracle DataBase Installation
 
-# Single-Instance Architecture
+#№ Single-Instance Architecture
 
 <br/>
 
@@ -20,13 +20,28 @@ permalink: /database/installation/
 
 <br/>
 
-## Installation Oracle DataBase on Oracle Linux:
+## Installation Oracle DataBase on Linux:
 
 <br/>
 
-Easiest way to run docker on linux or mac host, is run oracle 11 inside <a href="/docker-for-oracle/">docker container</a>. Of course docker should be installed.
+**Docker**
+
+Easiest way to run Oracle on linux / mac host, is run oracle 11 XE inside <a href="/docker-for-oracle/">docker container</a>. Of course docker should be installed.
 
 <br/>
+
+**Vagrant scripts**
+
+Video about installation Oracle Linux 8 and Oracle 19C by Vagrant + ssh scripts. 
+
+https://www.youtube.com/watch?v=0ogLoZfYOYs&t=0s
+
+https://github.com/oraclebase/vagrant/tree/master/database/ol8_19
+
+
+<br/>
+
+**Manual installation**
 
 <ul>
     <!-- <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">Oracle DataBase 12C Installation on Oracle Linux 6.X</a></li> -->
@@ -59,7 +74,7 @@ Easiest way to run docker on linux or mac host, is run oracle 11 inside <a href=
 
 <br/><br/>
 
-# Distributed System Architectures:
+## Distributed System Architectures:
 
 <br/>
 
@@ -68,14 +83,10 @@ Easiest way to run docker on linux or mac host, is run oracle 11 inside <a href=
 <ul>
 	<li><a href="https://en.wikibooks.org/wiki/RAC_Attack_-_Oracle_Cluster_Database_at_Home/RAC_Attack_12c/Create_VirtualBox_VM" rel="nofollow">RAC Attack - Oracle Cluster Database at Home/RAC Attack 12c/Create VirtualBox VM</a></li>
 
-    <li><a href="http://www.lab128.com/rac12_installation_using_vb/article_text.html" rel="nofollow">Oracle RAC 12c Database on Linux Using VirtualBox (GUI, Sharde Virtual Disk)</a></li>
+  <li><a href="http://www.lab128.com/rac12_installation_using_vb/article_text.html" rel="nofollow">Oracle RAC 12c Database on Linux Using VirtualBox (GUI, Sharde Virtual Disk)</a></li>
 
-<!--
+	<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle11gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 11g R2 on Linux - (RHEL 5)</a></li>
 
-Uncomment when idevelopment will accessible
-
-<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle11gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 11g R2 on Linux - (RHEL 5)</a></li>
-
-<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle10gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 10g R2 on Linux - (RHEL 5.3 / iSCSI)</a></li> -->
+	<li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle10gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 10g R2 on Linux - (RHEL 5.3 / iSCSI)</a></li>
 
 </ul>
