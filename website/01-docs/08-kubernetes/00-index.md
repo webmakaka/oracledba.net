@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Docker Containers, Oracle and Kubernetes
-permalink: /docker/
+permalink: /kubernetes/
 ---
 
 # Docker Containers, Oracle and Kubernetes
