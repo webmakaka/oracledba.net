@@ -26,7 +26,7 @@ permalink: /database/installation/
 
 **Docker**
 
-Easiest way to run Oracle on linux / mac host, is run oracle 11 XE inside <a href="/docker-for-oracle/">docker container</a>. Of course docker should be installed.
+Easiest way to run Oracle on linux / mac host, is run oracle 11 XE inside <a href="/docker/xe/">docker container</a>. Of course docker should be installed.
 
 <br/>
 
