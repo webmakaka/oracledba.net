@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Vagrant scripts for and Oracle
+title: Vagrant scripts for Oracle
 permalink: /vagrant/
 ---
 
-# Vagrant scripts for and Oracle
+# Vagrant scripts for Oracle
 
 Video about installation Oracle Linux 8 and Oracle 19C by Vagrant + ssh scripts. 
 
