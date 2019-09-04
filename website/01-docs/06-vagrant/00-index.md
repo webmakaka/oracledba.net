@@ -6,8 +6,7 @@ permalink: /vagrant/
 
 # Vagrant scripts for Oracle
 
-Video about installation Oracle Linux 8 and Oracle 19C by Vagrant + ssh scripts. 
+### [(YouTube) Vagrant : Oracle Database Build](https://www.youtube.com/watch?v=0ogLoZfYOYs)
 
-https://www.youtube.com/watch?v=0ogLoZfYOYs&t=0s
-
+**src:**  
 https://github.com/oraclebase/vagrant/tree/master/database/ol8_19

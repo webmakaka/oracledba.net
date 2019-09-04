@@ -14,6 +14,8 @@ permalink: /docker/
 
 ### [(YouTube) Docker : Oracle Database Build](https://www.youtube.com/watch?v=tvckEItrLa8)
 
+### [(YouTube) Docker : Oracle REST Data Services (ORDS) Build](https://www.youtube.com/watch?v=FX-Q6xU6InE)
+
 <br/>
 
 ## Weblogic
