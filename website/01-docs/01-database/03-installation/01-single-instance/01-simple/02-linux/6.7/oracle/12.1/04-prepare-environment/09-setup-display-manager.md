@@ -28,7 +28,7 @@ Next we should setup connection rights.<br/>
 Simplest way to do it is - right click on xming shortcut. In properties in target field add -ac (without access control)
 
 
-<img src="http://img.oradba.net/img/oracle/database/simple/12.1/XMing.png" border="0" alt="XMing">
+<img src="https://img.oracledba.net/img/oracle/database/simple/12.1/XMing.png" border="0" alt="XMing">
 
 
 
@@ -41,7 +41,7 @@ Simplest way to do it is - right click on xming shortcut. In properties in targe
 	$ sudo apt-get install -y gdm
 
 
-<br/><img src="http://img.oradba.net/img/oracle/database/simple/11.2/gdm.png" border="0" alt="Oracle installation"><br/>
+<br/><img src="https://img.oracledba.net/img/oracle/database/simple/11.2/gdm.png" border="0" alt="Oracle installation"><br/>
 
 
 ### If chosen gdm
@@ -158,4 +158,4 @@ Or you may execute next command:
 
 <br/><br/>
 
-<br/><img src="http://img.oradba.net/img/oracle/database/simple/11.2/xclock.png" border="0" alt="Oracle installation">
+<br/><img src="https://img.oracledba.net/img/oracle/database/simple/11.2/xclock.png" border="0" alt="Oracle installation">

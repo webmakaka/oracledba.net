@@ -23,10 +23,10 @@ permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/o
 При старте, нужно успеть нажать tab и дописать linux text. Иначе установка стартует в графическом режиме и в конечном итоге GUI будет также установлен на сервере.
 
 
-<img src="//img.oradba.net/01-database/02-installation/01-single-instance/01-simple/02-linux/7.4/oracle/12.2/01-oel-7.4-installation/oel-7.4-installation-01.png" border="0" alt="Oracle Linux 7.4 installation"><br/><br/>
+<img src="//img.oracledba.net/01-database/02-installation/01-single-instance/01-simple/02-linux/7.4/oracle/12.2/01-oel-7.4-installation/oel-7.4-installation-01.png" border="0" alt="Oracle Linux 7.4 installation"><br/><br/>
 
 
-<img src="//img.oradba.net/01-database/02-installation/01-single-instance/01-simple/02-linux/7.4/oracle/12.2/01-oel-7.4-installation/oel-7.4-installation-02.png" border="0" alt="Oracle Linux 7.4 installation"><br/><br/>
+<img src="//img.oracledba.net/01-database/02-installation/01-single-instance/01-simple/02-linux/7.4/oracle/12.2/01-oel-7.4-installation/oel-7.4-installation-02.png" border="0" alt="Oracle Linux 7.4 installation"><br/><br/>
 
 
 <br/>
@@ -41,4 +41,4 @@ permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/o
 
 <br/>
 
-<img src="//img.oradba.net/01-database/02-installation/01-single-instance/01-simple/02-linux/7.4/oracle/12.2/01-oel-7.4-installation/oel-7.4-installation-03.png" border="0" alt="Oracle Linux 7.4 installation"><br/><br/>
+<img src="//img.oracledba.net/01-database/02-installation/01-single-instance/01-simple/02-linux/7.4/oracle/12.2/01-oel-7.4-installation/oel-7.4-installation-03.png" border="0" alt="Oracle Linux 7.4 installation"><br/><br/>
