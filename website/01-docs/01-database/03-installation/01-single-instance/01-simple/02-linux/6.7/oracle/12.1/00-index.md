@@ -16,7 +16,7 @@ For installation we won't use GUI on server.
 To correct anything, please write mail to:
 
 <div>
-	<img src="http://img.fotografii.org/a3333333mail.gif" alt="Marley" border="0">
+	<img src="/img/a3333333mail.gif" alt="Marley" border="0">
 </div>
 
 <br/>

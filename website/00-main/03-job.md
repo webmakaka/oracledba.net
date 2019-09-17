@@ -38,5 +38,5 @@ Thanks.
 <br/>
 
 <div align="right">
-Feedback: <br/><img src="http://img.fotografii.org/a3333333mail.gif" alt="Marley" border="0" />
+Feedback: <br/><img src="/img/a3333333mail.gif" alt="Marley" border="0" />
 </div>
