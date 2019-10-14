@@ -6,7 +6,7 @@ permalink: /database/installation/
 
 # Oracle DataBase Installation
 
-#№ Single-Instance Architecture
+# Single-Instance Architecture
 
 <br/>
 
