@@ -1,10 +1,12 @@
 ---
 layout: page
-title: Telegram chat
+title: chat
 permalink: /chat/
 ---
 
-# Telegram chat
+# Chat
+
+### Telegram chat
 
 <br/>
 
@@ -12,8 +14,16 @@ https://t.me/oracledba_net
 
 <br/>
 
-# Gitter Chat
+### Slack
 
-If the telegram chat is not appropriate for you, you can ask anything in gitter chat. (Need github | gitlab | twitter account).
+<br/>
 
-https://gitter.im/oracle-dba-ru/Lobby
+https://oracledba-net.slack.com/
+
+<br/>
+
+<br/>
+
+**Join Link:**
+
+https://join.slack.com/t/oracledba-net/shared_invite/enQtODU2MzY4NTY5NjU0LWRkNjJlYWM0ZWM2NTVkYTU5ZGQ3NmNmNWUwNjQ3NGI1NmFkNGRjZDgwMjhkMWM5NGEwZDBhN2UyZjc3MzcxN2Q
