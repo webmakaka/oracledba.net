@@ -21,7 +21,7 @@ permalink: /database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/
 <br/>
 
 О том как инсталлировал virtualbox, переменные и каталоги, смотри  
-<a href="//sysadm.ru/linux/servers/virtual/virtualbox/">здесь</a>
+<a href="//sysadm.ru/linux/virtual/virtualbox/">здесь</a>
 
 <br/>
 
