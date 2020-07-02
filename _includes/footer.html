@@ -1,44 +1,60 @@
 <footer class="site-footer">
-
-    <div class="wrapper">
-
-
-        <!-- disqus -->
-
-        <!-- disqus -->
-
-        <!-- Google Analitics -->
-
-        <!-- Google Analinics  -->
-
-        <div align="center">
-
-            <table border="0">
-                <tr>
-                    <td><a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/"><img
-                                src="/img/single.png" border="0" alt="Single"></a>
-                    </td>
-                    <td><a href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/"><img
-                                src="/img/dataguard.png" border="0" alt="DataGuard"></a></td>
-                    <td><a href="/database/installation/distributed/rac/"><img src="/img/rac.png" border="0"
-                                alt="RAC"></a></td>
-                </tr>
-            </table>
-
-        </div>
-
-
-        <h2 class="footer-heading" align="center">Oracle DBA</h2>
-
-        <p align="center">Opensource project with codes on <a href="https://bitbucket.org/oracle-dba/oracledba.net"
-                rel="nofollow">bitbucket</a>.
-
-        </p>
-
-        <p align="center">Please help us to correct our english syntax, orthographic and semantic mistakes. That is very
-            important for us.</p>
-
-
+  <div class="wrapper">
+    <div align="center">
+      {% if page.keywords %}
+      <p>
+        <strong>Tags:</strong> {{ page.keywords | strip_html | strip_newlines |
+        truncate: 160 }} {% endif %}
+      </p>
     </div>
 
+    <br />
+    <br />
+
+    <!-- disqus -->
+
+    <!-- disqus -->
+
+    <!-- Google Analitics -->
+
+    <!-- Google Analinics  -->
+
+    <div align="center">
+      <table border="0">
+        <tr>
+          <td>
+            <a
+              href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/"
+              ><img src="/img/single.png" border="0" alt="Single"
+            /></a>
+          </td>
+          <td>
+            <a
+              href="/database/installation/distributed/dataguard/linux/6.7/oracle/12.1/"
+              ><img src="/img/dataguard.png" border="0" alt="DataGuard"
+            /></a>
+          </td>
+          <td>
+            <a href="/database/installation/distributed/rac/"
+              ><img src="/img/rac.png" border="0" alt="RAC"
+            /></a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <h2 class="footer-heading" align="center">Oracle DBA</h2>
+
+    <p align="center">
+      Opensource project with codes on
+      <a href="https://bitbucket.org/oracle-dba/oracledba.net" rel="nofollow"
+        >bitbucket</a
+      >.
+    </p>
+
+    <p align="center">
+      Please help us to correct our english syntax, orthographic and semantic
+      mistakes. That is very important for us.
+    </p>
+  </div>
 </footer>

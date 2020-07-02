@@ -1,9 +1,12 @@
 # Site settings
 title: oracledba.net
 
-description: Website about Oracle DataBases, Weblogic servers and other Oracle technologies
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "https://oracledba.net" # the base hostname & protocol for your site
+description: Website about Oracle DataBases, Weblogic, GoldenGate, Business Intelligence and other Oracle technologies
+
+keywords: Oracle, DataBase, ASM, DataGuard, RAC, DataGuard, Weblogic, GoldenGate
+
+baseurl: '' # the subpath of your site, e.g. /blog/
+url: 'https://oracledba.net' # the base hostname & protocol for your site
 
 # Build settings
 markdown: kramdown
