@@ -4,13 +4,21 @@ title: chat
 permalink: /chat/
 ---
 
-# Chat
+# Chats
 
-### Telegram chat
+### Telegram chats
 
 <br/>
 
+**Oracle DBAs Group (ENG)**  
 https://t.me/oracledba_net
+
+<br/>
+
+**Oracle DBAs Group (RUS)**  
+https://t.me/oracle_dba_ru
+
+<!--
 
 <br/>
 
@@ -27,3 +35,5 @@ https://oracledba-net.slack.com/
 **Join Link:**
 
 https://join.slack.com/t/oracledba-net/shared_invite/enQtODU2MzY4NTY5NjU0LWRkNjJlYWM0ZWM2NTVkYTU5ZGQ3NmNmNWUwNjQ3NGI1NmFkNGRjZDgwMjhkMWM5NGEwZDBhN2UyZjc3MzcxN2Q
+
+-->
