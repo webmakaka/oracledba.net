@@ -7,7 +7,7 @@ permalink: /database/installation/single-instance/simple/linux/6.7/oracle/12.1/v
 # <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7]</a>: Creating virtual machine for Oracle Database
 
 I installed virtualbox like here:  
-https://sysadm.ru/linux/servers/virtual/virtualbox/
+https://sysadm.ru/linux/virtual/virtualbox/
 
 <br/>
 
