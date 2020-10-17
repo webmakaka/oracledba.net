@@ -82,8 +82,13 @@ Easiest way to run Oracle in Linux / mac host, is run oracle 11 XE inside <a hre
 
   <li><a href="http://www.lab128.com/rac12_installation_using_vb/article_text.html" rel="nofollow">Oracle RAC 12c Database in Linux Using VirtualBox (GUI, Sharde Virtual Disk)</a></li>
 
+<!--
+
+Uncomment when idevelopment will accessible
+
     <li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle11gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 11g R2 in Linux - (RHEL 5)</a></li>
 
     <li><a href="http://www.idevelopment.info/data/Oracle/DBA_tips/Oracle10gRAC/CLUSTER_12.shtml" rel="nofollow">Building an Inexpensive Oracle RAC 10g R2 in Linux - (RHEL 5.3 / iSCSI)</a></li>
+-->
 
 </ul>
