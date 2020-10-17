@@ -1,82 +1,76 @@
 ---
 layout: page
 title: INS-32148 - Execution of 'GI Install' script failed on nodes
+description: INS-32148 - Execution of 'GI Install' script failed on nodes
+keywords: INS-32148 - Execution of 'GI Install' script failed on nodes
 permalink: /docs/errors/ins-32148/Execution-of-GI-Install-script-failed-on-nodes/
 ---
 
-
 # Oracle RAC 12 with ASM, ISCSI, Device-Mapper
-
 
 ### [INS-32148] Execution of 'GI Install' script failed on nodes: [rac2]
 
+    Action - Review the log files '/u01/app/oraInventory/logs/installActions2015-08-28_01-05-05AM.log' and '/u01/app/grid/12.1/cfgtoollogs/crsconfig/rootcrs_<nodename>_<timestamp>.log' for further details on failure.  More Details
+    Execution of GI Install script is successful on nodes : [rac1]  Execution of GI Install script is failed on nodes : [rac2]  Exception details  - PRCZ-2009 : Failed to execute command "/u01/app/grid/12.1/root.sh" as root within 3,600 seconds on nodes "rac2"
 
-	Action - Review the log files '/u01/app/oraInventory/logs/installActions2015-08-28_01-05-05AM.log' and '/u01/app/grid/12.1/cfgtoollogs/crsconfig/rootcrs_<nodename>_<timestamp>.log' for further details on failure.  More Details
-	Execution of GI Install script is successful on nodes : [rac1]  Execution of GI Install script is failed on nodes : [rac2]  Exception details  - PRCZ-2009 : Failed to execute command "/u01/app/grid/12.1/root.sh" as root within 3,600 seconds on nodes "rac2"
+    # /u01/app/grid/12.1/root.sh
+    Performing root user operation.
 
-	# /u01/app/grid/12.1/root.sh
-	Performing root user operation.
+    The following environment variables are set as:
+        ORACLE_OWNER= oracle12
+        ORACLE_HOME=  /u01/app/grid/12.1
+       Copying dbhome to /usr/local/bin ...
+       Copying oraenv to /usr/local/bin ...
+       Copying coraenv to /usr/local/bin ...
 
-	The following environment variables are set as:
-	    ORACLE_OWNER= oracle12
-	    ORACLE_HOME=  /u01/app/grid/12.1
-	   Copying dbhome to /usr/local/bin ...
-	   Copying oraenv to /usr/local/bin ...
-	   Copying coraenv to /usr/local/bin ...
+    Entries will be added to the /etc/oratab file as needed by
+    Database Configuration Assistant when a database is created
+    Finished running generic part of root script.
+    Now product-specific root actions will be performed.
+    Using configuration parameter file: /u01/app/grid/12.1/crs/install/crsconfig_params
+    2015/08/28 01:56:25 CLSRSC-4001: Installing Oracle Trace File Analyzer (TFA) Collector.
 
-	Entries will be added to the /etc/oratab file as needed by
-	Database Configuration Assistant when a database is created
-	Finished running generic part of root script.
-	Now product-specific root actions will be performed.
-	Using configuration parameter file: /u01/app/grid/12.1/crs/install/crsconfig_params
-	2015/08/28 01:56:25 CLSRSC-4001: Installing Oracle Trace File Analyzer (TFA) Collector.
+    2015/08/28 01:56:25 CLSRSC-4002: Successfully installed Oracle Trace File Analyzer (TFA) Collector.
 
-	2015/08/28 01:56:25 CLSRSC-4002: Successfully installed Oracle Trace File Analyzer (TFA) Collector.
+    2015/08/28 01:57:04 CLSRSC-507: The root script cannot proceed on this node rac2 because either the first-node operations have not completed on node rac1 or there was an error in obtaining the status of the first-node operations.
 
-	2015/08/28 01:57:04 CLSRSC-507: The root script cannot proceed on this node rac2 because either the first-node operations have not completed on node rac1 or there was an error in obtaining the status of the first-node operations.
-
-	Died at /u01/app/grid/12.1/crs/install/crsutils.pm line 3681.
-	The command '/u01/app/grid/12.1/perl/bin/perl -I/u01/app/grid/12.1/perl/lib -I/u01/app/grid/12.1/crs/install /u01/app/grid/12.1/crs/install/rootcrs.pl ' execution failed
-
+    Died at /u01/app/grid/12.1/crs/install/crsutils.pm line 3681.
+    The command '/u01/app/grid/12.1/perl/bin/perl -I/u01/app/grid/12.1/perl/lib -I/u01/app/grid/12.1/crs/install /u01/app/grid/12.1/crs/install/rootcrs.pl ' execution failed
 
 <br/>
 
 ### Solution:
 
-
 Edit on each nodes file:
 
-	# vi /etc/sysconfig/oracleasm
+    # vi /etc/sysconfig/oracleasm
 
-	ORACLEASM_SCANORDER=”dm”
-	ORACLEASM_SCANEXCLUDE=”sd”
+    ORACLEASM_SCANORDER=”dm”
+    ORACLEASM_SCANEXCLUDE=”sd”
 
 Restart asmlib service on all nodes except 1st node:
 
-	# /etc/init.d/oracleasm restart
-
+    # /etc/init.d/oracleasm restart
 
 <br/>
 
 Deconfigure failed service on nodes except 1st node:
 
-	# /u01/app/grid/12.1/crs/install/rootcrs.pl  -verbose -deconfig -force
-	Using configuration parameter file: /u01/app/grid/12.1/crs/install/crsconfig_params
-	PRCR-1070 : Failed to check if resource ora.net1.network is registered
-	CRS-0184 : Cannot communicate with the CRS daemon.
-	PRCR-1070 : Failed to check if resource ora.helper is registered
-	CRS-0184 : Cannot communicate with the CRS daemon.
-	PRCR-1070 : Failed to check if resource ora.ons is registered
-	CRS-0184 : Cannot communicate with the CRS daemon.
+    # /u01/app/grid/12.1/crs/install/rootcrs.pl  -verbose -deconfig -force
+    Using configuration parameter file: /u01/app/grid/12.1/crs/install/crsconfig_params
+    PRCR-1070 : Failed to check if resource ora.net1.network is registered
+    CRS-0184 : Cannot communicate with the CRS daemon.
+    PRCR-1070 : Failed to check if resource ora.helper is registered
+    CRS-0184 : Cannot communicate with the CRS daemon.
+    PRCR-1070 : Failed to check if resource ora.ons is registered
+    CRS-0184 : Cannot communicate with the CRS daemon.
 
-	2015/08/28 02:02:24 CLSRSC-4006: Removing Oracle Trace File Analyzer (TFA) Collector.
+    2015/08/28 02:02:24 CLSRSC-4006: Removing Oracle Trace File Analyzer (TFA) Collector.
 
-	2015/08/28 02:02:48 CLSRSC-4007: Successfully removed Oracle Trace File Analyzer (TFA) Collector.
+    2015/08/28 02:02:48 CLSRSC-4007: Successfully removed Oracle Trace File Analyzer (TFA) Collector.
 
-	Failure in execution (rc=-1, 0, No such file or directory) for command /etc/init.d/ohasd deinstall
-	2015/08/28 02:02:49 CLSRSC-336: Successfully deconfigured Oracle Clusterware stack on this node
-
-
+    Failure in execution (rc=-1, 0, No such file or directory) for command /etc/init.d/ohasd deinstall
+    2015/08/28 02:02:49 CLSRSC-336: Successfully deconfigured Oracle Clusterware stack on this node
 
 <br/>
 

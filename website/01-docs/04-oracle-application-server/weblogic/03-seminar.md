@@ -1,15 +1,14 @@
 ---
 layout: page
 title: Practicat course for study Oracle Weblogic Server
+description: Practicat course for study Oracle Weblogic Server
+keywords: Practicat course for study Oracle Weblogic Server
 permalink: /docs/oracle-application-server/weblogic/weblogic-seminar/
 ---
 
-
-## Practicat course for study Oracle Weblogic Server
-
+# Practicat course for study Oracle Weblogic Server
 
 <br/>
-
 
 ### Presentations:
 
@@ -32,7 +31,6 @@ permalink: /docs/oracle-application-server/weblogic/weblogic-seminar/
 
 <strong><a href="https://img.oracledba.net/files/docs/02-oracle-application-server/weblogic/03-seminar/Presentations/09-WLS11gR1 Labs - High Availability.pdf">9) WebLogic High Availability InfrastructureWebLogic Server 11gR1 Labs</a></strong><br/>
 
-
 <br/>
 <h3>Labs:</h3>
 
@@ -45,7 +43,6 @@ permalink: /docs/oracle-application-server/weblogic/weblogic-seminar/
 <strong><a href="https://img.oracledba.net/files/docs/02-oracle-application-server/weblogic/03-seminar/Lab_Guides/WLS_11gR1 Diagnostics Lab.pdf">4) WebLogic Server 11gR1 Diagnostics Lab</a></strong><br/>
 
 <strong><a href="https://img.oracledba.net/files/docs/02-oracle-application-server/weblogic/03-seminar/Lab_Guides/WLS_11gR1 Cluster Lab.pdf">5) WebLogic Server 11gR1 Clustering Labs</a></strong><br/>
-
 
 <br/>
 <h3>Files for labs:</h3>

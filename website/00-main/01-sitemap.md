@@ -1,6 +1,8 @@
 ---
 layout: page
 title: Site Map
+description: Site Map
+keywords: Site Map
 permalink: /sitemap/
 ---
 
@@ -16,7 +18,6 @@ permalink: /sitemap/
     <li><a href="/video-courses-oracle-database/">Video Courses for study Oracle DataBase</a></li>
     <li><a href="/video-courses-plsql-language/">Video Courses for study PL/SQL</a></li>
 </ul>
-
 
 <br/>
 
@@ -40,18 +41,14 @@ permalink: /sitemap/
 
 For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and other IDE you should install additional Oracle Client.
 
-
 <ul>
     <li><a href="/client/installation/windows/7/oracle/12.1/">Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)</a></li>
     <li><a href="/client/installation/linux/6.3/oracle/11.2/">Oracle Instant Client 11.2 Installation on Oracle Linux 6.x</a></li>
 </ul>
 
-
-
 <br/>
 
 ### Upgrade Oracle DataBase
-
 
 <ul>
     <li><a href="/database/upgrade/">Upgrade Oracle DataBase labs</a></li>
@@ -68,17 +65,14 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
     </li>
 </ul>
 
-
 <br/>
 
 ### Oracle DataBase Certification Exam
-
 
 <ul>
     <li><a href="/database/certification/examples/">Oracle DataBase Certification Exam Questions Examples</a></li>
 
 </ul>
-
 
 <br/>
 
@@ -88,7 +82,6 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
     <a href="https://goalkicker.com/OracleDatabaseBook/">
     <img src="https://goalkicker.com/OracleDatabaseBook/OracleDatabaseGrow.png" border="0" alt="Single"></a>
 </div>
-
 
 <br/>
 
@@ -103,15 +96,12 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
 
 ### Oracle Errors:
 
-
 <ul>
     <li><a href="/docs/errors/ins-32148/Execution-of-GI-Install-script-failed-on-nodes/">[INS-32148] Execution of 'GI Install' script failed on nodes: [rac2]</a></li>
 
 </ul>
 
-
 <br/>
-
 
 ### Oracle Weblogic Server
 
@@ -119,7 +109,6 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
     <li><a href="//javadev.org/docs/appserv/weblogic/12c/installation/">Weblogic 12c Installation on Centos 6.6 x86_64</a></li>
     <li><a href="/docs/oracle-application-server/weblogic/weblogic-seminar/">Practicat course for study Oracle Weblogic Server</a></li>
 </ul>
-
 
 <br/>
 

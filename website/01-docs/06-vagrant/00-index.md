@@ -1,6 +1,8 @@
 ---
 layout: page
 title: Vagrant scripts for Oracle
+description: Vagrant scripts for Oracle
+keywords: Vagrant scripts for Oracle
 permalink: /vagrant/
 ---
 
@@ -10,3 +12,9 @@ permalink: /vagrant/
 
 **src:**  
 https://github.com/oraclebase/vagrant/tree/master/database/ol8_19
+
+<br/>
+
+### <a href="https://www.youtube.com/watch?v=Tmm9o5MusA8">[YouTube] Vagrant Oracle Real Application Clusters (RAC) Build
+
+        </a>

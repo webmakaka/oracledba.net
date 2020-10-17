@@ -1,11 +1,12 @@
 ---
 layout: page
 title: Oracle DBA Certification
+description: Oracle DBA Certification
+keywords: Oracle DBA Certification
 permalink: /database/certification/examples/
 ---
 
-
-### Oracle Oracle DBA Certification
+# Oracle Oracle DBA Certification
 
 <div align="center">
 <p>
@@ -26,14 +27,11 @@ permalink: /database/certification/examples/
 <br/><br/>
 <strong>Books for Certification:</strong>
 
-
 <ul>
 	<li>OCA Oracle Database 11g SQL Fundamentals I Exam Guide (Exam 1Z0-051)</li>
 	<li>OCA Oracle Database 11g Administration I Exam Guide (Exam 1Z0-052)</li>
 	<li>OCP Oracle Database 11g. Administration II Exam Guide (Exam 1Z0-053)</li>
 </ul>
-
-
 
 <br/>
 

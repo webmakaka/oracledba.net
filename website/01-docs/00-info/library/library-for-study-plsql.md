@@ -1,25 +1,22 @@
 ---
 layout: page
-title:  Library for PL/SQL Developer
+title: Recommended Books for study PL/SQL
+description: Recommended Books for study PL/SQL
+keywords: Recommended Books for study PL/SQL
 permalink: /library-for-study-plsql/
 ---
 
 # Recommended Books for study PL/SQL:
 
-
 <br/><br/>
 
 <h3>Oracle PL/SQL Programming by Steven Feuerstein</h3>
-
 
 <br/><br/>
 
 <div align="center">
 	<img src="/img/Feuerstein.jpg" border="0" alt="Oracle PL/SQL Programming by Steven Feuerstein">
 </div>
-
-
-
 
 <br/>
 
@@ -31,8 +28,6 @@ permalink: /library-for-study-plsql/
 <div align="center">
 	<img src="/img/molinaro.jpg" border="0" alt="Oracle SQL Specialist">
 </div>
-
-
 
 <br/><br/>
 

@@ -1,6 +1,8 @@
 ---
 layout: page
 title: WebLogic 12.2.1 inside Docker Containers
+description: WebLogic 12.2.1 inside Docker Containers
+keywords: WebLogic 12.2.1 inside Docker Containers
 permalink: /docker/weblogic/
 ---
 

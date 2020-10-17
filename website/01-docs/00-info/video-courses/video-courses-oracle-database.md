@@ -1,13 +1,14 @@
 ---
 layout: page
-title:  Video Courses for study Oracle DataBase
+title: Video Courses for study Oracle DataBase
+description: Video Courses for study Oracle DataBase
+keywords: Video Courses for study Oracle DataBase
 permalink: /video-courses-oracle-database/
 ---
 
-### Video Courses
+# Video Courses for study Oracle DataBase
 
 You can buy it or try to find in the internet.
-
 
 ### Pluralsight:
 
@@ -16,12 +17,10 @@ Oracle Database 12c: Installation and Upgrade<br/>
 Oracle Database 12c Performance Tuning and Optimization<br/>
 Oracle Database 12c Disaster Recovery and Data Movement<br/>
 
-
 ### infiniteskills:
+
 Learning Oracle 12c<br/>
 Oracle 11g Real Application Cluster Training Video<br/>
-
-
 
 <br/><br/>
 

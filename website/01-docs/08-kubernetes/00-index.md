@@ -1,6 +1,8 @@
 ---
 layout: page
 title: Docker Containers, Oracle and Kubernetes
+description: Docker Containers, Oracle and Kubernetes
+keywords: Docker Containers, Oracle and Kubernetes
 permalink: /kubernetes/
 ---
 

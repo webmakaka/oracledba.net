@@ -1,6 +1,8 @@
 ---
 layout: page
 title: Oracle DBA Profiles (for HR)
+description: Oracle DBA Profiles (for HR)
+keywords: Oracle DBA Profiles (for HR)
 permalink: /oracle-dba-profiles/
 ---
 

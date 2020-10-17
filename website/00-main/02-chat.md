@@ -1,12 +1,12 @@
 ---
 layout: page
-title: chat
+title: Oracle DBA's Telegram Group For Chatting
+description: Oracle DBA's Telegram Group For Chatting
+keywords: Oracle DBA's Telegram Group For Chatting
 permalink: /chat/
 ---
 
-# Chats
-
-### Telegram chats
+# Oracle DBA's Telegram Group For Chatting
 
 <br/>
 

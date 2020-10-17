@@ -1,6 +1,8 @@
 ---
 layout: page
 title: Job Offer
+description: Job Offer
+keywords: Job Offer
 permalink: /job_offer/
 ---
 

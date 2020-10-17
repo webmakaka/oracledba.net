@@ -1,11 +1,12 @@
 ---
 layout: page
 title: Creating Duplicate and Standby database using RMAN
+description: Creating Duplicate and Standby database using RMAN
+keywords: Creating Duplicate and Standby database using RMAN
 permalink: /database/backup-and-restore/rman/
 ---
 
-## Creating Duplicate and Standby database using RMAN
-
+# Creating Duplicate and Standby database using RMAN
 
 <br/><br/>
 

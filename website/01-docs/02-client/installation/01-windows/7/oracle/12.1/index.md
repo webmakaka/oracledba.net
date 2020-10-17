@@ -1,15 +1,16 @@
 ---
 layout: page
 title: Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)
+description: Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)
+keywords: Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)
 permalink: /client/installation/windows/7/oracle/12.1/
 ---
 
 # [Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)]
 
-
 <br/>
 
-In this document we will describe installation process for Oracle Database Client on Windows 7 (64 bit).  
+In this document we will describe installation process for Oracle Database Client on Windows 7 (64 bit).
 
 To correct anything, please write mail to:
 
@@ -17,14 +18,11 @@ To correct anything, please write mail to:
 	<img src="/img/a3333333mail.gif" alt="Marley" border="0">
 </div>
 
-
 <br/>
-
 
 Oracle Clietn need for remote connection from desktop to database with programms like SQLPLUS, PL/SQL Developer, TOAD, SQL Navigator and maty other.
 
-
-Oracle client for Windows you could download from Oracle website.  
+Oracle client for Windows you could download from Oracle website.
 
 For installation we need only
 winnt_12102_client32.zip
@@ -39,7 +37,6 @@ Before we need to install additional library. This library needed only when you 
 
 https://www.microsoft.com/en-gb/download/details.aspx?id=5555
 
-
 <br/>
 
 **hosts**
@@ -51,11 +48,9 @@ C:\WINDOWS\system32\drivers\etc\hosts
     127.0.0.1   	localhost
     192.168.1.11	oracle12.localdomain oracle12
 
-
 <div>
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/01-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
 </div>
-
 
 <br/><br/>
 
@@ -63,12 +58,9 @@ C:\WINDOWS\system32\drivers\etc\hosts
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/02-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
 </div>
 
-
-
 <br/>
 
 ### Oracle Client Installation
-
 
 <div>
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/03-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
@@ -104,7 +96,6 @@ C:\WINDOWS\system32\drivers\etc\hosts
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/08-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
 </div>
 
-
 We need only Oracle Call Interface library (OCL). But for convenient i will install next:
 
 <ul>
@@ -112,7 +103,6 @@ We need only Oracle Call Interface library (OCL). But for convenient i will inst
 <li>Oracle Call Interface (OCI)</li>
 <li>Connection Manager</li>
 </ul>
-
 
 <div>
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/09-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
@@ -130,11 +120,9 @@ We need only Oracle Call Interface library (OCL). But for convenient i will inst
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/11-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
 </div>
 
-
 <br/>
 
 ### Creating from master tnsnames.ora file:
-
 
 <div>
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/12-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
@@ -187,8 +175,6 @@ We need only Oracle Call Interface library (OCL). But for convenient i will inst
 <div>
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/20-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
 </div>
-
-
 
 Connection parameter you could see on database server in tnsnames.ora file
 
@@ -268,11 +254,9 @@ Connection parameter you could see on database server in tnsnames.ora file
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/33-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
 </div>
 
-
 <br/>
 
 ### Result should be like
-
 
 <div>
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/34-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
@@ -283,7 +267,6 @@ Connection parameter you could see on database server in tnsnames.ora file
 <div>
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/35-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
 </div>
-
 
     ORCL12 =
       (DESCRIPTION =
@@ -299,14 +282,12 @@ Connection parameter you could see on database server in tnsnames.ora file
 
 ### Check
 
-
     C:\> tnsping oracl12
 
-
 system - login  
-manager - password  
+manager - password
 
-    C:\>sqlplus /nolog  
+    C:\>sqlplus /nolog
     SQL> conn system/manager@oracle12
 
 <div>
@@ -325,14 +306,11 @@ manager - password
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/38-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
 </div>
 
-
 <br/>
 
 ### Edit Oracle Enviromnet Variables in windows reestr
 
 I replace AMERICAN_AMERICA.WE8MSWIN1252 on AMERICAN_AMERICA.AL32UTF8
-
-
 
 <div>
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/39-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
@@ -350,12 +328,9 @@ I replace AMERICAN_AMERICA.WE8MSWIN1252 on AMERICAN_AMERICA.AL32UTF8
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/41-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
 </div>
 
-
-
 <br/>
 
 ### Trying connect to database server by PL/SQL Developer
-
 
 <div>
 	<img src="https://img.oracledba.net/02-client/installation/windows/7/oracle/12.1/42-oracle_client_12_installation_on_windows_7.png" border="0" alt="Oracle Client 12C (32 bit) Installation on Windows 7 (64 bit)">
