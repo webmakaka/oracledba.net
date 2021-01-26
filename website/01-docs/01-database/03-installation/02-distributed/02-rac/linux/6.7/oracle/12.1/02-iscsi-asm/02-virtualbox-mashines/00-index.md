@@ -7,7 +7,7 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 # [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Конфиги виртуальных машин
 
 О том как инсталлировал virtualbox, переменные и каталоги, смотри здесь.
-https://sysadm.ru/linux/virtual/virtualbox/
+https://sysadm.ru/devops/linux/virtual/virtualbox/
 
 Конфиги виртуальных машин:
 
