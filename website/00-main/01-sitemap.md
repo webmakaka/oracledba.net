@@ -57,6 +57,15 @@ For connection to remote host with Oracle DataBase by PL/SQL developer, TOAD and
 
 <br/>
 
+### Migrating to New Hardware
+
+<ul>
+    <li><a href="/files/migrating-non-cdbs-new-hardware-different-endian-operating-system-and-new-release.pdf">Migrating Non-CDBs to New Hardware with a Different Endian Operating System and for a New Release</a></li>
+
+</ul>
+
+<br/>
+
 ### Backup and Restore Oracle DataBase:
 
 <ul>
