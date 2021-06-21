@@ -10,11 +10,8 @@ permalink: /vagrant/
 
 ### [(YouTube) Vagrant : Oracle Database Build](https://www.youtube.com/watch?v=0ogLoZfYOYs)
 
-**src:**  
-https://github.com/oraclebase/vagrant/tree/master/database/ol8_19
+[src](https://github.com/oraclebase/vagrant/tree/master/database/ol8_19)
 
 <br/>
 
-### <a href="https://www.youtube.com/watch?v=Tmm9o5MusA8">[YouTube] Vagrant Oracle Real Application Clusters (RAC) Build
-
-        </a>
+### [[YouTube] Vagrant Oracle Real Application Clusters (RAC) Build](https://www.youtube.com/watch?v=Tmm9o5MusA8)
