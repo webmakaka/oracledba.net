@@ -12,7 +12,25 @@ permalink: /
     <div class="row-fluid">
       <div class="span8">
 
-      Hello from Russia! <br/><br/>
+      <br/>
+
+      Hello from Russia!
+
+      <br/><br/>
+
+      Looking for a job as <strong>Oracle Cloud Engineer</strong>. Can work with Oracle Linux, Oracle Database, Oracle Weblogic etc. Especially i am interesting in machine learning / deep learning projects.
+
+      If your company can agree salary at least $2500 / month + taxes, i think it can be interesting to me.
+
+      <br/><br/>
+
+      Contacts:
+
+      <div>
+          <img src="/img/a3333333mail.gif" alt="Marley" border="0">
+      </div>
+
+      <br/><br/>
 
       On our website we collect information about Oracle Administration on English. (Oracle DB, Weblogic, GoldenGate, Oracle Linux etc)
 
