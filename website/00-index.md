@@ -18,16 +18,21 @@ permalink: /
 
       <br/><br/>
 
-      Looking for a job as <strong>Oracle Cloud Engineer</strong>. Can work with Oracle Linux, Oracle Database, Oracle Weblogic etc. Especially i am interesting in machine learning / deep learning projects.
+      <h3>Install Oracle23c Free Developer Version Using Oracle VirtualBox</h3>
 
-      If your company can agree salary at least $2500 / month + taxes, i think it can be interesting to me.
+      <br/><br/>
+
+<div align="center">
+      <iframe width="853" height="480" src="https://www.youtube.com/embed/fkuWHFxzk0U?si=Bw32ekXiQeyV7_GY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+      </div>
 
       <br/><br/>
 
       Contacts:
 
       <div>
-          <img src="/img/a3333333mail.gif" alt="Marley" border="0">
+         telegram group for discussions Oracle: https://t.me/oracledba_net
       </div>
 
       <br/><br/>
