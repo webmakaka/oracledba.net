@@ -1,78 +1,58 @@
 ---
 layout: page
-title: Oracle DataBase 12.2 - Oracle Linux 7.4 - Включить режим работы FLASH BACK
+title: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Enable FLASH BACK Mode
+description: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Enable FLASH BACK Mode
+keywords: Oracle DataBase 12.2, Oracle Linux 7.4, FLASH BACK
 permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/enable-flashback-mod/
 ---
 
 <br/>
 
-<div style="padding:10px; border:thin solid black;">
-
-	<h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
-
-    <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
-
-</div>
+# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Oracle DataBase Server 12.2 Installation on Oracle Linux 7.4]</a>: Enable FLASH BACK Mode
 
 <br/>
 
-# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Инсталляция Oracle DataBase Server 12.2 в Oracle Linux 7.4]</a>: Включить режим работы FLASH BACK
+FlashBack is useful when you need to roll back changes or view the previous state of objects in the database.
+As a consequence, server load increases because additional information must be stored.
+
+    $ sqlplus / as sysdba
 
 <br/>
 
-FlashBack бывает полезен, когда нужно откатить изменения или посмотреть предыдущее состояние объектов в базе данных.
-Как следствие растет нагрузка на сервер, т.к. приходится хранить дополнительную информацию.
-
-	$ sqlplus / as sysdba
-
-<br/>
-
-	SQL> shutdown immediate;
-	SQL> startup mount exclusive;
-	SQL> alter database flashback on;
-	SQL> alter database open;
-
-
+    SQL> shutdown immediate;
+    SQL> startup mount exclusive;
+    SQL> alter database flashback on;
+    SQL> alter database open;
 
 <br/>
 
-	SQL> select flashback_on from v$database;
+    SQL> select flashback_on from v$database;
 
 <br/>
 
-	FLASHBACK_ON
-	------------------
-	YES
+    FLASHBACK_ON
+    ------------------
+    YES
 
-
-UNDO_RETENTION - (при включенном FLASHBACK) определяет минимальное время в секундах, за которое можно отменить (посмотреть) изменение в базе данных. При этом данные будут храниться в UNDO_TABLESPACE (необходимо обеспечить достаточный размер табличного пространства) и перезаписываться по мере необходимости, обеспечивая минимальное значение, указанное в UNDO_RETENTION. Не поддерживается для LOB.
-
+UNDO_RETENTION - (with FLASHBACK enabled) determines the minimum time in seconds for which a change in the database can be undone (viewed). The data will be stored in UNDO_TABLESPACE (you must ensure sufficient tablespace size) and overwritten as needed, ensuring the minimum value specified in UNDO_RETENTION. Not supported for LOB.
 
 <br/>
 
-Задаю параметр UNDO_RETENTION равный 30 минутам
+Set the UNDO_RETENTION parameter to 30 minutes
 
-
-	SQL> alter system set UNDO_RETENTION = 1800;
-	SQL> alter tablespace UNDO RETENTION GUARANTEE;
-
-
+    SQL> alter system set UNDO_RETENTION = 1800;
+    SQL> alter tablespace UNDO RETENTION GUARANTEE;
 
 <br/>
 
-
-	SQL> show parameter UNDO_RETENTION
-
-
+    SQL> show parameter UNDO_RETENTION
 
 <br/>
 
-	NAME                                 TYPE        VALUE
-	------------------------------------ ----------- ------------------------------
-	undo_retention                       integer     1800
-
-
+    NAME                                 TYPE        VALUE
+    ------------------------------------ ----------- ------------------------------
+    undo_retention                       integer     1800
 
 <br/>
 
-	SQL> quit
+    SQL> quit

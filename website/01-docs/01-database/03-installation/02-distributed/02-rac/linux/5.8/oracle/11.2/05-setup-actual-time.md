@@ -1,18 +1,16 @@
 ---
 layout: page
-title: Oracle RAC 11.2 ISCSI + ASM - Настройка сервисов отвечающих за синхронизацию времени
+title: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Configuring time synchronization services
+description: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Configuring time synchronization services
+keywords: database, installation, distributed, rac, linux, 5.8, oracle, 11.2, Configuring time synchronization services
 permalink: /database/installation/distributed/rac/linux/5.8/oracle/11.2/setup-actual-time/
 ---
 
-# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Инсталляция Oracle RAC 11.2 в операционной системе Oracle Linux 5.8 x86_64]</a>: Настройка сервисов отвечающих за синхронизацию времени
+# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Oracle RAC 11.2 Installation on Oracle Linux 5.8 x86_64]</a>: Configuring time synchronization services
 
 <br/>
 
-
-
-
-<span style="font-size: 20px; text-align: left; line-height: 130%; font-family: Arial,Helvetica,sans-serif; color: rgb(153, 0, 0);"><strong>Настройка времени</strong></span>
-
+<span style="font-size: 20px; text-align: left; line-height: 130%; font-family: Arial,Helvetica,sans-serif; color: rgb(153, 0, 0);"><strong>Time settings</strong></span>
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 <tr>
@@ -21,8 +19,7 @@ permalink: /database/installation/distributed/rac/linux/5.8/oracle/11.2/setup-ac
 </tr>
 </table>
 
-
-Указать доступные ntp сервера
+Specify available ntp servers
 
     # vi /etc/ntp.conf
 
@@ -32,11 +29,10 @@ permalink: /database/installation/distributed/rac/linux/5.8/oracle/11.2/setup-ac
     server 1.rhel.pool.ntp.org
     server 2.rhel.pool.ntp.org
 
-
 <!--
-Настраиваем планировщик заданий
+Configure the task scheduler
 
-Сервера ru.pool.ntp.org выбраны в качестве примера
+ru.pool.ntp.org servers are chosen as an example
 
 # crontab -e
 
@@ -46,22 +42,21 @@ permalink: /database/installation/distributed/rac/linux/5.8/oracle/11.2/setup-ac
 
 -->
 
-Внесите изменения в файл параметров ntpd
+Make changes to the ntpd parameters file
 
     # vi /etc/sysconfig/ntpd
 
-замените
+replace
 
     # Drop root to id 'ntp:ntp' by default.
     OPTIONS="-u ntp:ntp -p /var/run/ntpd.pid"
 
-на
+with
 
     # Drop root to id 'ntp:ntp' by default.
     # OPTIONS="-u ntp:ntp -p /var/run/ntpd.pid"
     OPTIONS="-x -u ntp:ntp -p /var/run/ntpd.pid"
 
 <br/>
-
 
     # service ntpd restart

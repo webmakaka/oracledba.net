@@ -1,29 +1,29 @@
 ---
 layout: page
-title: Oracle DataBase Server 12.1 installation on Oracle Linux 6.7 with ASM and GRID - Setup hostname and hosts
+title: Инсталляция Oracle DataBase Server 12.1 в Centos 6.7 с использованием ASM и GRID - Установка hostname и hosts
+description: нсталляция Oracle DataBase Server 12.1 в Centos 6.7 с использованием ASM и GRID - Установка hostname и hosts
+keywords: Oracle DataBase 12.1, Centos 6.7, ASM, GRID
 permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/prepare/
 ---
 
-# <a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7 with ASM and GRID]</a>: Setup hostname and hosts
+# <a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">[Инсталляция Oracle DataBase Server 12.1 в Centos 6.7 с использованием ASM и GRID]</a>: Установка hostname и hosts
 
 <br/>
 
-	# vi /etc/hosts
+    # vi /etc/hosts
 
 <br/>
 
-	## Localdomain and Localhost
+    ## Localdomain and Localhost
 
-	127.0.0.1 localhost.localdomain localhost
-
-
-	## DataBases
-
-	192.168.1.11 moscow.localdomain moscow
+    127.0.0.1 localhost.localdomain localhost
 
 
+    ## DataBases
 
-Setup hostname for server
+    192.168.1.11 moscow.localdomain moscow
+
+Устанавливаю значение hostname для сервера
 
     # vi /etc/sysconfig/network
 
@@ -32,5 +32,4 @@ Setup hostname for server
     NETWORKING=yes
     HOSTNAME=moscow.localdomain
 
-
-**After this steps i recommend to reboot server**
+**После переименования, лучше перезагрузить сервер или каким-то способом применить изменения, или иначе в конфигах будет прописано что-то не то и придется их потом еще и править**

@@ -1,11 +1,12 @@
 ---
 layout: page
-title: Oracle RAC 12.1 ISCSI + ASM - Конфиги виртуальных машин для узлов кластера
+title: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Virtualbox machine configs for cluster nodes
+description: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Virtualbox machine configs for cluster nodes
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, (ISCSI + ASM)
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/vm/rac-nodes/
 ---
 
-# [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Конфиги виртуальных машин для инсталляции узлов кластера
-
+# [Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM)]: Virtualbox machine configs for cluster nodes installation
 
     # su - vmadm
 
@@ -13,13 +14,11 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 
     $ vm=vm_oel_rac1
 
-
-Создаем каталоги для виртуальной машины  и для snapshots
+Create directories for the virtual machine and for snapshots
 
     $ mkdir -p ${VM_HOME}/${vm}/snapshots
 
-
-### Создание и регистрация виртуальной машины:
+### Creating and registering the virtual machine:
 
     $ VBoxManage createvm \
     --name ${vm} \
@@ -27,41 +26,31 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     --basefolder ${VM_HOME}/${vm} \
     --register
 
-
-
-### Устанавливаем планку оперативной памяти:
-
+### Setting the RAM limit:
 
     $ VBoxManage modifyvm ${vm} --memory 4608
 
-
-### Подключаю видеокарту на 32 MB:
-
+### Connect video card with 32 MB:
 
     $ VBoxManage modifyvm ${vm} --vram 32
 
-
-### Снимаю sound карту, вытаскиваем дисковвод:
+### Remove sound card, remove floppy drive:
 
     $ VBoxManage modifyvm ${vm} --floppy disabled --audio none
 
-
-### Подключаю контроллер жестких дисков (SAS):
-
+### Connect hard disk controller (SAS):
 
     $ VBoxManage storagectl ${vm} \
     --add sas \
     --name "SAS Controller"
 
+### Creating and connecting hard disks:
 
-### Создание и подключение жестких дисков:
-
-
-Создаю виртуальные жесткие диски. Размер (size), рекомендуется задавать согласно имеющихся ресурсов. Иначе возможны проблемы и крах виртуальной машины):
+Create virtual hard disks. The size is recommended to be set according to available resources. Otherwise, problems and virtual machine crashes may occur):
 
     $ cd ${VM_HOME}/${vm}/${vm}
 
-	$ VBoxManage createhd \
+    $ VBoxManage createhd \
     --filename ${vm}_dsk1.vdi \
     --size 40960 \
     --format VDI \
@@ -73,36 +62,27 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     --format VDI \
     --variant Standard
 
+### Connect disks to the SAS controller:
 
+    $ VBoxManage storageattach ${vm} \
+    --storagectl "SAS Controller" \
+    --port 0 \
+    --type hdd \
+    --medium ${vm}_dsk1.vdi
 
+    $ VBoxManage storageattach ${vm} \
+    --storagectl "SAS Controller" \
+    --port 1 \
+    --type hdd \
+    --medium ${vm}_dsk2.vdi
 
-### Подключаю диски к SAS контроллеру:
-
-
-	$ VBoxManage storageattach ${vm} \
-	--storagectl "SAS Controller" \
-	--port 0 \
-	--type hdd \
-	--medium ${vm}_dsk1.vdi
-
-	$ VBoxManage storageattach ${vm} \
-	--storagectl "SAS Controller" \
-	--port 1 \
-	--type hdd \
-	--medium ${vm}_dsk2.vdi
-
-
-
-### Подключаю IDE контроллер к которому будет позднее подключен DVD-ROM:
-
+### Connect the IDE controller to which the DVD-ROM will later be connected:
 
     $ VBoxManage storagectl ${vm} \
     --add ide \
     --name "IDE Controller"
 
-
-### Подключаю к IDE контроллеру DVD образ инсталлируемой операционной системы:
-
+### Connect the DVD image of the operating system being installed to the IDE controller:
 
     $ VBoxManage storageattach ${vm} \
     --storagectl "IDE Controller" \
@@ -111,21 +91,19 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     --type dvddrive \
     --medium  /home/marley/Downloads/OracleLinux6U7/x64/OracleLinux-R6-U7-Server-x86_64-dvd.iso
 
+### Connecting network interfaces:
 
-### Подключение сетевых интерфейсов:
-
-
-Наберите команду;
+Run the command;
 
     $ VBoxManage list bridgedifs
 
-Обратите внимание на значение:
+Pay attention to the value:
 
-Name:                eth0
+Name: eth0
 
-Я использую eth0 как основной физический интерфейс, который будут использовать виртуальные машины в качестве моста.
+I use eth0 as the main physical interface that the virtual machines will use as a bridge.
 
-Подключаю к виртуальной машине 3 виртуальных сетевых “Intel® 82540EM Gigabit Ethernet Controller”, работающих как bridget (3 адаптера нужные в случае необходимости установить RAC):
+Connect 3 virtual network "Intel® 82540EM Gigabit Ethernet Controller" interfaces to the virtual machine, operating as bridged (3 adapters are needed for RAC installation):
 
     $ VBoxManage modifyvm ${vm} \
     --nictype1 82540EM \
@@ -142,27 +120,20 @@ Name:                eth0
     --nic3 bridged \
     --bridgeadapter3 eth0
 
-
 <br/>
 
-### Определяем порядок устройств, с которых будет произведена попытка стартовать систему:
-
+### Determine the boot device order:
 
     $ VBoxManage modifyvm ${vm} \
     --boot1 disk \
     --boot2 dvd
 
-
-### Определяем каталог для снапшотов:
-
+### Determine the snapshot directory:
 
     $ VBoxManage modifyvm ${vm} \
     --snapshotfolder ${VM_HOME}/${vm}/snapshots
 
-
-
-### Предоставим возможность подключения к машине по RDP:
-
+### Allow RDP connection to the machine:
 
     $ VBoxManage modifyvm ${vm} \
     --vrde on \
@@ -171,40 +142,32 @@ Name:                eth0
     --vrdeaddress 192.168.1.5 \
     --vrdeport 3389
 
-Здесь мы указываем:  
+Here we specify:
 
---vrdeaddress - ip адрес машины, на которой установлен vitrualbox  
---vrdeauthtype null - аутентификация не требуется.  
---vrdemulticon on - разрешено множественное подключение к виртуальным машинам.  
---vrdeport порт к которому можно будет подключиться при старте виртуальной машины.  
+--vrdeaddress - ip address of the machine where virtualbox is installed  
+--vrdeauthtype null - authentication not required.  
+--vrdemulticon on - multiple connections to virtual machines allowed.  
+--vrdeport the port that can be connected to when the virtual machine starts.
 
-
-
-### Показать результат созданнойвиртуальной машины:
-
+### Show the created virtual machine result:
 
     $ VBoxManage showvminfo ${vm}
 
+<br/>
+
+## VIRTUAL MACHINE IS READY FOR OPERATING SYSTEM INSTALLATION
 
 <br/>
 
-## ВИРТУАЛЬНАЯ МАШИНА ГОТОВА ДЛЯ ИНСТАЛЛЯЦИИ ОПЕРАЦИОННОЙ СИСТЕМЫ
-
-<br/>
-
-### Стартуем виртуальную машину с возможностью подключения по RDP:
-
+### Start the virtual machine with RDP connection capability:
 
     $ VBoxHeadless --startvm ${vm}
 
+I connect via RDP to the virtual machine. In Windows, this is the remote desktop connection console (mstsc I think), in linux remmina or rdesktop.
 
-Подключаюсь по RDP к виртуальной машине. В Windows это консоль для удаленного подключения (mstsc вроде), в linux remmina или rdesktop.
+In the first window, I press tab and add linux text so that the installation proceeds in a convenient mode. The operating system should be installed on the 1st disk. The second will be for Oracle.
 
-
-В первом окне нажимаю tab и дописываю linux text, чтобы инсталляция проходила в удобном для меня режиме. Устанавливать операционную следует на 1 диск. Второй будет для Oracle.
-
-Таких виртуальных машин должно быть 2. После инсталляции предлагаю клонировать.
-
+There should be 2 such virtual machines. After installation, I suggest cloning.
 
     $ vboxmanage clonevm vm_oel_rac1 --name vm_oel_rac2 --register
     $ vm=vm_oel_rac2
@@ -212,7 +175,7 @@ Name:                eth0
 
 <!--
 
-Нужно поменять mac адреса вирту
+Need to change the mac addresses of the virtual machines
 
     $ vboxmanage modifyvm ${vm} --macaddress1 auto
     $ vboxmanage modifyvm ${vm} --macaddress2 auto
@@ -221,10 +184,8 @@ Name:                eth0
 
 -->
 
-Нужно отредактировать или удалить содержимое файла в котором явно прописывается какому интерфейсу какой mac адрес соответствует.
-
+You need to edit or delete the file contents that explicitly specifies which mac address corresponds to which interface.
 
      # cat /dev/null > /etc/udev/rules.d/70-persistent-net.rules
 
-
-И перезагрузиться.
+And reboot.

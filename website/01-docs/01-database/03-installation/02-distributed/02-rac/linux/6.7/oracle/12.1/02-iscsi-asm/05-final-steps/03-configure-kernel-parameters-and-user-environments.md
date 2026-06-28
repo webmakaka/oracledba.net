@@ -1,18 +1,17 @@
 ---
 layout: page
-title: Oracle RAC 12.1 ISCSI + ASM - Изменение параметров ядра и параметров учетной записи администратора базы данных
+title: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Modifying kernel parameters and database administrator account parameters
+description: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Modifying kernel parameters and database administrator account parameters
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, (ISCSI + ASM)
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/configure-kernel-parameters-and-user-environments/
 ---
 
-
-# [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Изменение параметров ядра и параметров учетной записи администратора базы данных
-
+# [Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM)]: Modifying kernel parameters and database administrator account parameters
 
 <br/>
 
-
 <span style="font-size: 20px; text-align: left; line-height: 130%; font-family: Arial,Helvetica,sans-serif; color: rgb(153, 0, 0);">
-<strong>Редактирование конфиг файлов</strong></span>
+<strong>Editing config files</strong></span>
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 	<tr>
@@ -21,27 +20,25 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 	</tr>
 </table>
 
+Before making changes to configuration scripts, it is recommended to create their backups first:
 
-Перед тем как вносить изменения в конфигурационные скрипты, следует предварительно создать их резервные копии:
+    # {
+    cp /etc/sysctl.conf /etc/sysctl.conf.bkp
+    cp /etc/security/limits.conf /etc/security/limits.conf.bkp
+    cp /etc/pam.d/login /etc/pam.d/login.bkp
+    cp /etc/profile /etc/profile.bkp
+    }
 
-	# {
-	cp /etc/sysctl.conf /etc/sysctl.conf.bkp
-	cp /etc/security/limits.conf /etc/security/limits.conf.bkp
-	cp /etc/pam.d/login /etc/pam.d/login.bkp
-	cp /etc/profile /etc/profile.bkp
-	}
+1. Edit the file /etc/sysctl.conf
 
+It is recommended to comment out (put a # sign before them) the existing kernel.shmmax and kernel.shmall parameters. They will later be added as parameters together with the remaining Oracle parameters.
 
-1) Отредактируйте файл  /etc/sysctl.conf
-
-Рекомендуется закомментировать (поставить перед ними знак #) имеющиеся параметры kernel.shmmax и kernel.shmall. Далее они будут добавлены в качестве параметров вместе с остальными параметрами Oracle.
-
-	# sed -i.gres "s/kernel.shmmax/#kernel.shmmax/g" /etc/sysctl.conf
-	# sed -i.gres "s/kernel.shmall/#kernel.shmall/g" /etc/sysctl.conf
+    # sed -i.gres "s/kernel.shmmax/#kernel.shmmax/g" /etc/sysctl.conf
+    # sed -i.gres "s/kernel.shmall/#kernel.shmall/g" /etc/sysctl.conf
 
 <br/>
 
-	# vi /etc/sysctl.conf
+    # vi /etc/sysctl.conf
 
 <br/>
 
@@ -49,100 +46,95 @@ kernel.shmmax = 50% of RAM (in bytes) / 2
 
 <br/>
 
-Количество байт отперативной памяти, можно узнать введя команду
+The number of bytes of RAM can be found by running the command
 
-	# free -b
+    # free -b
 
+Add the following kernel parameters to the end of the document.
 
-Добавьте в конец документа следующие параметры ядра.
+    #################################################
+    #### Oracle 12 Kernel Parameters
 
-	#################################################
-	#### Oracle 12 Kernel Parameters
+    kernel.sem = 250 32000 100 128
 
-	kernel.sem = 250 32000 100 128
-
-	kernel.shmall = 2097152
-	kernel.shmmax = 2202540032
-	kernel.shmmni = 4096
-	fs.file-max = 6815744
-	fs.aio-max-nr = 1048576
-	net.ipv4.ip_local_port_range = 20000 65500
-	net.core.rmem_default = 262144
-	net.core.rmem_max = 4194304
-	net.core.wmem_default = 262144
-	net.core.wmem_max = 1048586
-	vm.min_free_kbytes = 23168
-
-
-	### New Parameters
-
-	kernel.panic_on_oops = 1
-	################################################
-
-Применить параметры ядра, можно командой
-
-	# sysctl -p
+    kernel.shmall = 2097152
+    kernel.shmmax = 2202540032
+    kernel.shmmni = 4096
+    fs.file-max = 6815744
+    fs.aio-max-nr = 1048576
+    net.ipv4.ip_local_port_range = 20000 65500
+    net.core.rmem_default = 262144
+    net.core.rmem_max = 4194304
+    net.core.wmem_default = 262144
+    net.core.wmem_max = 1048586
+    vm.min_free_kbytes = 23168
 
 
-2) Отредактируйте файл /etc/security/limits.conf
+    ### New Parameters
 
-	# vi /etc/security/limits.conf
+    kernel.panic_on_oops = 1
+    ################################################
+
+You can apply the kernel parameters with the command
+
+    # sysctl -p
+
+2.  Edit the file /etc/security/limits.conf
+
+        	# vi /etc/security/limits.conf
 
 <br/>
 
-	################################################
-	# Settings required for Oracle 12
+    ################################################
+    # Settings required for Oracle 12
 
-	oracle12 soft nproc 2047
-	oracle12 hard nproc 16384
-	oracle12 soft nofile 1024
-	oracle12 hard nofile 65536
-	oracle12 soft stack 10240
-	oracle12 hard stack 32768
-
-
-	### Maximum locked memory
-	oracle12  hard  memlock  3871653
-	################################################
+    oracle12 soft nproc 2047
+    oracle12 hard nproc 16384
+    oracle12 soft nofile 1024
+    oracle12 hard nofile 65536
+    oracle12 soft stack 10240
+    oracle12 hard stack 32768
 
 
-3) Отредактируйте файл /etc/pam.d/login
+    ### Maximum locked memory
+    oracle12  hard  memlock  3871653
+    ################################################
 
-	# vi /etc/pam.d/login
+3.  Edit the file /etc/pam.d/login
+
+        	# vi /etc/pam.d/login
 
 <br/>
 
-	################################################
-	# Settings required for Oracle 12
+    ################################################
+    # Settings required for Oracle 12
 
-		session required pam_limits.so
-	################################################
+    	session required pam_limits.so
+    ################################################
 
-4) Отредактируйте файл /etc/profile
+4.  Edit the file /etc/profile
 
-	# vi /etc/profile
+        	# vi /etc/profile
 
-Перед  
+Before
 
 unset i  
 unset pathmunge
 
-Добавляем:
+Add:
 
+    ################################################
+    # Shell limits for Oracle 12 user accounts
 
-	################################################
-	# Shell limits for Oracle 12 user accounts
-
-	if [ $USER = "oracle12" ]; then
-	ulimit -u 16384 -n 65536
-	fi
-	################################################
-
+    if [ $USER = "oracle12" ]; then
+    ulimit -u 16384 -n 65536
+    fi
+    ################################################
 
 <br/>
 
 <span style="font-size: 20px; text-align: left; line-height: 130%; font-family: Arial,Helvetica,sans-serif; color: rgb(153, 0, 0);">
-<strong>Настройка параметров окружения пользователя oracle12 на узлах кластера</strong></span>
+<strong>Configuring environment parameters for oracle12 user on cluster nodes</strong></span>
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 	<tr>
@@ -151,64 +143,60 @@ unset pathmunge
 	</tr>
 </table>
 
+5. Edit the file /home/oracle12/.bash_profile
 
-5) Отредактируйте файл /home/oracle12/.bash_profile
+The ORACLE_SID and ORACLE_UNQNAME values must be unique on each cluster node. Otherwise the configs are identical.
 
-Значения ORACLE_SID и ORACLE_UNQNAME должны быть уникальны на каждой из нод кластера. В остальном конфиги одинаковы.
+    # su - oracle12
 
+    $  vi ~/.bash_profile
 
-	# su - oracle12
+Immediately after:
 
-	$  vi ~/.bash_profile
-
-Сразу после:
-
-	# User specific environment and startup programs
-
+    # User specific environment and startup programs
 
 <br/>
 
-	############################################
-	#### Oracle 12 Parameters rac1
+    ############################################
+    #### Oracle 12 Parameters rac1
 
-	   umask 022
+       umask 022
 
-	   # Different Parameters
+       # Different Parameters
 
-	    export ORACLE_SID=rac121
-	    export ORACLE_UNQNAME=rac121
-	    export ORACLE_HOSTNAME=rac1.localdomain
+        export ORACLE_SID=rac121
+        export ORACLE_UNQNAME=rac121
+        export ORACLE_HOSTNAME=rac1.localdomain
 
-	   # Grid
+       # Grid
 
-	    export GRID_HOME=/u01/app/grid/12.1
-	    export CRS_HOME=${GRID_HOME}/crs
+        export GRID_HOME=/u01/app/grid/12.1
+        export CRS_HOME=${GRID_HOME}/crs
 
-	   # DataBase
+       # DataBase
 
-	   export ORACLE_BASE=/u01/app/oracle
-	   export ORACLE_HOME=${ORACLE_BASE}/product/rac/12.1
+       export ORACLE_BASE=/u01/app/oracle
+       export ORACLE_HOME=${ORACLE_BASE}/product/rac/12.1
 
-	   # NLS
+       # NLS
 
-	   export NLS_LANG=AMERICAN_AMERICA.AL32UTF8
-	   export NLS_DATE_FORMAT="DD.MM.YYYY HH24:MI:SS"
+       export NLS_LANG=AMERICAN_AMERICA.AL32UTF8
+       export NLS_DATE_FORMAT="DD.MM.YYYY HH24:MI:SS"
 
-	   # Other
-	   export ORACLE_OWNER=oracle12
+       # Other
+       export ORACLE_OWNER=oracle12
 
-	   # Alias
+       # Alias
 
-	    alias sqlplus='rlwrap sqlplus'
-	    alias rman='rlwrap rman'
+        alias sqlplus='rlwrap sqlplus'
+        alias rman='rlwrap rman'
 
-	   # Path
+       # Path
 
-	   export LD_LIBRARY_PATH=$ORACLE_HOME/lib
-	   export PATH=$PATH:$ORACLE_HOME/bin:$GRID_HOME/bin:$CRS_HOME/bin
+       export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+       export PATH=$PATH:$ORACLE_HOME/bin:$GRID_HOME/bin:$CRS_HOME/bin
 
-	############################################
-
+    ############################################
 
 <br/><br/>
 
@@ -219,53 +207,53 @@ unset pathmunge
 	</tr>
 </table>
 
-	# su - oracle12
+    # su - oracle12
 
-	$ vi ~/.bash_profile
+    $ vi ~/.bash_profile
 
 <br/>
 
-	############################################
-	#### Oracle 12 Parameters rac2
+    ############################################
+    #### Oracle 12 Parameters rac2
 
-	   umask 022
+       umask 022
 
-	   # Different Parameters
+       # Different Parameters
 
-		export ORACLE_SID=rac122
-		export ORACLE_UNQNAME=rac122
-		export ORACLE_HOSTNAME=rac2.localdomain
+    	export ORACLE_SID=rac122
+    	export ORACLE_UNQNAME=rac122
+    	export ORACLE_HOSTNAME=rac2.localdomain
 
-	   # Grid
+       # Grid
 
-		export GRID_HOME=/u01/app/grid/12.1
-		export CRS_HOME=${GRID_HOME}/crs
+    	export GRID_HOME=/u01/app/grid/12.1
+    	export CRS_HOME=${GRID_HOME}/crs
 
-	   # DataBase
+       # DataBase
 
-	   export ORACLE_BASE=/u01/app/oracle
-	   export ORACLE_HOME=${ORACLE_BASE}/product/rac/12.1
+       export ORACLE_BASE=/u01/app/oracle
+       export ORACLE_HOME=${ORACLE_BASE}/product/rac/12.1
 
-	   # NLS
+       # NLS
 
-	   export NLS_LANG=AMERICAN_AMERICA.AL32UTF8
-	   export NLS_DATE_FORMAT="DD.MM.YYYY HH24:MI:SS"
+       export NLS_LANG=AMERICAN_AMERICA.AL32UTF8
+       export NLS_DATE_FORMAT="DD.MM.YYYY HH24:MI:SS"
 
-	   # Other
-	   export ORACLE_OWNER=oracle12
+       # Other
+       export ORACLE_OWNER=oracle12
 
-	   # Alias
+       # Alias
 
-		alias sqlplus='rlwrap sqlplus'
-		alias rman='rlwrap rman'
+    	alias sqlplus='rlwrap sqlplus'
+    	alias rman='rlwrap rman'
 
-	   # Path
+       # Path
 
-	   export LD_LIBRARY_PATH=$ORACLE_HOME/lib
-	   export PATH=$PATH:$ORACLE_HOME/bin:$GRID_HOME/bin:$CRS_HOME/bin
+       export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+       export PATH=$PATH:$ORACLE_HOME/bin:$GRID_HOME/bin:$CRS_HOME/bin
 
-	############################################
+    ############################################
 
-Применить параметры к текущей сессии консоли bash можно следующей командой:
+Apply the parameters to the current bash console session with the following command:
 
-	# source ~/.bash_profile
+    # source ~/.bash_profile

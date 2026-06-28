@@ -1,31 +1,20 @@
 ---
 layout: page
-title: Oracle DataBase Server 12.1 installation on Oracle Linux 6.7 with ASM and GRID - Copy oracle distributives on server
+title: Инсталляция Oracle DataBase Server 12.1 в Centos 6.7 с использованием ASM и GRID - Извлечение дистрибутивов базы Oracle из архивов
+description: Инсталляция Oracle DataBase Server 12.1 в Centos 6.7 с использованием ASM и GRID - Извлечение дистрибутивов базы Oracle из архивов
+keywords: Oracle DataBase 12.1, Centos 6.7, ASM, GRID
 permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/extract-oracle-distrib-from-archives/
 ---
 
-# <a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7 with ASM and GRID]</a>: Copy oracle distributives on server
+# <a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">[Инсталляция Oracle DataBase Server 12.1 в Centos 6.7 с использованием ASM и GRID]</a>: Извлечение дистрибутивов базы Oracle из архивов
 
-Copy oracle distributives on server to /tmp/oracle/12.1/ folder.
-
-You could do it with connection by sftp protocol in Linux or use winscp from windows.
-
-in Linux you could copy distrib with next command:
-
-    # scp marley@192.168.1.5:/oracle/linuxamd64_12c_database_*.zip /tmp/oracle/12.1/
-
-To setup right permissions:
-
-    # chown -R oracle12:oinstall /tmp/oracle/12.1/linuxamd64_12c_database_*.zip
-
-<br/>
-
-### Login on server as user oracle12.
+Войдите в систему пользователем, от имени которого будет будет происходить инсталляция базы данных.
 
     # su - oracle12
-    $ cd /tmp/oracle/12.1/
 
-And extract archives:
+Скопируйте дистрибутивы во временный каталог /tmp/oracle/12.1/
+
+    $ cd /tmp/oracle/12.1/
 
 <br/>
 
@@ -36,5 +25,4 @@ And extract archives:
 <br/>
 
     $ unzip linuxamd64_12102_grid_1of2.zip; unzip linuxamd64_12102_grid_2of2.zip
-
     $ unzip linuxamd64_12102_database_1of2.zip; unzip linuxamd64_12102_database_2of2.zip

@@ -1,45 +1,34 @@
 ---
 layout: page
-title: Oracle DataBase 12.2 - Oracle Linux 7.4 - Задание параметров FAST RECOVERY AREA
+title: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Setting FAST RECOVERY AREA Parameters
+description: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Setting FAST RECOVERY AREA Parameters
+keywords: Oracle DataBase 12.2, Oracle Linux 7.4, fast recovery area, FRA
 permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-setup-fast-recovery-area-params/
 ---
 
 <br/>
 
-<div style="padding:10px; border:thin solid black;">
-
-	<h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
-
-    <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
-
-</div>
+# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Oracle DataBase Server 12.2 Installation on Oracle Linux 7.4]</a>: Setting FAST RECOVERY AREA Parameters
 
 <br/>
 
-# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Инсталляция Oracle DataBase Server 12.2 в Oracle Linux 7.4]</a>: Задание параметров FAST RECOVERY AREA
-
-
-<br/>
-
-Fast Recovery Area (FRA) - это пространство для резервных копий базы данных и файлов архивных журналов (если включен рехим создания архивов redo журналов). Необходимо следить за тем, чтобы у базы данных оставалось место для записи в него своих данных. При необходимости, его можно увеличивать и/или очищать от устаревших данных. Чистить можно только средствами RMAN.
+Fast Recovery Area (FRA) is space for database backups and archive log files (if redo log archiving mode is enabled). It is necessary to ensure that the database has enough space to write its data. If necessary, it can be increased and/or cleaned of outdated data. Cleaning can only be done using RMAN.
 
 <br/>
 
-	$ sqlplus / as sysdba
-
-
-<br/>
-
-
-	SQL> alter system set db_recovery_file_dest_size="20G";
+    $ sqlplus / as sysdba
 
 <br/>
 
-	SQL> alter system set db_recovery_file_dest="/u03/oracle/oradata/12.2/orcl12/backups";
+    SQL> alter system set db_recovery_file_dest_size="20G";
 
 <br/>
 
-	SQL> show parameter db_recovery;
+    SQL> alter system set db_recovery_file_dest="/u03/oracle/oradata/12.2/orcl12/backups";
+
+<br/>
+
+    SQL> show parameter db_recovery;
 
 <br/>
 

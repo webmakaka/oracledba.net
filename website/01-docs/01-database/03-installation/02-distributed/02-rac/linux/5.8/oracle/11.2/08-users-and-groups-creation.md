@@ -1,37 +1,36 @@
 ---
 layout: page
-title: Oracle RAC 11.2 ISCSI + ASM - Создание пользователя oracle11 и групп
+title: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Creating oracle11 user and groups
+description: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Creating oracle11 user and groups
+keywords: database, installation, distributed, rac, linux, 5.8, oracle, 11.2, Creating oracle11 user and groups
 permalink: /database/installation/distributed/rac/linux/5.8/oracle/11.2/users-and-groups-creation/
 ---
 
-# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Инсталляция Oracle RAC 11.2 в операционной системе Oracle Linux 5.8 x86_64]</a>: Создание пользователя oracle11 и групп
+# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Oracle RAC 11.2 Installation on Oracle Linux 5.8 x86_64]</a>: Creating oracle11 user and groups
 
 <br/>
 
+System parameter configuration (performed on both cluster nodes)
 
-Настройка параметров системы (выполняется на обоих узлах кластера)
+Before making changes to configuration scripts, create their backups:
 
+    # {
+    cp /etc/sysctl.conf /etc/sysctl.conf.bkp
+    cp /etc/security/limits.conf /etc/security/limits.conf.bkp
+    cp /etc/pam.d/login /etc/pam.d/login.bkp
+    cp /etc/profile /etc/profile.bkp
+    }
 
-Перед тем как вносить изменения в конфигурационные скрипты, следует предварительно создать их резервные копии:
+Create groups:
 
-	# {
-	cp /etc/sysctl.conf /etc/sysctl.conf.bkp
-	cp /etc/security/limits.conf /etc/security/limits.conf.bkp
-	cp /etc/pam.d/login /etc/pam.d/login.bkp
-	cp /etc/profile /etc/profile.bkp
-	}
+    # groupadd -g 1000 oinstall
+    # groupadd -g 1001 dba
+    # groupadd -g 1002 oper
 
-Создаем группы:
+Create the oracle11 user, specify that he will be a member of dba and oinstall groups and his home directory will be /home/oracle11
 
-	# groupadd -g 1000 oinstall
-	# groupadd -g 1001 dba
-	# groupadd -g 1002 oper
+    # useradd -g oinstall -G dba -d /home/oracle11 oracle11
 
+Set the password for oracle11 user
 
-Создаем пользователя oracle11, сообщаем, что он будет членом групп dba и oinstall и домашним каталогом у него будет /home/oracle11
-
-	# useradd -g oinstall -G dba -d /home/oracle11 oracle11
-
-Устанавливаем пароль для пользователе oracle11
-
-	# passwd oracle11
+    # passwd oracle11

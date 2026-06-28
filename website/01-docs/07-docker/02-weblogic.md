@@ -2,7 +2,7 @@
 layout: page
 title: WebLogic 12.2.1 inside Docker Containers
 description: WebLogic 12.2.1 inside Docker Containers
-keywords: WebLogic 12.2.1 inside Docker Containers
+keywords: Oracle WebLogic Server, WLS, Docker
 permalink: /docker/weblogic/
 ---
 

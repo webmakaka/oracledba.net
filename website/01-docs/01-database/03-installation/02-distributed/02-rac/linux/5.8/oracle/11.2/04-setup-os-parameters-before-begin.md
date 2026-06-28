@@ -1,30 +1,31 @@
 ---
 layout: page
-title: Oracle RAC 11.2 ISCSI + ASM - Предварительные настройки
+title: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Preliminary settings
+description: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Preliminary settings
+keywords: database, installation, distributed, rac, linux, 5.8, oracle, 11.2, Preliminary settings
 permalink: /database/installation/distributed/rac/linux/5.8/oracle/11.2/setup-os-parameters-before-begin/
 ---
 
-# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Инсталляция Oracle RAC 11.2 в операционной системе Oracle Linux 5.8 x86_64]</a>: Предварительные настройки
+# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Oracle RAC 11.2 Installation on Oracle Linux 5.8 x86_64]</a>: Preliminary settings
 
 <br/>
 
-Следующие команды выполняются на всех виртаульных машинах
+The following commands are executed on all virtual machines
 
-Некоторые комментарии к следующим 2 командам - 1 создает резервную копию файла /etc/selinux/config, а вторая заменяет значение парамета SELINUX с enforcing на disabled
+Some comments on the following 2 commands - the first creates a backup of /etc/selinux/config, and the second changes the SELINUX parameter value from enforcing to disabled
 
     # cp /etc/selinux/config /etc/selinux/config.bkp
     # sed -i.gres "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
 
-Следующие 2 команды -  1 создает резервную копию файла, меняет значение timeout с 5 на 0
+The following 2 commands - the first creates a backup of the file, changes the timeout value from 5 to 0
 
     # cp /etc/grub.conf /etc/grub.conf.bkp
     # sed -i.gres "s/timeout=5/timeout=0/g" /etc/grub.conf
 
-
-Выключаю firewall
+Disabling firewall
 
     # service iptables stop
 
-Запрещаю firewall запускаться при старте операционной системы
+Prevent firewall from starting at OS boot
 
     # chkconfig iptables off

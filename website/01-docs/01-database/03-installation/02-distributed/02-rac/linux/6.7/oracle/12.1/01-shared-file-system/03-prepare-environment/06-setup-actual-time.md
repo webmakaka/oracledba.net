@@ -1,16 +1,16 @@
 ---
 layout: page
-title: Oracle RAC 12.1 SHARED FILE SYSTEM - Настройка сервисов отвечающих за синхронизацию времени
+title: Oracle RAC 12.1 SHARED FILE SYSTEM - Setting up time synchronization services
+description: Oracle RAC 12.1 SHARED FILE SYSTEM - Setting up time synchronization services
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, SHARED FILE SYSTEM
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-file-system/setup-actual-time/
 ---
 
-# [Инсталляция Oracle RAC 12.1 SHARED FILE SYSTEM]: Настройка сервисов отвечающих за синхронизацию времени
+# [Oracle RAC 12.1 SHARED FILE SYSTEM Installation]: Setting up time synchronization services
 
 <br/>
 
-
-<span style="font-size: 20px; text-align: left; line-height: 130%; font-family: Arial,Helvetica,sans-serif; color: rgb(153, 0, 0);"><strong>Настройка времени</strong></span>
-
+<span style="font-size: 20px; text-align: left; line-height: 130%; font-family: Arial,Helvetica,sans-serif; color: rgb(153, 0, 0);"><strong>Time setup</strong></span>
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 <tr>
@@ -19,29 +19,25 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-f
 </tr>
 </table>
 
-
-
-Внесите изменения в файл параметров ntpd
+Make changes to the ntpd parameters file
 
     # vi /etc/sysconfig/ntpd
 
-замените
+replace
 
     # Drop root to id 'ntp:ntp' by default.
     OPTIONS="-u ntp:ntp -p /var/run/ntpd.pid -g"
 
-на
+with
 
-	# Drop root to id 'ntp:ntp' by default.
-	# OPTIONS="-u ntp:ntp -p /var/run/ntpd.pid -g"
-	OPTIONS="-x -u ntp:ntp -p /var/run/ntpd.pid -g"
+    # Drop root to id 'ntp:ntp' by default.
+    # OPTIONS="-u ntp:ntp -p /var/run/ntpd.pid -g"
+    OPTIONS="-x -u ntp:ntp -p /var/run/ntpd.pid -g"
 
 <br/>
 
-
-	# chkconfig --level 345 ntpd on
-	# service ntpd restart
-
+    # chkconfig --level 345 ntpd on
+    # service ntpd restart
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 <tr>
@@ -50,21 +46,19 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-f
 </tr>
 </table>
 
+    # cd /etc
+    # cp ntp.conf ntp.conf.bak
 
-	# cd /etc
-	# cp ntp.conf ntp.conf.bak
+    # vi ntp.conf
 
-	# vi ntp.conf
+Leave only:
 
-Оставляю только:
-
-	server rac1-priv-storage
-	restrict rac1-priv-storage mask 255.255.255.255 nomodify notrap noquery
+    server rac1-priv-storage
+    restrict rac1-priv-storage mask 255.255.255.255 nomodify notrap noquery
 
 <br/>
 
-	# service ntpd restart
-
+    # service ntpd restart
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 <tr>
@@ -73,29 +67,27 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-f
 </tr>
 </table>
 
+    # cd /etc
+    # cp ntp.conf ntp.conf.bak
 
-	# cd /etc
-	# cp ntp.conf ntp.conf.bak
+    # vi ntp.conf
 
-	# vi ntp.conf
+    Leave only:
 
-	Оставляю только:
+    server rac2-priv-storage
+    restrict rac2-priv-storage mask 255.255.255.255 nomodify notrap noquery
 
-	server rac2-priv-storage
-	restrict rac2-priv-storage mask 255.255.255.255 nomodify notrap noquery
+    <br/>
 
-	<br/>
+    # service ntpd restart
 
-	# service ntpd restart
+Check:
 
-
-Проверка:
-
-	# ntpq -pn
-	# ntpq -c peers
+    # ntpq -pn
+    # ntpq -c peers
 
 
-	# ntpq -p
-	     remote           refid      st t when poll reach   delay   offset  jitter
-	==============================================================================
-	 rac1-priv-stora .INIT.          16 u    -   64    0    0.000    0.000   0.000
+    # ntpq -p
+         remote           refid      st t when poll reach   delay   offset  jitter
+    ==============================================================================
+     rac1-priv-stora .INIT.          16 u    -   64    0    0.000    0.000   0.000

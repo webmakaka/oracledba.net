@@ -1,20 +1,17 @@
 ---
 layout: page
-title: Oracle RAC 12.1 SHARED FILE SYSTEM - Выбор пакетов для автозапуска
+title: Oracle RAC 12.1 SHARED FILE SYSTEM - Selecting packages for autostart
+description: Oracle RAC 12.1 SHARED FILE SYSTEM - Selecting packages for autostart
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, SHARED FILE SYSTEM
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-file-system/autostart-only-packages-what-needed/
 ---
 
-
-
-# [Инсталляция Oracle RAC 12.1 SHARED FILE SYSTEM]: Выбор пакетов для автозапуска
-
+# [Oracle RAC 12.1 SHARED FILE SYSTEM Installation]: Selecting packages for autostart
 
 <br/>
 
-
 <span style="font-size: 20px; text-align: left; line-height: 130%; font-family: Arial,Helvetica,sans-serif; color: rgb(153, 0, 0);">
-<strong>Выбор пакетов для автозапуска:</strong></span>
-
+<strong>Selecting packages for autostart:</strong></span>
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 
@@ -25,25 +22,19 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-f
 
 </table>
 
+// See which programs currently autostart when the OS boots.
 
+    # chkconfig --list | grep '3:on\|4:on\|5:on'  |awk '{print $1}' | sort
 
+// Create a backup copy of the output stream from chkconfig --list
 
-// Посмотреть какие программы сейча автостартуют при запуске операционной системы.
+    # chkconfig --list > /tmp/chkconfig.backup
 
-	# chkconfig --list | grep '3:on\|4:on\|5:on'  |awk '{print $1}' | sort
+// The following command disables autostart for all packages at once.
 
-// Создать резервную копию выходного потока от программы chkconfig --list
+    # for i in $(chkconfig --list | grep '3:on\|4:on\|5:on' | awk {'print $1'}); do chkconfig --level 345 $i off; done
 
-	# chkconfig --list > /tmp/chkconfig.backup
-
-// Следующая команда отключает автозапуск сразу всех пакетов.
-
-	# for i in $(chkconfig --list | grep '3:on\|4:on\|5:on' | awk {'print $1'}); do chkconfig --level 345 $i off; done
-
-
-После этого, включаем нужные нам пакеты:
-
-
+After that, enable the packages we need:
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 	<tr>
@@ -55,12 +46,11 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-f
 	</tr>
 </table>
 
-
-	# {
-	chkconfig --level 345 network on
-	chkconfig --level 345 sshd on
-	chkconfig --level 345 ntpd on
-	}
+    # {
+    chkconfig --level 345 network on
+    chkconfig --level 345 sshd on
+    chkconfig --level 345 ntpd on
+    }
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 	<tr>
@@ -72,14 +62,14 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-f
 	</tr>
 </table>
 
-	# {
-	chkconfig  --level 345 auditd on
-	chkconfig  --level 345 netfs on
-	chkconfig  --level 345 nfs on
-	chkconfig  --level 345 nfslock on
-	chkconfig  --level 345 rpcgssd on
-	chkconfig  --level 345 rpcidmapd on
-	chkconfig  --level 345 sysstat on
-	chkconfig  --level 345 xinetd on
-	chkconfig  --level 345 snmpd on
-	}
+    # {
+    chkconfig  --level 345 auditd on
+    chkconfig  --level 345 netfs on
+    chkconfig  --level 345 nfs on
+    chkconfig  --level 345 nfslock on
+    chkconfig  --level 345 rpcgssd on
+    chkconfig  --level 345 rpcidmapd on
+    chkconfig  --level 345 sysstat on
+    chkconfig  --level 345 xinetd on
+    chkconfig  --level 345 snmpd on
+    }

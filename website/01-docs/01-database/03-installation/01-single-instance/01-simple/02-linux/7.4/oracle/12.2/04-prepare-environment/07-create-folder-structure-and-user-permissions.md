@@ -1,0 +1,33 @@
+---
+layout: page
+title: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Creating Directory Structure and Assigning Necessary Permissions
+description: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Creating Directory Structure and Assigning Necessary Permissions
+keywords: Oracle DataBase 12.2, Oracle Linux 7.4, creating directories, assigning permissions
+permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/create-folder-structure-and-user-permissions/
+---
+
+<br/>
+
+# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Oracle DataBase Server 12.2 Installation on Oracle Linux 7.4]</a>: Creating Directory Structure and Assigning Necessary Permissions
+
+<br/>
+
+    # mkdir -p /u01/oracle/database/12.2
+    # chown -R oracle12:dba /u01/oracle
+    # chmod -R 775 /u01/oracle/database/12.2
+
+    # mkdir -p /u01/oraInventory
+    # chown -R oracle12:oinstall /u01/oraInventory
+    # chmod -R 775 /u01/oraInventory
+
+    # mkdir -p /u02/oracle/oradata/12.2
+    # chown -R oracle12:dba /u02/oracle/oradata/12.2
+    # chmod -R 775 /u02/oracle/oradata/12.2
+
+    # mkdir -p /u03/oracle/oradata/12.2/orcl12/backups
+    # chown -R oracle12:dba /u03/oracle/oradata/12.2/orcl12/
+    # chmod -R 775 /u03/oracle/oradata/12.2/orcl12/
+
+    # mkdir -p /distrib/oracle/12.2/
+    # chown -R oracle12:dba /distrib/oracle/12.2/
+    # chmod -R 775 /distrib/oracle/12.2/

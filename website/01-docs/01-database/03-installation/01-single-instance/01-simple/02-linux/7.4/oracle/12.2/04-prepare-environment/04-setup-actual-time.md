@@ -1,24 +1,14 @@
 ---
 layout: page
-title: Oracle DataBase 12.2 - Oracle Linux 7.4 - Настройка сервисов отвечающих за синхронизацию времени
+title: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Configuring Time Synchronization Services
+description: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Configuring Time Synchronization Services
+keywords: Oracle DataBase 12.2, Oracle Linux 7.4, Time Synchronization
 permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/setup-actual-time/
 ---
 
 <br/>
 
-<div style="padding:10px; border:thin solid black;">
-
-	<h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
-
-    <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
-
-</div>
-
-<br/>
-
-
-# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Инсталляция Oracle DataBase Server 12.2 в Oracle Linux 7.4]</a>: Настройка сервисов отвечающих за синхронизацию времени
-
+# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Oracle DataBase Server 12.2 Installation on Oracle Linux 7.4]</a>: Configuring Time Synchronization Services
 
 <br/>
 
@@ -26,19 +16,16 @@ permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/s
     # systemctl enable ntpd
     # systemctl status ntpd
 
-
-
 <br/>
 
-При необходимости разрешить на фаерволе
+If necessary, allow on the firewall
 
     # firewall-cmd --add-service=ntp --permanent
     # firewall-cmd --reload
 
-
 <br/>
 
-Проверка
+Verification
 
     # ntpq -p
     # date -R

@@ -1,57 +1,105 @@
 ---
 layout: page
-title: Oracle DataBase 12c - Linux - Setup Display Manger
+title: Oracle DataBase 12c Installation on Oracle Linux 6.7 - Configuring Display Manager
+description: Oracle DataBase 12c Installation on Oracle Linux 6.7 - Configuring Display Manager
+keywords: Oracle DataBase 12c, Oracle Linux 6.7, Display Manager
 permalink: /database/installation/single-instance/simple/linux/6.7/oracle/12.1/setup-display-manager/
 ---
 
-# <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7]</a>: Setup Display Manger
+# <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 Installation on Oracle Linux 6.7]</a>: Configuring Display Manager
 
+### Preparation and verification
 
-
-192.168.1.5 -  ip address of my desktop<br/>
-192.168.1.11 - ip address of server<br/>
-
+192.168.1.5 - ip address of the computer from which the installation process is managed.<br/>
+192.168.1.11 - ip address of the server<br/>
 
 <br/>
 
-# If you install Oracle from Windows machine
+## If installing from a Windows machine
 
-
-Install XMing and additional fonts:<br/>
+Install XMing and additional fonts. :<br/>
 http://sourceforge.net/projects/xming/<br/>
 http://sourceforge.net/projects/xming/files/Xming-fonts/
 
-I strongly recommend to reboop computer. Without reboot there was a problem from some oracle installation forms (At least when i installed RAC 10).
+Reboot. If you don't reboot, during installation of version 10 RAC, problems occurred (buttons were not displayed on the last installation step).
 
-Next we should setup connection rights.<br/>
-
-Simplest way to do it is - right click on xming shortcut. In properties in target field add -ac (without access control)
-
-
-<img src="https://img.oracledba.net/img/oracle/database/simple/12.1/XMing.png" border="0" alt="XMing">
-
-
+Next, configure access rules.<br/>
+In the simplest case, right-click on the xming shortcut. Go to properties and add -ac to the target (i.e., no access control)
 
 <br/>
 
-# If you install Oracle from Linux machine
-
-### On Client:
-
-	$ sudo apt-get install -y gdm
-
-
-<br/><img src="https://img.oracledba.net/img/oracle/database/simple/11.2/gdm.png" border="0" alt="Oracle installation"><br/>
-
-
-### If chosen gdm
-
-	# vi /etc/gdm/custom.conf
+<div align="center">
+    <img src="https://img.oracledba.net/img/oracle/database/simple/12.1/XMing.png" border="0" alt="XMing">
+</div>
 
 <br/>
+
+<br/>
+
+## If installing from a Linux machine
+
+### On the client:
+
+    $ sudo apt-get install -y gdm
+
+<br/>
+
+<div align="center">
+    <img src="https://img.oracledba.net/img/oracle/database/simple/11.2/gdm.png" border="0" alt="Oracle installation">
+</div>
+
+<br/>
+<br/>
+
+I think it's better to choose lightdm (gdm last time didn't want to work for me). More precisely, I configured gdm as described here, then spent god knows how much time troubleshooting and then decided to try lightdm. After reboot, the service started listening on port 6000).
+
+<br/>
+
+If needed, you can switch later with commands:
+
+<br/>
+
+    # dpkg-reconfigure gdm
+    # dpkg-reconfigure lightdm
+
+<br/>
+
+### If lightdm is chosen
+
+    # vi /etc/lightdm/lightdm.conf
+
+<br/>
+
+    ###########################
+
+    [SeatDefaults]
+    user-session=ubuntu
+    greeter-session=unity-greeter
+    xserver-allow-tcp=true
+
+    ###########################
+
+<br/>
+
+### If gdm is chosen
+
+    # vi /etc/gdm/custom.conf
+
+<br/>
+
+Add to the blocks:
+
+    [security]
+    DisallowTCP=false
+
+    [xdmcp]
+    Enable=true
+
+<!-- <br/>
 
 	###########################
 	[xdmcp]
+    Enable=true
 
 	[chooser]
 
@@ -59,103 +107,110 @@ Simplest way to do it is - right click on xming shortcut. In properties in targe
 	DisallowTCP=false
 
 	[debug]
-	###########################
+	########################### -->
 
+<!--
+<br/>
 
+Perhaps it's enough to restart services with commands:
 
-### If chosen lightgdm
+    # service gdm status
 
-
-	# vi /etc/lightdm/lightdm.conf
+    # service gdm restart (or even # service gdm3 restart)
 
 <br/>
 
-	###########################
+If lightdm is chosen
 
-	[SeatDefaults]
-	user-session=ubuntu
-	greeter-session=unity-greeter
-	xserver-allow-tcp=true
+    # service gdm lightgdm
 
-	###########################
+If that doesn't help, then: -->
 
 <br/>
 
-	# reboot
+    # sudo restart lightdm
+
+or
+
+    # service gdm restart
 
 <br/>
 
-### Commands for checks
+### Verification commands
 
+    $ ps ax | grep dm
+    $ ps lf -C Xorg
 
-	$ sudo apt-get install -y nmap nc
-
-<br/>
-
-	$ netstat -an | grep -F 6000
+There should be a line "listen tcp"
 
 <br/>
 
-	tcp        0      0 0.0.0.0:6000            0.0.0.0:*               LISTEN
-	tcp6       0      0 :::6000                 :::*                    LISTEN
-
+    $ sudo apt-get install -y nmap nc
 
 <br/>
 
-	# nmap -p 6000 192.168.1.5
+    $ netstat -an | grep -F 6000
 
 <br/>
 
-	Starting Nmap 5.21 ( http://nmap.org ) at 2013-08-18 04:13 MSK
-	Nmap scan report for 192.168.1.5
-	Host is up (0.000044s latency).
-	PORT     STATE SERVICE
-	6000/tcp open  X11
-
+    tcp        0      0 0.0.0.0:6000            0.0.0.0:*               LISTEN
+    tcp6       0      0 :::6000                 :::*                    LISTEN
 
 <br/>
 
-	$ nc -vv 192.168.1.5 6000
-	Connection to 192.168.1.200 6000 port [tcp/x11] succeeded!=
-
+    # nmap -p 6000 192.168.1.5
 
 <br/>
 
-	$ xhost +192.168.1.10
-
-
-
-
-<br/>
-
-## On Server:
-
-To check you could install xterm or xclock
+    Starting Nmap 5.21 ( http://nmap.org ) at 2013-08-18 04:13 MSK
+    Nmap scan report for 192.168.1.5
+    Host is up (0.000044s latency).
+    PORT     STATE SERVICE
+    6000/tcp open  X11
 
 <br/>
 
-
-If you don't install earlier package xdpyinfo, do it. It needs to show oracle forms on remote host.
-
-
-	# yum install -y xdpyinfo
+    $ nc -vv 192.168.1.5 6000
+    Connection to 192.168.1.200 6000 port [tcp/x11] succeeded!=
 
 <br/>
 
-	# yum install -y xclock
+    $ xhost +192.168.1.11
 
 <br/>
 
-	$ export DISPLAY=192.168.1.5:0.0
+## On the server:
+
+You can check the operation by installing xterm or xclock
 
 <br/>
 
-	$ xclock
+-- if not installed earlier, install the xdpyinfo package. It is needed for displaying windows on the client machine.
 
-Or you may execute next command:
+<br/>
 
-	$ xclock -display 192.168.1.5:0
+    # yum install -y xdpyinfo
+
+<br/>
+
+    # yum install -y xclock
+
+<br/>
+
+    $ export DISPLAY=192.168.1.5:0.0
+
+<br/>
+
+    $ xclock
+
+-- you can even just run the command:
+
+    $ xclock -display 192.168.1.5:0
 
 <br/><br/>
 
-<br/><img src="https://img.oracledba.net/img/oracle/database/simple/11.2/xclock.png" border="0" alt="Oracle installation">
+<br/>
+
+<div align="center">
+    <img src="https://img.oracledba.net/img/oracle/database/simple/11.2/xclock.png" border="0" alt="Oracle installation">
+</div>

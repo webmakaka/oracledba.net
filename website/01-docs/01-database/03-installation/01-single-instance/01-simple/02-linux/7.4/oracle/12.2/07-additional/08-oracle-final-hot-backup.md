@@ -1,87 +1,69 @@
 ---
 layout: page
-title: Oracle DataBase 12.2 - Oracle Linux 7.4 - Контрольный backup (горячий backup)
+title: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Final Backup (Hot Backup)
+description: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Final Backup (Hot Backup)
+keywords: Oracle DataBase 12.2, Oracle Linux 7.4, hot backup
 permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-final-hot-backup/
 ---
 
 <br/>
 
-<div style="padding:10px; border:thin solid black;">
-
-	<h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
-
-    <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
-
-</div>
+# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Oracle DataBase Server 12.2 Installation on Oracle Linux 7.4]</a>: Final Backup (Hot Backup):
 
 <br/>
 
-# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Инсталляция Oracle DataBase Server 12.2 в Oracle Linux 7.4]</a>: Контрольный backup (горячий backup):
-
-
-<br/>
-
-	$ mkdir -p /u02/oracle/oradata/12.2/${ORACLE_SID}/scripts
+    $ mkdir -p /u02/oracle/oradata/12.2/${ORACLE_SID}/scripts
 
 <br/>
 
-	$ cd /u02/oracle/oradata/12.2/${ORACLE_SID}/scripts
-
-
+    $ cd /u02/oracle/oradata/12.2/${ORACLE_SID}/scripts
 
 <br/>
 
-	$ vi rmanscript.rman
-
-
-<br/>
-
-	RUN {
-	CONFIGURE DEVICE TYPE DISK BACKUP TYPE TO COMPRESSED BACKUPSET;
-	BACKUP FULL DATABASE TAG "FULL_DATABASE" PLUS ARCHIVELOG TAG "FULL_DATABASE_ARCHIVELOGS";
-	BACKUP CURRENT CONTROLFILE TAG "FULL_DATABASE_CONTROLFILE";
-	BACKUP SPFILE TAG "FULL_DATABASE_SPFILE";
-	}
-
-Проверка синтаксиса созданного файла сценария
-
-
-	$ rman CHECKSYNTAX @rmanscript.rman
-
-Выполнение скрипта резервного копирования
-
-
-	$ rman target / @rmanscript.rman
-
-
+    $ vi rmanscript.rman
 
 <br/>
 
-### Посмотреть список бекапов
+```
+RUN {
+    CONFIGURE DEVICE TYPE DISK BACKUP TYPE TO COMPRESSED BACKUPSET;
+    BACKUP FULL DATABASE TAG "FULL_DATABASE" PLUS ARCHIVELOG TAG "FULL_DATABASE_ARCHIVELOGS";
+    BACKUP CURRENT CONTROLFILE TAG "FULL_DATABASE_CONTROLFILE";
+    BACKUP SPFILE TAG "FULL_DATABASE_SPFILE";
+}
+```
 
-	RMAN> rman target /
+Check the syntax of the created script file
 
+    $ rman CHECKSYNTAX @rmanscript.rman
 
-<br/>
+Run the backup script
 
-	RMAN> list backup of database summary;
-
-<br/>
-
-Следующей командой я сообщаю, что все бекапы кроме последного, следует поменить как obsolete.
-
-
-	RMAN> CONFIGURE RETENTION POLICY TO REDUNDANCY 1;
-
-
-Теперь говорю RMAN удалить устаревшие бекапы (без подтверждения).
-
-
-	RMAN> delete noprompt obsolete;
+    $ rman target / @rmanscript.rman
 
 <br/>
 
-	RMAN> list backup of database summary;
+### View the list of backups
+
+    RMAN> rman target /
+
+<br/>
+
+    RMAN> list backup of database summary;
+
+<br/>
+
+With the following command, I specify that all backups except the last one should be marked as obsolete.
+
+    RMAN> CONFIGURE RETENTION POLICY TO REDUNDANCY 1;
+
+Now I tell RMAN to delete obsolete backups (without confirmation).
+
+    RMAN> delete noprompt obsolete;
+
+<br/>
+
+    RMAN> list backup of database summary;
 
     List of Backups
     ===============
@@ -90,7 +72,6 @@ permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/o
     1       B  F  A DISK        14/08/2017 14:31:28 1       1       NO         FULL_DATABASE_DATAFILES
     8       B  F  A DISK        14/08/2017 15:15:39 1       1       YES        FULL_DATABASE
 
-
 <br/>
 
-	RMAN>  quit
+    RMAN>  quit

@@ -8,7 +8,7 @@ permalink: /open-search.xml
 
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
  <ShortName>oracledba.net</ShortName>
- <Description>Use Google to search oracle-dba.ru</Description>
+ <Description>Use Google to search oracledba.net</Description>
  <Tags>oracledba.net</Tags>
  <Url type="text/html"
       template="http://www.google.com/search?as_sitesearch=oracledba.net&amp;start={indexOffset}&amp;q={searchTerms}"/>

@@ -1,16 +1,14 @@
 ---
 layout: page
-title: Oracle RAC 12.1 SHARED FILE SYSTEM - Создание пользователя oracle12 и административных групп
+title: Oracle RAC 12.1 SHARED FILE SYSTEM - Creating oracle12 user and administrative groups
+description: Oracle RAC 12.1 SHARED FILE SYSTEM - Creating oracle12 user and administrative groups
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, SHARED FILE SYSTEM
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-file-system/users-and-groups-creation/
 ---
 
-
-
-# [Инсталляция Oracle RAC 12.1 SHARED FILE SYSTEM]: Создание пользователя oracle12 и административных групп
-
+# [Oracle RAC 12.1 SHARED FILE SYSTEM Installation]: Creating oracle12 user and administrative groups
 
 <br/>
-
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 
@@ -21,33 +19,30 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-f
 
 </table>
 
+Create groups:
 
-Создаем группы:
+    # groupadd -g 1000 oinstall
+    # groupadd -g 1001 dba
+    # groupadd -g 1002 oper
 
-	# groupadd -g 1000 oinstall
-	# groupadd -g 1001 dba
-	# groupadd -g 1002 oper
-
-
-Вроде как мы не используем здесь ASM, но группы почему-то требуются.
+It seems we don't use ASM here, but for some reason groups are required.
 
 OSASM Group
 
-	# groupadd -g 1003 asmadmin
+    # groupadd -g 1003 asmadmin
 
 OSDBA Group
 
-	# groupadd -g 1004 asmdba
+    # groupadd -g 1004 asmdba
 
 OSOPER Group
 
-	# groupadd -g 1005 asmoper
+    # groupadd -g 1005 asmoper
 
+Create oracle12 user, specify that he will be a member of dba and oinstall groups and his home directory will be /home/oracle12
 
-Создаем пользователя oracle12, сообщаем, что он будет членом групп dba и oinstall и домашним каталогом у него будет /home/oracle12
+    # useradd -g oinstall -G dba,oper,asmadmin,asmdba,asmoper -d /home/oracle12 oracle12
 
-	# useradd -g oinstall -G dba,oper,asmadmin,asmdba,asmoper -d /home/oracle12 oracle12
+Set password for oracle12 user
 
-Устанавливаем пароль для пользователе oracle12
-
-	# passwd oracle12
+    # passwd oracle12

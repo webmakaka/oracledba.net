@@ -1,12 +1,12 @@
 ---
 layout: page
-title: Oracle RAC 12.1 ISCSI + ASM - Настройка ASM на узлах кластера, маркировка дисков как ASM
+title: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Configuring ASM on cluster nodes, labeling disks as ASM
+description: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Configuring ASM on cluster nodes, labeling disks as ASM
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, (ISCSI + ASM)
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/prepare-asm-discs/
 ---
 
-<br/>
-
-### [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Настройка ASM на узлах кластера, маркировка дисков как ASM
+# [Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM)]: Configuring ASM on cluster nodes, labeling disks as ASM
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 
@@ -31,44 +31,42 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     Initializing the Oracle ASMLib driver:                     [  OK  ]
     Scanning the system for Oracle ASMLib disks:               [  OK  ]
 
-Проверка:
+Check:
 
     # /etc/init.d/oracleasm status
 
     Checking if ASM is loaded: yes
     Checking if /dev/oracleasm is mounted: yes
 
-Если используется Divice Mapper, то выполняем следующий шаг, иначе при инсталляции возникнет ошибка: <a href="http://oracledba.net/docs/errors/ins-32148/Execution-of-GI-Install-script-failed-on-nodes/">[INS-32148] Execution of 'GI Install' script failed on nodes: [rac2]</a>
+If using Device Mapper, execute the following step, otherwise an error will occur during installation: <a href="https://oracledba.net/docs/errors/ins-32148/Execution-of-GI-Install-script-failed-on-nodes/">[INS-32148] Execution of 'GI Install' script failed on nodes: [rac2]</a>
 
     # vi /etc/sysconfig/oracleasm
 
     ***
-    ORACLEASM_SCANORDER=”dm”
-    ORACLEASM_SCANEXCLUDE=”sd”
+    ORACLEASM_SCANORDER="dm"
+    ORACLEASM_SCANEXCLUDE="sd"
     ***
 
-Перестартовываем сервис asmlib:
+Restart the asmlib service:
 
     # /etc/init.d/oracleasm restart
 
 <br/>
 
-# Маркируем диски как ASM диски:
+# Label disks as ASM disks:
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
-
-<tr>
-<td style="color: rgb(255, 255, 255);" bgcolor="#386351" width="14%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>Server:</strong></span></td>
-<td height="20" bgcolor="#a2bcb1" width="60%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>rac1</strong></span></td>
-</tr>
-
+    <tr>
+    <td style="color: rgb(255, 255, 255);" bgcolor="#386351" width="14%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>Server:</strong></span></td>
+    <td height="20" bgcolor="#a2bcb1" width="60%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>rac1</strong></span></td>
+    </tr>
 </table>
 
 <br/>
 
-### Маркируем диски как ASM:
+### Label disks as ASM:
 
-Если используется Device Mapper то:
+If using Device Mapper:
 
     # {
         /etc/init.d/oracleasm createdisk ASMDISK1 /dev/mapper/iscsi-disk1
@@ -82,7 +80,7 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 
     Marking disk "ASMDISK" as an ASM disk:                        [  OK  ]
 
-Посмотреть список дисков
+View list of disks
 
     # /etc/init.d/oracleasm listdisks
     ASMDISK1
@@ -93,7 +91,7 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     ASMDISK6
     ASMDISK7
 
-Или так
+Or like this
 
     # ls /dev/oracleasm/disks/
     ASMDISK1  ASMDISK2  ASMDISK3  ASMDISK4  ASMDISK5  ASMDISK6  ASMDISK7
@@ -107,7 +105,7 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 
 </table>
 
-Нужно убедиться что диски подмонтированы на всех узлах кластера. И при вводе следующей команды, возвращают следующие данные на обоих узлах.
+You need to make sure that the disks are mounted on all cluster nodes. And when entering the following command, it returns the following data on both nodes.
 
     # oracleasm listdisks
     ASMDISK1
@@ -118,21 +116,21 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     ASMDISK6
     ASMDISK7
 
-Если используется Device Mapper то:
+If using Device Mapper:
 
     # oracleasm scandisks
     # oracleasm listdisks
 
 ---
 
-Если используются правила Udev то, нужно явно указать, где лежат эти самые диски:
+If using Udev rules, you need to explicitly specify where these disks are located:
 
     # oracleasm scandisks /dev/mapper/iscsi-disk* --verbose
     # oracleasm listdisks
 
-Я пока не нашел способа, как настроить сканирование дисков без доп параметров. Скорее всего это явно прописывается в файле /etc/sysconfig/oracleasm. Но мне пока не удалось добиться нужно результата.
+I have not yet found a way to configure disk scanning without additional parameters. This is most likely explicitly specified in the /etc/sysconfig/oracleasm file. But I have not yet been able to achieve the desired result.
 
-Поэтому, дополнительно прописываю в cron задание, которое должно быть выполнено при перезагрузке.
+Therefore, I additionally add a cron job that should be executed at reboot.
 
 ---
 
@@ -154,7 +152,7 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 <br/><br/>
 
 <span style="font-size: 20px; text-align: left; line-height: 130%; font-family: Arial,Helvetica,sans-serif; color: rgb(153, 0, 0);">
-<strong>Проверка правильности приоритера старта пакетов</strong></span>
+<strong>Checking package startup order correctness</strong></span>
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 
@@ -167,7 +165,7 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 
     # cd /etc/rc3.d
 
-например:
+for example:
 
     S60iscsi
     S65iscsid
@@ -179,13 +177,13 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 
 <br/>
 
-### Дополнительно для информации
+### Additional information
 
     # /etc/init.d/oracleasm querydisk -p ASMDISK1
     Disk "ASMDISK1" is a valid ASM disk
     /dev/mapper/asm-disk1: LABEL="ASMDISK1" TYPE="oracleasm"
 
-Посмотреть конфиг
+View config
 
     # /usr/sbin/oracleasm configure
     ORACLEASM_ENABLED=true
@@ -196,11 +194,11 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     ORACLEASM_SCANEXCLUDE=""
     ORACLEASM_USE_LOGICAL_BLOCK_SIZE="false"
 
-Конфиг в текстовом формате
+Config in text format
 
     # vi /etc/sysconfig/oracleasm
 
-Файл логов
+Log file
 
     # less /var/log/oracleasm
 

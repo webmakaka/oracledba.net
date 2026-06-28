@@ -1,13 +1,12 @@
 ---
 layout: page
-title: Oracle RAC 12.1 ISCSI + ASM - Копирование дистрибутивов базы данных на сервер
+title: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Copying database distributives to the server
+description: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Copying database distributives to the server
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, (ISCSI + ASM)
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/copy-oracle-distrib-on-server/
 ---
 
-
-# [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Копирование дистрибутивов базы данных на сервер
-
-
+# [Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM)]: Copying database distributives to the server
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 	<tr>
@@ -16,32 +15,26 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 	</tr>
 </table>
 
+<br/>
 
+Log in as the user who will perform the database installation.
+
+    # su - oracle12
+
+Copy the Oracle distributives to the temporary directory /tmp/oracle/12.1/
+
+    $ cd /tmp/oracle/12.1/
 
 <br/>
 
+    $ ls
+    linuxamd64_12102_database_1of2.zip  linuxamd64_12102_grid_1of2.zip
+    linuxamd64_12102_database_2of2.zip  linuxamd64_12102_grid_2of2.zip
 
-Войдите в систему пользователем, от имени которого будет будет происходить инсталляция базы данных.
+Unzip Grid
 
-	# su - oracle12
+    $ unzip linuxamd64_12102_grid_1of2.zip; unzip linuxamd64_12102_grid_2of2.zip
 
+Unzip DataBase
 
-Скопируйте дистрибутивы Oracle во временный каталог /tmp/oracle/12.1/
-
-	$ cd /tmp/oracle/12.1/
-
-<br/>
-
-	$ ls
-	linuxamd64_12102_database_1of2.zip  linuxamd64_12102_grid_1of2.zip
-	linuxamd64_12102_database_2of2.zip  linuxamd64_12102_grid_2of2.zip
-
-
-Разархивируем Grid
-
-	$ unzip linuxamd64_12102_grid_1of2.zip; unzip linuxamd64_12102_grid_2of2.zip
-
-
-Разархивируем DataBase
-
-	$ unzip linuxamd64_12102_database_1of2.zip; unzip linuxamd64_12102_database_2of2.zip
+    $ unzip linuxamd64_12102_database_1of2.zip; unzip linuxamd64_12102_database_2of2.zip

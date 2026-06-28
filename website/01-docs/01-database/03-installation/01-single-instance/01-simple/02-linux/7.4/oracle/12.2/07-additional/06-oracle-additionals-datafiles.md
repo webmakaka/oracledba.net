@@ -1,105 +1,77 @@
 ---
 layout: page
-title: Oracle DataBase 12.2 - Oracle Linux 7.4 - Расширение табличных пространств (создание дополнительных файлов для табличных пространств)
+title: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Extending Tablespaces (Creating Additional Files for Tablespaces)
+description: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Extending Tablespaces (Creating Additional Files for Tablespaces)
+keywords: Oracle DataBase 12.2, Oracle Linux 7.4, tablespaces
 permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-additionals-datafiles/
 ---
 
 <br/>
 
-<div style="padding:10px; border:thin solid black;">
-
-	<h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
-
-    <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
-
-</div>
+# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Oracle DataBase Server 12.2 Installation on Oracle Linux 7.4]</a>: Extending Tablespaces (Creating Additional Files for Tablespaces)
 
 <br/>
 
-# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Инсталляция Oracle DataBase Server 12.2 в Oracle Linux 7.4]</a>: Расширение табличных пространств (создание дополнительных файлов для табличных пространств)
+    $ sqlplus / as sysdba
 
+View which database files are used by the database and where they are located:
 
-<br/>
-
-	$ sqlplus / as sysdba
-
-
-Посмотреть какие файлы базы данных используются базой данных и где они расположены:
-
-
-	SQL> set linesize 200;
-	SQL> set pagesize 0;
-	SQL> col name format a40;
-	SQL> SELECT file#, name, status
-	FROM v$datafile;
-
+    SQL> set linesize 200;
+    SQL> set pagesize 0;
+    SQL> col name format a40;
+    SQL> SELECT file#, name, status
+    FROM v$datafile;
 
 <br/>
 
-**1) Создание нового табличное пространство для индексов и данных:**
+**1) Creating a new tablespace for indexes and data:**
 
+    SQL> CREATE TABLESPACE "MY_DATA"
+    DATAFILE '/u02/oracle/oradata/12.2/orcl12/DATAFILE/data/my_data01.dbf' SIZE 2G AUTOEXTEND OFF;
 
-	SQL> CREATE TABLESPACE "MY_DATA"
-	DATAFILE '/u02/oracle/oradata/12.2/orcl12/DATAFILE/data/my_data01.dbf' SIZE 2G AUTOEXTEND OFF;
+If necessary, you can add additional space for data (when such a need arises) with the following commands:
 
-
-При необходимости, можно добавить дополнительное место для данных (когда будет такая необходимость) следующими командами:
-
-
-	SQL> ALTER TABLESPACE “MY_DATA”
-	ADD DATAFILE  '/u02/oracle/oradata/12.2/orcl12/DATAFILE/data/my_data02.dbf' SIZE 2G AUTOEXTEND OFF;
+    SQL> ALTER TABLESPACE "MY_DATA"
+    ADD DATAFILE  '/u02/oracle/oradata/12.2/orcl12/DATAFILE/data/my_data02.dbf' SIZE 2G AUTOEXTEND OFF;
 
 <br/>
 
-	SQL> CREATE TABLESPACE "MY_INDEXES"
-	DATAFILE '/u02/oracle/oradata/12.2/orcl12/DATAFILE/indexes/my_indexes01.dbf' SIZE 2G AUTOEXTEND OFF;
+    SQL> CREATE TABLESPACE "MY_INDEXES"
+    DATAFILE '/u02/oracle/oradata/12.2/orcl12/DATAFILE/indexes/my_indexes01.dbf' SIZE 2G AUTOEXTEND OFF;
 
-
-При необходимости, можно добавить дополнительное место для индексов (когда будет такая необходимость) следующими командами:
-
+If necessary, you can add additional space for indexes (when such a need arises) with the following commands:
 
 <br/>
 
-	SQL> ALTER TABLESPACE “MY_INDEXES”
-	ADD DATAFILE  '/u02/oracle/oradata/12.2/orcl12/DATAFILE/indexes/my_indexes02.dbf' SIZE 2G AUTOEXTEND OFF;
-
-
-<br/>
-
-**2) Иногда, нужно создать дополнительное табличное пространство для табличного пространства отмены (undo).**
-
-
-	SQL> CREATE undo tablespace "UNDO" datafile '/u02/oracle/oradata/12.2/orcl12/DATAFILE/undo/undo01.dbf' size 1G autoextend off;
-
-
-Определяю созданное табличное пространство, как пространство по умолчанию
-
-	SQL> ALTER SYSTEM SET UNDO_TABLESPACE = "UNDO";
-
-
-
-Удаляю старое табличное пространство
-
-
-	SQL> drop tablespace UNDOTBS1;
-
+    SQL> ALTER TABLESPACE "MY_INDEXES"
+    ADD DATAFILE  '/u02/oracle/oradata/12.2/orcl12/DATAFILE/indexes/my_indexes02.dbf' SIZE 2G AUTOEXTEND OFF;
 
 <br/>
 
-**3) Создать новое табличное пространство для временных данных.**
+**2) Sometimes you need to create an additional undo tablespace.**
 
+    SQL> CREATE undo tablespace "UNDO" datafile '/u02/oracle/oradata/12.2/orcl12/DATAFILE/undo/undo01.dbf' size 1G autoextend off;
 
-	SQL> CREATE TEMPORARY TABLESPACE "MY_TEMP"
-	TEMPFILE '/u02/oracle/oradata/12.2/orcl12/DATAFILE/temp/my_temp01.dbf' SIZE 2G AUTOEXTEND OFF;
+Set the created tablespace as the default tablespace
 
+    SQL> ALTER SYSTEM SET UNDO_TABLESPACE = "UNDO";
 
-Добавить дополнительный файл для временных табличных пространств.
+Delete the old tablespace
 
-
-	SQL> ALTER TABLESPACE “MY_TEMP”
-	ADD TEMPFILE '/u02/oracle/oradata/12.2/orcl12/DATAFILE/temp/my_temp02.dbf' SIZE 2G AUTOEXTEND OFF;
-
+    SQL> drop tablespace UNDOTBS1;
 
 <br/>
 
-	SQL> quit
+**3) Create a new temporary tablespace.**
+
+    SQL> CREATE TEMPORARY TABLESPACE "MY_TEMP"
+    TEMPFILE '/u02/oracle/oradata/12.2/orcl12/DATAFILE/temp/my_temp01.dbf' SIZE 2G AUTOEXTEND OFF;
+
+Add an additional file for temporary tablespaces.
+
+    SQL> ALTER TABLESPACE "MY_TEMP"
+    ADD TEMPFILE '/u02/oracle/oradata/12.2/orcl12/DATAFILE/temp/my_temp02.dbf' SIZE 2G AUTOEXTEND OFF;
+
+<br/>
+
+    SQL> quit

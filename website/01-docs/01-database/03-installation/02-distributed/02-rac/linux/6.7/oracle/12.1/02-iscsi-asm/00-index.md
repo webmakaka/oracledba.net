@@ -1,141 +1,138 @@
 ---
 layout: page
-title: Oracle RAC 12.1 ISCSI + ASM
+title: Oracle RAC 12.1 Installation on Oracle Linux 6.7 x86_64 (ISCSI + ASM)
+description: Oracle RAC 12.1 Installation on Oracle Linux 6.7 x86_64 (ISCSI + ASM)
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, (ISCSI + ASM)
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/
 ---
 
-# Инсталляция Oracle RAC 12.1 (ISCSI + ASM) в операционной системе Oracle Linux 6.7
+# Oracle RAC 12.1 Installation on Oracle Linux 6.7 x86_64 (ISCSI + ASM)
 
-<br/>
+This document describes one of the methods for installing an Oracle database on Oracle Linux in a Real Application Cluster (RAC) configuration.
 
-В документе описывается один из способов инсталляции базы данных Oracle в операционной системе Oracle Linux в конфигурации Real Application Cluster (RAC).
+If I understood correctly. OCR and Voting Disk now need to be stored on ASM disks either local or from storage. I.e., OCFS2 file systems no longer need to be configured for storing this data.
 
-Если я все правильно понял. То OCR и Voting Disk теперь нужно хранить на ASM дисках либо локальных, либо от storage. Т.е. файловые системы OCFS2, для хранения этих данных больше настраивать не нужно.
-
-В случае обнаружения ошибок, неточностей, опечаток или Вам известны лучшие способы, пишите мне адрес эл. почты:
-
-<div>
-	<img src="/img/a3333333mail.gif" alt="Marley" border="0">
-</div>
+If you find errors, inaccuracies, typos, or you know better methods, <a href="/chat/">write to the chat or email</a>.
 
 <br/><br/>
 
-## Документация:
+## Documentation:
 
 <ul>
-	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/docs/">Официальная документация</a></li>
+	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/docs/">Official documentation</a></li>
 </ul>
 
 <br/><br/>
 
-## Описание окружения для инсталляции Oracle RAC:
+## Environment description for Oracle RAC installation:
 
 <ul>
-	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/environment-description/">Описание окружения для инсталляции Oracle RAC</a></li>
+	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/environment-description/">Environment description for Oracle RAC installation</a></li>
 </ul>
 
 <br/><br/>
 
-<h2>Дистрибутивы:</h2>
+<h2>Distributives:</h2>
 
 <ul>
-	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/distrib/">Дистрибутивы баз данных и дополнительное программное обеспечение</a></li>
+	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/distrib/">Database distributives and additional software</a></li>
 </ul>
 
 <br/>
 
-### Конфиги виртуальных машин virtualbox:
+### Virtualbox machine configs:
 
 <ul>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/vm/">Конфиги виртуальных машин virtualbox</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/vm/">Virtualbox machine configs</a></li>
 
 </ul>
 
 <br/>
 
-### Подготовка окружения для инсталляции RAC:
+### Environment preparation for RAC installation:
 
 <ul>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/network-interfaces/">Настройка сетевых интерфейсов и файл hosts</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/network-interfaces/">Network interface configuration and hosts file</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-os-parameters-before-begin/">Предварительные настройки</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-os-parameters-before-begin/">Pre-configuration settings</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-dns-server/">Настройка DNS сервера</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-dns-server/">DNS server setup</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/install-mandatory-packages/">Инсталляция обязательных пакетов</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/install-mandatory-packages/">Installation of mandatory packages</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/autostart-only-packages-what-needed/">Выбор пакетов для автозапуска</a> (Необязательный шаг, можно пропустить)</li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/autostart-only-packages-what-needed/">Selecting packages for autostart</a> (Optional step, can be skipped)</li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-actual-time/">Настройка сервисов отвечающих за синхронизацию времени</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-actual-time/">Configuration of time synchronization services</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/users-and-groups-creation/">Создание пользователя oracle12 и административных групп</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/users-and-groups-creation/">Creating oracle12 user and administrative groups</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/secure-shell-between-nodes/">Настройка Secure Shell между узлами кластера</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/secure-shell-between-nodes/">Secure Shell configuration between cluster nodes</a></li>
 
 </ul>
 
 <br/>
 
-### Подготовка дисковой подсистемы создаваемого RAC:
+### Preparing disk subsystem for the RAC being created:
 
 <ul>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/asmlib-installation/">Инсталляция ASMLIB на узлах кластера</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/asmlib-installation/">ASMLIB installation on cluster nodes</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/prepare-storage/">Подготовка сервера storage (ISCSI)</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/prepare-storage/">Storage server preparation (ISCSI)</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/prepare-hdd-to-install-oracle/">Подготовка локальных дисков на узлах кластера для инсталляции на них Oracle Database Software</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/prepare-hdd-to-install-oracle/">Preparing local disks on cluster nodes for Oracle Database Software installation</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/mount-iscsi-on-nodes/">Монтирование SCSI дисков на узлах кластера</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/mount-iscsi-on-nodes/">Mounting SCSI disks on cluster nodes</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-mounting-rules-by-device-mapper/">[Вариант 1] Настройка правил монтирования SCSI дисков на узлах кластера с помощью Device Mapper</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-mounting-rules-by-device-mapper/">[Option 1] Configuring SCSI disk mounting rules on cluster nodes using Device Mapper</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-mounting-rules-by-uder-rules/">[Вариант 2] Настройка правил монтирования SCSI дисков на узлах кластера с помощью правил Udev</a> (Если выполнен предыдущий шаг, этот выполнять не нужно)</li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-mounting-rules-by-uder-rules/">[Option 2] Configuring SCSI disk mounting rules on cluster nodes using Udev rules</a> (If the previous step was completed, this one is not needed)</li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/prepare-asm-discs/">Настройка ASM на узлах кластера, маркировка дисков как ASM</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/prepare-asm-discs/">Configuring ASM on cluster nodes, labeling disks as ASM</a></li>
 
 </ul>
 
 <br/>
 
-### Заключительные шаги по конфигурированию и проверка готовности подготовленного окружения к инсталляции RAC:
+### Final configuration steps and checking prepared environment readiness for RAC installation:
 
 <ul>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/create-folder-structure-and-user-permissions/">Создание структуры каталогов и назначение необходимых прав</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/create-folder-structure-and-user-permissions/">Creating directory structure and assigning necessary permissions</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/copy-oracle-distrib-on-server/">Копирование дистрибутивов базы данных на сервер</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/copy-oracle-distrib-on-server/">Copying database distributives to the server</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/configure-kernel-parameters-and-user-environments/">Изменение параметров ядра и параметров учетной записи администратора базы данных</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/configure-kernel-parameters-and-user-environments/">Modifying kernel parameters and database administrator account parameters</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/check-environment-before-install/">Проверка конфигурации кластера перед инсталляцией RAC</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/check-environment-before-install/">Checking cluster configuration before RAC installation</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/check-display-manager/">Проверка работы Display Manager на компьютере с GUI</a></li>
+
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/check-display-manager/">Checking Display Manager operation on the GUI computer</a></li>
 
 </ul>
 
 <br/><br/>
 
-## Инсталляция RAC и создание экземпляров баз данных:
+## RAC installation and database instance creation:
 
 <ul>
-	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/grid-installation/">Инсталляция Grid</a></li>
+	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/grid-installation/">Grid installation</a></li>
 
-    <li><a href="/database/installation/single/asm/linux/6.7/oracle/12.1/asm-disk-groups-creation/">Создание ASM дисковых групп</a></li>
+    <li><a href="/database/installation/single/asm/linux/6.7/oracle/12.1/asm-disk-groups-creation/">Creating ASM disk groups</a></li>
 
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/oracle-database-software-installation/">Инсталляция Oracle Database Software</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/oracle-database-software-installation/">Oracle Database Software installation</a></li>
 
-    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/oracle-instance-creation/">Создание экземпляра (instance) базы данных</a></li>
+    <li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/oracle-instance-creation/">Creating a database instance</a></li>
 
 </ul>
 
 <br/><br/>
 
-## Шаги, выполняемые после развертывания RAC:
+## Steps performed after RAC deployment:
 
 <ul>
-	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/post-installation-tasks/">После инсталляции</a></li>
+	<li><a href="/database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/post-installation-tasks/">Post-installation tasks</a></li>
 </ul>

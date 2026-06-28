@@ -1,15 +1,14 @@
 ---
 layout: page
-title: Oracle RAC 12.1 ISCSI + ASM - Настройка правил монтирования SCSI дисков на узлах кластера с помощью правил Udev
+title: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Configuring SCSI disk mounting rules on cluster nodes using Udev rules
+description: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Configuring SCSI disk mounting rules on cluster nodes using Udev rules
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, (ISCSI + ASM)
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/setup-mounting-rules-by-uder-rules/
 ---
 
-# [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Настройка правил монтирования SCSI дисков на узлах кластера с помощью правил Udev
+# [Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM)]: Configuring SCSI disk mounting rules on cluster nodes using Udev rules
 
-
-
-### Вариант монтирования дисков с помощью udev правил
-
+### Option for mounting disks using udev rules
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 
@@ -20,99 +19,88 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 
 </table>
 
-
-	# yum install -y \
-	parted
-
-<br/>
-
-	# fdisk /dev/sdc
-	# fdisk /dev/sdd
-	# fdisk /dev/sde
-	# fdisk /dev/sdf
-	# fdisk /dev/sdg
-	# fdisk /dev/sdh
-	# fdisk /dev/sdi
+    # yum install -y \
+    parted
 
 <br/>
 
-	# partprobe /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1 /dev/sdg1 /dev/sdh1 /dev/sdi1
+    # fdisk /dev/sdc
+    # fdisk /dev/sdd
+    # fdisk /dev/sde
+    # fdisk /dev/sdf
+    # fdisk /dev/sdg
+    # fdisk /dev/sdh
+    # fdisk /dev/sdi
 
 <br/>
 
-	# /sbin/udevadm test /block/sdc/sdc1
-	# /sbin/udevadm test /block/sdd/sdd1
-	# /sbin/udevadm test /block/sde/sde1
-	# /sbin/udevadm test /block/sdf/sdf1
-	# /sbin/udevadm test /block/sdg/sdg1
-	# /sbin/udevadm test /block/sdh/sdh1
-	# /sbin/udevadm test /block/sdi/sdi1
-
+    # partprobe /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1 /dev/sdg1 /dev/sdh1 /dev/sdi1
 
 <br/>
 
-### Создание файла с правилами Udev
-
-	# echo "options=-g" > /etc/scsi_id.config
-
-
-**Следующую команду выполняю на rac1**
-
-
-
-	i=1
-	cmd="/sbin/scsi_id -g -u -d"
-	for disk in sdc sdd sde sdf sdg sdh sdi ; do
-	         cat <<EOF >> /etc/udev/rules.d/99-oracle-asmdevices.rules
-	KERNEL=="sd?1", BUS=="scsi", PROGRAM=="$cmd /dev/\$parent", \
-	 RESULT=="`$cmd /dev/$disk`", NAME="iscsi-disk$i", OWNER="oracle12", GROUP="asmadmin", MODE="0660", SYMLINK+="mapper/iscsi-disk$i"
-	EOF
-	         i=$(($i+1))
-	done
-
+    # /sbin/udevadm test /block/sdc/sdc1
+    # /sbin/udevadm test /block/sdd/sdd1
+    # /sbin/udevadm test /block/sde/sde1
+    # /sbin/udevadm test /block/sdf/sdf1
+    # /sbin/udevadm test /block/sdg/sdg1
+    # /sbin/udevadm test /block/sdh/sdh1
+    # /sbin/udevadm test /block/sdi/sdi1
 
 <br/>
 
-	# scp /etc/udev/rules.d/99-oracle-asmdevices.rules root@rac2:/etc/udev/rules.d/99-oracle-asmdevices.rules
+### Creating the Udev rules file
 
+    # echo "options=-g" > /etc/scsi_id.config
 
-Перезагрузка правил Udev
+**Execute the following command on rac1**
 
-	# /sbin/udevadm control --reload-rules
-	# /sbin/start_udev
-
+    i=1
+    cmd="/sbin/scsi_id -g -u -d"
+    for disk in sdc sdd sde sdf sdg sdh sdi ; do
+             cat <<EOF >> /etc/udev/rules.d/99-oracle-asmdevices.rules
+    KERNEL=="sd?1", BUS=="scsi", PROGRAM=="$cmd /dev/\$parent", \
+     RESULT=="`$cmd /dev/$disk`", NAME="iscsi-disk$i", OWNER="oracle12", GROUP="asmadmin", MODE="0660", SYMLINK+="mapper/iscsi-disk$i"
+    EOF
+             i=$(($i+1))
+    done
 
 <br/>
 
+    # scp /etc/udev/rules.d/99-oracle-asmdevices.rules root@rac2:/etc/udev/rules.d/99-oracle-asmdevices.rules
 
-	# ls /dev/mapper/iscsi*
-	/dev/mapper/iscsi-disk1  /dev/mapper/iscsi-disk4  /dev/mapper/iscsi-disk7
-	/dev/mapper/iscsi-disk2  /dev/mapper/iscsi-disk5
-	/dev/mapper/iscsi-disk3  /dev/mapper/iscsi-disk6
+Reload Udev rules
 
+    # /sbin/udevadm control --reload-rules
+    # /sbin/start_udev
 
-Проверить можно следующей командой на rac1 и rac2, что диски правильно подмонтировались.
+<br/>
 
-	# ls -l /dev/disk/by-id/
+    # ls /dev/mapper/iscsi*
+    /dev/mapper/iscsi-disk1  /dev/mapper/iscsi-disk4  /dev/mapper/iscsi-disk7
+    /dev/mapper/iscsi-disk2  /dev/mapper/iscsi-disk5
+    /dev/mapper/iscsi-disk3  /dev/mapper/iscsi-disk6
 
+You can check with the following command on rac1 and rac2 that the disks are mounted correctly.
+
+    # ls -l /dev/disk/by-id/
 
 <!--
 
 
-Почитать здесь:
+Read here:
 
 http://www.linuxtopia.org/online_books/rhel6/rhel_6_virtualization/rhel_6_virtualization_sect-Virtualization-Virtualized_block_devices-Configuring_persistent_storage_in_Red_Hat_Enterprise_Linux_5.html
 
 
 
-РАБОТАЕТ, ПОЭТОМУ И НЕ УДАЛИЛ.
+IT WORKS, THAT'S WHY I DIDN'T DELETE IT.
 
 
 Make SCSI Devices Trusted
 
 	# vi /etc/scsi_id.config
 
-Добавить:
+Add:
 
 	options=--whitelisted --replace-whitespace
 
@@ -159,7 +147,7 @@ Restart UDEV Service
 	# udevadm control --reload-rules
 	# /sbin/start_udev
 
-Результат:
+Result:
 
 	# ls /dev/asm*
 	/dev/asm-disk1  /dev/asm-disk3  /dev/asm-disk5  /dev/asm-disk7

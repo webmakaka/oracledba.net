@@ -1,11 +1,12 @@
 ---
 layout: page
-title: Oracle RAC 12.1 ISCSI + ASM - Конфиги виртуальных машин для storage
+title: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Virtualbox machine configs for storage
+description: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Virtualbox machine configs for storage
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, (ISCSI + ASM)
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/vm/storage/
 ---
 
-# [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Конфиги виртуальных машин для storage
-
+# [Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM)]: Virtualbox machine configs for storage
 
     # su - vmadm
 
@@ -13,13 +14,11 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 
     $ vm=vm_oel_storage
 
-
-Создаем каталоги для виртуальной машины  и для snapshots
+Create directories for the virtual machine and for snapshots
 
     $ mkdir -p ${VM_HOME}/${vm}/snapshots
 
-
-### Создание и регистрация виртуальной машины:
+### Creating and registering the virtual machine:
 
     $ VBoxManage createvm \
     --name ${vm} \
@@ -27,66 +26,51 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     --basefolder ${VM_HOME}/${vm} \
     --register
 
-
-
-### Устанавливаем планку оперативной памяти:
-
+### Setting the RAM limit:
 
     $ VBoxManage modifyvm ${vm} --memory 512
 
-
-### Подключаю видеокарту на 32 MB:
-
+### Connect video card with 32 MB:
 
     $ VBoxManage modifyvm ${vm} --vram 32
 
-
-### Снимаю sound карту, вытаскиваем дисковвод:
+### Remove sound card, remove floppy drive:
 
     $ VBoxManage modifyvm ${vm} --floppy disabled --audio none
 
-
-### Подключаю контроллер жестких дисков (SAS):
-
+### Connect hard disk controller (SAS):
 
     $ VBoxManage storagectl ${vm} \
     --add sas \
     --name "SAS Controller"
 
+### Creating and connecting hard disks:
 
-### Создание и подключение жестких дисков:
-
-
-Создаю виртуальные жесткие диски. Размер (size), рекомендуется задавать согласно имеющихся ресурсов. Иначе возможны проблемы и крах виртуальной машины):
+Create virtual hard disks. The size is recommended to be set according to available resources. Otherwise, problems and virtual machine crashes may occur):
 
     $ cd ${VM_HOME}/${vm}/${vm}
 
-Создать 8 дисков 1 командой:
+Create 8 disks with 1 command:
 
     $ for i in $(seq 1 8 )
     do VBoxManage createhd --filename ${vm}_dsk_dsk$i.vdi --size 40960 --format VDI --variant Standard
     done
 
+### Connect disks to the SAS controller:
 
-### Подключаю диски к SAS контроллеру:
-
-Подключить 8 дисков 1 командой:
+Connect 8 disks with 1 command:
 
     $ for i in $(seq 1 8 )
     do let port=$i-1; VBoxManage storageattach ${vm} --storagectl "SAS Controller" --port $port --type hdd --medium ${vm}_dsk_dsk$i.vdi
     done
 
-
-### Подключаю IDE контроллер к которому будет позднее подключен DVD-ROM:
-
+### Connect the IDE controller to which the DVD-ROM will later be connected:
 
     $ VBoxManage storagectl ${vm} \
     --add ide \
     --name "IDE Controller"
 
-
-### Подключаю к IDE контроллеру DVD образ инсталлируемой операционной системы:
-
+### Connect the DVD image of the operating system being installed to the IDE controller:
 
     $ VBoxManage storageattach ${vm} \
     --storagectl "IDE Controller" \
@@ -95,9 +79,7 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     --type dvddrive \
     --medium  /home/marley/Downloads/OracleLinux6U7/x64/OracleLinux-R6-U7-Server-x86_64-dvd.iso
 
-
-### Подключение сетевых интерфейсов:
-
+### Connecting network interfaces:
 
     $ VBoxManage modifyvm ${vm} \
     --nictype1 82540EM \
@@ -109,27 +91,20 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     --nic2 bridged \
     --bridgeadapter2 eth0
 
-
 <br/>
 
-### Определяем порядок устройств, с которых будет произведена попытка стартовать систему:
-
+### Determine the boot device order:
 
     $ VBoxManage modifyvm ${vm} \
     --boot1 disk \
     --boot2 dvd
 
-
-### Определяем каталог для снапшотов:
-
+### Determine the snapshot directory:
 
     $ VBoxManage modifyvm ${vm} \
     --snapshotfolder ${VM_HOME}/${vm}/snapshots
 
-
-
-### Предоставим возможность подключения к машине по RDP:
-
+### Allow RDP connection to the machine:
 
     $ VBoxManage modifyvm ${vm} \
     --vrde on \
@@ -138,24 +113,18 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
     --vrdeaddress 192.168.1.5 \
     --vrdeport 3389
 
-
-
-### Показать результат созданнойвиртуальной машины:
-
+### Show the created virtual machine result:
 
     $ VBoxManage showvminfo ${vm}
 
+<br/>
+
+## VIRTUAL MACHINE IS READY FOR OPERATING SYSTEM INSTALLATION
 
 <br/>
 
-## ВИРТУАЛЬНАЯ МАШИНА ГОТОВА ДЛЯ ИНСТАЛЛЯЦИИ ОПЕРАЦИОННОЙ СИСТЕМЫ
-
-<br/>
-
-### Стартуем виртуальную машину с возможностью подключения по RDP:
-
+### Start the virtual machine with RDP connection capability:
 
     $ VBoxHeadless --startvm ${vm}
 
-
-Устанавливать операционную следует на 1 диск.
+Install the operating system on 1 disk.

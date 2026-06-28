@@ -1,93 +1,78 @@
 ---
 layout: page
-title: Oracle DataBase 12.2 - Oracle Linux 7.4 - Дистрибутивы и дополнительное ПО
+title: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Distributions and Additional Software
+description: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Distributions and Additional Software
+keywords: Oracle DataBase 12.2, Oracle Linux 7.4, Distributions
 permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/distrib/
 ---
 
 <br/>
 
-<div style="padding:10px; border:thin solid black;">
-
-	<h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
-
-    <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
-
-</div>
+# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Oracle DataBase Server 12.2 Installation on Oracle Linux 7.4]</a>: Distributions and Additional Software
 
 <br/>
 
-# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Инсталляция Oracle DataBase Server 12.2 в Oracle Linux 7.4]</a>: Дистрибутивы и дополнительное ПО
+The latest versions of Oracle DB and critical patch updates are available to commercial subscribers with an active technical support contract. If you have a support contract, you can download database distributions directly from support.oracle.com.
+
+If you don't have a contract, simply registering on the Oracle website will not be enough to download the latest versions, even for study purposes.
+
+There are no activation keys required. For development, distributions can be used for free, but for their intended use (production), a license must be purchased.
 
 <br/>
 
-Последние версии БД Oracle и пакеты критических исправлений доступны коммерческим подписчикам  с активным контрактом на техническую поддержку. Если у вас есть контракт на техподдержку, вы можете скачать дистрибутивы базы данных непосредственно с сайта support.oracle.com.
-
-
-Если контракта у вас нет, простой регистрации на сайте Oracle будет недостаточно, чтобы скачать последние версии даже для изучения.
-
-
-Каких-либо ключей для активации нет. Для разработки (development) дистрибутивы можно использовать бесплатно, но для использования по основному их назначению (production), требуется приобрести лицензию.
-
-<br/>
-
-### Программное обеспечение:
+### Software:
 
 <strong>VirtualBox:</strong><br/>
 http://www.virtualbox.org/wiki/Downloads
 
 <br/>
 
-<strong>Дистрибутивы операционной системы Oracle Linux Server 7 Update 4 (x86_x64):</strong><br/>
+<strong>Oracle Linux Server 7 Update 4 (x86_x64) distributions:</strong><br/>
 http://linux.oracle.com
 
-<strong>Резервный источники для скачивания:</strong><br/>
+<strong>Backup download sources:</strong><br/>
 hxxp://rutracker.org/forum/viewtopic.php?t=4603407
 
 <br/>
 
-<strong>Дистрибутивы базы данных Oracle (12.1) Linux x64:</strong><br/>
+<strong>Oracle Database (12.1) Linux x64 distributions:</strong><br/>
 http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html
 
-
-<strong>Резервный источники для скачивания:</strong><br/>
+<strong>Backup download sources:</strong><br/>
 hxxp://rutracker.org/forum/viewtopic.php?p=65149195#65149195
 
-
-
-Для инсталляции достаточно:<br/>
+For installation, the following are sufficient:<br/>
 
 linuxamd64_12c_database_1of2.zip<br/>
 linuxamd64_12c_database_2of2.zip
 
-
 <br/>
 
-### Если компьютер с которого происходит управление инсталляцией под Windows:
+### If the computer from which the installation is managed runs Windows:
 
-<strong>Putty (SSH Клиент):</strong><br/>
+<strong>Putty (SSH Client):</strong><br/>
 http://www.putty.org/
 
 <br/>
 
-<strong>XMing (Для отображения графических окон в процессе инсталляции)</strong> (необходимо установить XMing, дополнительные шрифты и перезагрузить компьютер):<br/>
+<strong>XMing (For displaying graphical windows during installation)</strong> (need to install XMing, additional fonts, and restart the computer):<br/>
 http://sourceforge.net/projects/xming/<br/>
 http://sourceforge.net/projects/xming/files/Xming-fonts/
 
 <br/><br/>
 
-<p>Далее, необходимо настроить правила доступа.<br />
-В самом простом варианте, правой кнопкой мыши по ярлыку xming. Зайти в свойства и в target дописать -ac (т.е. без контроля доступа)</p>
+<p>Next, configure access rules.<br />
+In the simplest case, right-click on the xming shortcut. Go to properties and add -ac to the target (i.e., no access control)</p>
 
 <p><img src="https://img.oracledba.net/img/oracle/database/simple/12.1/XMing.png" border="0" alt="XMing" /></p>
 
 <br/><br/>
 
-<strong>winscp (Для копирования файлов на сервер):</strong><br/>
+<strong>winscp (For copying files to the server):</strong><br/>
 http://winscp.net/eng/download.php
-
 
 <br/>
 
-### Если компьютер с которого происходит управление инсталляцией под Linux:
+### If the computer from which the installation is managed runs Linux:
 
-Все уже есть
+Everything is already there

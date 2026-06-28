@@ -1,24 +1,22 @@
 ---
 layout: page
-title: Oracle RAC 12.1 SHARED FILE SYSTEM - Настройка Secure Shell между узлами кластера
+title: Oracle RAC 12.1 SHARED FILE SYSTEM - Setting up Secure Shell between cluster nodes
+description: Oracle RAC 12.1 SHARED FILE SYSTEM - Setting up Secure Shell between cluster nodes
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, SHARED FILE SYSTEM
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-file-system/secure-shell-between-nodes/
 ---
 
-# [Инсталляция Oracle RAC 12.1 SHARED FILE SYSTEM]: Настройка Secure Shell между узлами кластера
-
+# [Oracle RAC 12.1 SHARED FILE SYSTEM Installation]: Setting up Secure Shell between cluster nodes
 
 <br/>
 
-Необходимо, чтобы узлы кластера могли обмениваться между собой по протоколу ssh.
-Когда устанавливается Oracle RAC, он устанавливается только на первую ноду,
-на все стальные он просто копируется.
+Cluster nodes must be able to communicate with each other via ssh.
+When Oracle RAC is installed, it is installed only on the first node,
+all others are just copied.
 
-
-### Настраиваем secure shell (ssh)
-
+### Setting up secure shell (ssh)
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
-
 
 <tr>
 <td style="color: rgb(255, 255, 255);" bgcolor="#386351" width="14%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>Server:</strong></span></td>
@@ -27,99 +25,94 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/shared-f
 
 </table>
 
-	# su - oracle12
+    # su - oracle12
 
 <br/>
 
-	$ mkdir ~/.ssh
-	$ chmod 700 ~/.ssh
+    $ mkdir ~/.ssh
+    $ chmod 700 ~/.ssh
 
+Create RSA-type public and private encryption keys. (Press Enter for all questions)
 
+    $ /usr/bin/ssh-keygen -t rsa
 
-Создаем RSA-type public и private encryption keys. (На все вопросы просто жмем Enter)
+Create DSA-type public and private encryption keys. (Press Enter for all questions)
 
-	$ /usr/bin/ssh-keygen -t rsa
-
-Создаем DSA-type public и private encryption keys.  (На все вопросы жмем Enter)
-
-	$ /usr/bin/ssh-keygen -t dsa
+    $ /usr/bin/ssh-keygen -t dsa
 
 <br/>
 
-	$ cd .ssh/
+    $ cd .ssh/
 
+Add the obtained keys to the authorized_keys file.
 
-Добавляем полученные ключи в файл authorized key.
-
-	$ cat id_rsa.pub >>authorized_keys
-	$ cat id_dsa.pub >>authorized_keys
-
-<br/>
-
-	$ ssh rac2 mkdir /home/oracle12/.ssh/
+    $ cat id_rsa.pub >>authorized_keys
+    $ cat id_dsa.pub >>authorized_keys
 
 <br/>
 
-	$ scp authorized_keys rac2:/home/oracle12/.ssh
+    $ ssh rac2 mkdir /home/oracle12/.ssh/
 
 <br/>
 
-	$ ssh rac2
-
-Повторяем процедуру генерации
-
-	$ /usr/bin/ssh-keygen -t rsa
-	$ /usr/bin/ssh-keygen -t dsa
+    $ scp authorized_keys rac2:/home/oracle12/.ssh
 
 <br/>
 
+    $ ssh rac2
 
-	$ cd ~/.ssh
-	$ cat id_rsa.pub >> authorized_keys
-	$ cat id_dsa.pub >> authorized_keys
+Repeat the generation procedure
 
-<br/>
-
-	$ chmod 644 authorized_keys
+    $ /usr/bin/ssh-keygen -t rsa
+    $ /usr/bin/ssh-keygen -t dsa
 
 <br/>
 
-	$ scp authorized_keys rac1:/home/oracle12/.ssh
+    $ cd ~/.ssh
+    $ cat id_rsa.pub >> authorized_keys
+    $ cat id_dsa.pub >> authorized_keys
 
 <br/>
 
-	$ ssh rac1
+    $ chmod 644 authorized_keys
 
 <br/>
 
-	$ exec /usr/bin/ssh-agent $SHELL
-	$ /usr/bin/ssh-add
-
-
-Проверяем, что все работает нормально. Необходимо постараться пройти все возможные варианты подключений между узлами без ввода учетных записей.
-
-	$ ssh rac1 date
-	$ ssh rac2 date
+    $ scp authorized_keys rac1:/home/oracle12/.ssh
 
 <br/>
 
-	$ ssh rac1.localdomain date
-	$ ssh rac2.localdomain date
+    $ ssh rac1
 
 <br/>
 
-	$ ssh rac2
+    $ exec /usr/bin/ssh-agent $SHELL
+    $ /usr/bin/ssh-add
+
+Check that everything is working correctly. Try to go through all possible connection options between nodes without entering credentials.
+
+    $ ssh rac1 date
+    $ ssh rac2 date
 
 <br/>
 
-	$ ssh rac1 date
-	$ ssh rac2 date
+    $ ssh rac1.localdomain date
+    $ ssh rac2.localdomain date
 
 <br/>
 
-	$ ssh rac1.localdomain date
-	$ ssh rac2.localdomain date
+    $ ssh rac2
 
 <br/>
 
-	$ ssh rac1
+    $ ssh rac1 date
+    $ ssh rac2 date
+
+<br/>
+
+    $ ssh rac1.localdomain date
+    $ ssh rac2.localdomain date
+
+<br/>
+
+    $ ssh rac1

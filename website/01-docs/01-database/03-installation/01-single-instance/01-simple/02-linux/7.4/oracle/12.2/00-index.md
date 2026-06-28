@@ -1,38 +1,30 @@
 ---
 layout: page
-title: Oracle DataBase 12.2 Installation in Oracle Linux 7.4
+title: Oracle DataBase 12.2 Installation on Oracle Linux 7.4
+description: Oracle DataBase 12.2 Installation on Oracle Linux 7.4
+keywords: Oracle DataBase 12.2, Oracle Linux 7.4, Installation
 permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/
 ---
 
 <br/>
 
-<div style="padding:10px; border:thin solid black;">
-
-    <h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
-
-    <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
-
-</div>
+# [Oracle DataBase 12.2 Installation on Oracle Linux 7.4]
 
 <br/>
 
-# [Oracle DataBase 12.2 Installation in Oracle Linux 7.4]
+### Last installed using this guide for test tasks on 24.11.2017. (Need to fix the material in kernel parameter settings.)
 
 <br/>
 
-В документе описывается один из способов инсталляции базы данных Oracle в операционной системе Oracle Linux.
+This document describes one way to install an Oracle database on the Oracle Linux operating system.
 
-Использовать его следует, если вы только приступаете к изучению основ администрирования баз данных Oracle. В случае необходимости использования в промышленной среде, необходимо обязательно обеспечить резервное копирование, мультиплексирование критичных для работы базы данных файлов и правильно настроить системные параметры.
+Use it if you are just starting to learn the basics of Oracle database administration. If you need to use it in a production environment, be sure to provide backup, multiplexing of critical database files and properly configure system parameters.
 
-В случае обнаружения ошибок, неточностей, опечаток или Вам известны лучшие способы, пишите мне адрес эл. почты:
-
-<div>
-	<img src="/img/a3333333mail.gif" alt="Marley" border="0">
-</div>
+If you find errors, inaccuracies, typos, or know better ways, <a href="/chat/">write to the chat or email address</a>.
 
 <br/>
 
-<strong>Самые последние версии (на момент написания):</strong>
+<strong>Latest versions (at the time of writing):</strong>
 
 <ul>
 	<li>Oracle Linux - 7.4</li>
@@ -41,131 +33,125 @@ permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/
 
 <br/>
 
-Инсталляция происходит на удаленный сервер без GUI.
+Installation is performed on a remote server without GUI.
 
-Управление процессом установки и настройки происходит с рабочей станции с помощью SSH клиента. В Windows это может быть Putty в linux стандартный Terminal.
-
-<br/>
-
-## Дистрибутивы:
-
-В этот раз дистрибутивы я взял с официального сайта Oracle. Это база данных и это oracle Linux.
-
-Oracle linux можно скачать на сайте linux.oracle.com. Обращаю внимани, что кликать нужно на кнопку "Download" а не пытаться залогиниться.
-Базу данных я скачал на сайте oracle.com будучи залогиненым пользователем. В новом интерфейсе сайта достаточно сложно найти что нужно.
+Management of the installation and configuration process is done from a workstation using an SSH client. On Windows it can be Putty, on Linux a standard Terminal.
 
 <br/>
 
-## Создание виртуальной машины VirtualBox для инсталляции базы данных:
+## Distributions:
+
+This time I took the distributions from the official Oracle website. This is the database and Oracle Linux.
+
+Oracle Linux can be downloaded from linux.oracle.com. Please note that you need to click on the "Download" button, not try to log in.
+I downloaded the database from oracle.com while logged in as a user. In the new website interface, it's quite difficult to find what you need.
+
+<br/>
+
+## Creating a VirtualBox virtual machine for database installation:
 
 <ul>
-	<li><a href="/database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/">Создание виртуальной машины VirtualBox для инсталляции базы данных</a><br/></li>
+	<li><a href="/database/installation/single-instance/simple/oel/7.4/oracle/db/12.2/">Creating a VirtualBox virtual machine for database installation</a><br/></li>
 </ul>
 
 <br/>
 
-## Инсталляция Oracle Linux 7.4:
+## Installing Oracle Linux 7.4:
 
 <ul>
-	<li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oel-7.4-installation/">Инсталляция Oracle Linux 7.4</a><br/></li>
+	<li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oel-7.4-installation/">Installing Oracle Linux 7.4</a><br/></li>
 </ul>
 
 <br/><br/>
 
-## Подготовка операционной системы Linux к инсталляции базы данных Oracle:
+## Preparing the Linux operating system for Oracle database installation:
 
 <ul>
-	<li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/network-interfaces/">Настройка сетевых интерфейсов</a></li>
+	<li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/network-interfaces/">Configuring network interfaces</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/setup-os-parameters-before-we-start/">Установка параметров ОС перед стартом</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/setup-os-parameters-before-we-start/">Setting OS parameters before starting</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/install-mandatory-packages/">Инсталляция обязательных пакетов</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/install-mandatory-packages/">Installing mandatory packages</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/setup-actual-time/">Настройка сервисов отвечающих за синхронизацию времени</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/setup-actual-time/">Configuring time synchronization services</a></li>
 
-    <!--
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/prepare-hdd-to-install-oracle/">Preparing hard disks for database installation</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/autostart-only-packages-what-needed/">Автозапуск только выбранных программ</a></li> -->
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/prepare-kernel-parameters-and-user-environments/">Configuring system users, system parameter settings</a></li>
 
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/create-folder-structure-and-user-permissions/">Creating directory structure and assigning necessary permissions</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/prepare-hdd-to-install-oracle/">Подготовка жестких дисков к инсталляции базы данных</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/setup-display-manager/">Configuring Display Manager</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/prepare-kernel-parameters-and-user-environments/">Конфигурирование системных пользователей, настройка параметров системы</a></li>
-
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/create-folder-structure-and-user-permissions/">Создание структуры каталогов и назначение необходимых прав</a></li>
-
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/setup-display-manager/">Настройка Display Manger</a></li>
-
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/copy-oracle-distrib-on-server/">Копирование дистрибутивов базы данных на сервер</a></li>
+  <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/copy-oracle-distrib-on-server/">Copying database distributions to the server</a></li>
 
 </ul>
 
 <br/><br/>
 
-## Инсталляция базы данных:
+## Database installation:
 
 <ul>
+	<li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-database-software-installation/">Installing Oracle DBMS (DataBase Software)</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-database-software-installation/">Инсталляция СУБД Oracle (DataBase SoftWare)</a></li>
+    <li><a href="/database/installation/single-instance/linux/7.3/oracle/12.2/oracle-listener-creation/">Creating a remote connection service to the server (Listener)</a></li>
 
-    <li><a href="/database/installation/single-instance/linux/7.3/oracle/12.2/oracle-listener-creation/">Создание службы удаленного подключения к серверу (Listener)</a></li>
-
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-instance-creation/">Создание экземпляра базы данных (Instance)</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-instance-creation/">Creating a database instance</a></li>
 
 </ul>
 
 <br/><br/>
 
-## После инсталляции:
+## Post-installation:
 
 <ul>
-	<li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/autorstart-oracle-after-restart/">Настройка автозапуска Oracle после перезагрузки</a></li>
+	<li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/autorstart-oracle-after-restart/">Configuring Oracle autostart after reboot</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-setup-fast-recovery-area-params/">Задание параметров FAST RECOVERY AREA</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-setup-fast-recovery-area-params/">Setting FAST RECOVERY AREA parameters</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-cold-backup/">Создание резервной копии созданной базы данных (холодный backup)</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-cold-backup/">Creating a backup of the created database (cold backup)</a></li>
 
-    <li>Обновление базы патчами, рекомендованными Oracle (Нет у меня сейчас доступа, чтобы скачать патчи. Демонстрировалось при инсталляции 11 версии Oracle)</li>
+    <li>Updating the database with patches recommended by Oracle (I don't have access to download patches right now. Was demonstrated during Oracle 11 installation)</li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-restrict-root-access/">Запретить удаленное подключение к серверу баз данных пользователем root</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-restrict-root-access/">Restrict remote connection to the database server by root user</a></li>
 
-    <li>Разрешить удаленное подключение к серверу по ssh только с определенных ip адресов, создав правила в iptables (возможное улучшение, здесь не описывается)</li>
+    <li>Allow remote connection to the server via SSH only from specific IP addresses by creating rules in iptables (possible improvement, not described here)</li>
 
-    <li>Блокировать возможность подключения к серверу при вводе неправильного пароля более 5 раз (Fail2ban) (возможное улучшение, здесь не описывается)</li>
+    <li>Block the ability to connect to the server after entering an incorrect password more than 5 times (Fail2ban) (possible improvement, not described here)</li>
 
 </ul>
 
 <br/><br/>
 
-## Обеспечение дополнительной отказоустойчивости и надежности:
+## Ensuring additional fault tolerance and reliability:
 
 <ul>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-controlfiles-multiplexing/">Мультиплексирование controlfiles</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-controlfiles-multiplexing/">Multiplexing controlfiles</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-redologs-multiplexing/">Мультиплексирование redologs</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-redologs-multiplexing/">Multiplexing redologs</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/enable-archivelog-mod/">Включить режим работы ARCHIVELOG</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/enable-archivelog-mod/">Enable ARCHIVELOG mode</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-archivelogs-multiplexing/">Мультиплексирование archivelog</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-archivelogs-multiplexing/">Multiplexing archivelog</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-change-default-datafile-location/">Изменение расположения файлов данных</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-change-default-datafile-location/">Changing data file location</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-additionals-datafiles/">Расширение табличных пространств (создание дополнительных файлов для табличных пространств)</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-additionals-datafiles/">Extending tablespaces (creating additional files for tablespaces)</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/enable-flashback-mod/">Включить режим работы FLASH BACK</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/enable-flashback-mod/">Enable FLASH BACK mode</a></li>
 
-    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-final-hot-backup/">Контрольный backup (горячий backup)</a></li>
+    <li><a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/oracle-final-hot-backup/">Final backup (hot backup)</a></li>
 
 </ul>
 
 <br/><br/>
 
-## Подключиться к базе с клиентского компьютера:
+## Connecting to the database from a client computer:
 
 <ul>
 
-    <li><a href="/client/installation/windows/7/oracle/12.1/">Инсталляция Oracle Client 12C (32 bit) в операционной системе Windows 7 (64 bit)</a> (C 64 битным клиентом не работают такие программы как PL/SQL Developer)</li>
+    <li><a href="/client/installation/windows/7/oracle/12.1/">Installing Oracle Client 12C (32 bit) on Windows 7 (64 bit)</a> (PL/SQL Developer and similar programs do not work with a 64-bit client)</li>
 
 </ul>
 
@@ -173,6 +159,6 @@ Oracle linux можно скачать на сайте linux.oracle.com. Обр�
 
 <div style="padding:10px; border:thin solid black;" align="center">
 
-  <h3>Есди есть предложения по улучшению, пишите!</h3>
+  <h3>If you have suggestions for improvement, write!</h3>
 
 </div>

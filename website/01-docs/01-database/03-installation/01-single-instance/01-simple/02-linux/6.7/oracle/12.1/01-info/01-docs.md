@@ -1,10 +1,12 @@
 ---
 layout: page
-title: Oracle DataBase 12c - Linux - Official Doccumentation
+title: Oracle DataBase 12c Installation on Oracle Linux 6.7 - Official Documentation
+description: Oracle DataBase 12c Installation on Oracle Linux 6.7 - Official Documentation
+keywords: Oracle DataBase 12c, Oracle Linux 6.7, Official Documentation
 permalink: /database/installation/single-instance/simple/linux/6.7/oracle/12.1/docs/
 ---
 
-# <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7]</a>: Official Doccumentation
+# <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 Installation on Oracle Linux 6.7]</a>: Official Documentation
 
 <br/>
 

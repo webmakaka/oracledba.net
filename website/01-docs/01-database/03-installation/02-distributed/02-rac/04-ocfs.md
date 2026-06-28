@@ -1,22 +1,22 @@
 ---
 layout: page
 title: Oracle RAC OCFS2
+description: Oracle RAC OCFS2
+keywords: database, installation, rac, Oracle RAC OCFS2
 permalink: /database/installation/distributed/rac/linux/6.7/ocfs/
 ---
 
-# [Инсталляция Oracle RAC]: OCFS2
+# [Oracle RAC Installation]: OCFS2
 
+For the ability to simultaneously write to 2 cluster nodes (primary/primary), you should use a cluster file system, for example ocfs2.
 
-Для возможности одновременной записи на 2 ноды (primary/primary) кластера, следует использовать кластерную файловую систему, например ocfs2.
+OCFS2 is a general-purpose cluster file system developed by Oracle specifically for clustering database files, currently available only for RHEL and OEL. It can be used to store Oracle Clusterware files, Oracle RAC datafiles, Oracle application files, or any other files. The second version of OCFS has significant changes, the innovations relate to configuring the use of datafiles and Oracle Clusterware files.
 
+The ocfs2 file system is designed for shared use by two or more Linux systems, i.e., we have the ability to simultaneously mount partitions in RW mode on multiple nodes.
 
-OCFS2 это кластерная файловая система общего назначения, разработанная Oracle специально для кластеризации файлов баз данных, доступна пока только для RHEL и OEL. Она может использоваться для размещения файлов Oracle Clusterware, датафайлов Oracle RAC, приложения Oracle или любых других файлов. Вторая версия OCFS имеет значительные изменения, новшества коснулись настройки использования датафайлов и файлов Oracle Clusterware.
+OCFS2 is freely distributed by Oracle in three RPM packages: kernel module, utility set, and graphical console. For each OS kernel version, the corresponding package should be used.
 
-Файловая система ocfs2, предназначенная для совместного использования двумя или более Linux-системами, т.е. мы имеем возможность одновременно монтировать разделы в режиме RW на нескольких узлах.
-
-OCFS2 свободно распространяется Oracle в трех RPM-пакетах: модуле ядра, наборе утилит и графической консоли. Для каждой версии ядра ОС следует использовать соответствующий пакет.
-
-Возвращаемся на шаг предшествующий созданию ASM дисков.
+We return to the step preceding the creation of ASM disks.
 
 <!--
 
@@ -26,11 +26,9 @@ https://oraclelabs.wordpress.com/virtual-oracle-rac-oracle-installation/
 
 <br/>
 
-**Конфигурация такая же как и в документе RAC 12 iSCSI + ASM**
-
+**Configuration is the same as in the RAC 12 iSCSI + ASM document**
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
-
 
 <tr>
 <td style="color: rgb(255, 255, 255);" bgcolor="#386351" width="14%"><span style="font-family: Arial,Helvetica,sans-serif; font-size: 14px;"><strong>Server:</strong></span></td>
@@ -39,109 +37,103 @@ https://oraclelabs.wordpress.com/virtual-oracle-rac-oracle-installation/
 
 </table>
 
-
-	# yum install -y \
-	ocfs2-tools \
-	ocfs2-tools-devel
-
-<br/>
-
-Если нужна gui консоль, то можно еще установить
-
-	# yum install -y \
-	ocfs2console
+    # yum install -y \
+    ocfs2-tools \
+    ocfs2-tools-devel
 
 <br/>
 
-	# chkconfig --level 345 o2cb on
+If a gui console is needed, you can also install
+
+    # yum install -y \
+    ocfs2console
 
 <br/>
 
-	 # mkfs.ocfs2 /dev/mapper/iscsi-disk1
+    # chkconfig --level 345 o2cb on
 
 <br/>
 
-	# mkdir -p /u02
-	# mkdir -p /etc/ocfs2/
+     # mkfs.ocfs2 /dev/mapper/iscsi-disk1
 
 <br/>
 
-	# vi /etc/ocfs2/cluster.conf
+    # mkdir -p /u02
+    # mkdir -p /etc/ocfs2/
 
 <br/>
 
-	cluster:
-	    node_count = 2
-	    name = ocfs2
-
-	node:
-	    ip_port = 7777
-	    ip_address = 192.168.3.11
-	    number = 0
-	    name = rac1
-	    cluster = ocfs2
-
-	node:
-	    ip_port = 7777
-	    ip_address = 192.168.3.12
-	    number = 1
-	    name = rac2
-	    cluster = ocfs2
-
+    # vi /etc/ocfs2/cluster.conf
 
 <br/>
 
-	# /etc/init.d/o2cb offline ocfs2
-	# /etc/init.d/o2cb unload
-	# /etc/init.d/o2cb configure
+    cluster:
+        node_count = 2
+        name = ocfs2
 
+    node:
+        ip_port = 7777
+        ip_address = 192.168.3.11
+        number = 0
+        name = rac1
+        cluster = ocfs2
 
-// Поднимаем на 2-х узлах
-
-	# /etc/init.d/o2cb online ocfs2
-
-
-Чтобы модуль поддержки OCFS2 активировался при загрузке, на каждой ноде выполняется:
-
-	# /etc/init.d/o2cb enable
-
-<br/>
-
-
-	# /etc/init.d/o2cb load
-
-<br/>
-
-	# /etc/init.d/o2cb status
+    node:
+        ip_port = 7777
+        ip_address = 192.168.3.12
+        number = 1
+        name = rac2
+        cluster = ocfs2
 
 <br/>
 
-### Монтирование OCFS2.
-
-Для файловой системы, содержащей датафайлы и файлы Oracle Clusterware должно соблюдаться условие, что все операции ввода-вывода для файлов используют механизм прямого ввода-вывода I/O (O_DIRECT). Поэтому всегда используйте опцию "datavolume" при каждом монтировании файловой системы. Без этой опции отказ системы может привести к потере данных.
-
-
-	# mount -t ocfs2 /dev/mapper/iscsi-disk1 -o datavolume /u02
-
-Смонтируйте раздел OCFS2 к остальным нодам.
-
-
-Чтобы файловая система монтировалась каждый раз при загрузке, на каждой ноде в /etc/fstab прописывается:
-
-	# vi /etc/fstab
-
-	/dev/mapper/iscsi-disk1 /u02 ocfs2 _netdev,datavolume,nointr 0 0
-
-Для отключения периодической проверки файловой системы на ошибки выполните команду:
-
-	/sbin/tune2fs -i 0 -c 0 /u02
-
+    # /etc/init.d/o2cb offline ocfs2
+    # /etc/init.d/o2cb unload
+    # /etc/init.d/o2cb configure
 
 <br/>
 
-### Дополнительные команды
+// Start on both nodes
 
-Возможно когда-нибудь понадобятся команды:
+    # /etc/init.d/o2cb online ocfs2
 
-	/etc/init.d/ocfs2 restart
-	/etc/init.d/o2cb force-reload
+To have OCFS2 support module activated at boot, execute on each node:
+
+    # /etc/init.d/o2cb enable
+
+<br/>
+
+    # /etc/init.d/o2cb load
+
+<br/>
+
+    # /etc/init.d/o2cb status
+
+<br/>
+
+### Mounting OCFS2
+
+For a file system containing datafiles and Oracle Clusterware files, the condition must be met that all I/O operations for files use the direct I/O mechanism (O_DIRECT). Therefore, always use the "datavolume" option when mounting the file system. Without this option, a system failure may lead to data loss.
+
+    # mount -t ocfs2 /dev/mapper/iscsi-disk1 -o datavolume /u02
+
+Mount the OCFS2 partition to the remaining nodes.
+
+For the file system to mount every time at boot, add to /etc/fstab on each node:
+
+    # vi /etc/fstab
+
+    /dev/mapper/iscsi-disk1 /u02 ocfs2 _netdev,datavolume,nointr 0 0
+
+To disable periodic file system error checking, run:
+
+    /sbin/tune2fs -i 0 -c 0 /u02
+
+<br/>
+
+### Additional commands
+
+These commands may be needed sometime:
+
+    /etc/init.d/ocfs2 restart
+    /etc/init.d/o2cb force-reload

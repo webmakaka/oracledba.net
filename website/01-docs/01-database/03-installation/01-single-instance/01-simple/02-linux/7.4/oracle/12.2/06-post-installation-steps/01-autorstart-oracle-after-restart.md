@@ -1,22 +1,14 @@
 ---
 layout: page
-title: Oracle DataBase 12.2 - Oracle Linux 7.4 - Настройка автозапуска Oracle после перезагрузки
+title: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Configuring Oracle Autostart After Reboot
+description: Oracle DataBase 12.2 Installation on Oracle Linux 7.4 - Configuring Oracle Autostart After Reboot
+keywords: Oracle DataBase 12.2, Oracle Linux 7.4, Oracle autostart
 permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/autorstart-oracle-after-restart/
 ---
 
 <br/>
 
-<div style="padding:10px; border:thin solid black;">
-
-    <h3>Этот материал в разработке. Рекомендую обратиться к последней версии документа.</h3>
-
-    <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">Ссылка на документ по инсталляции Oracle.</a>
-
-</div>
-
-<br/>
-
-# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Инсталляция Oracle DataBase Server 12.2 в Oracle Linux 7.4]</a>: Настройка автозапуска Oracle после перезагрузки
+# <a href="/database/installation/single-instance/simple/linux/7.4/oracle/12.2/">[Oracle DataBase Server 12.2 Installation on Oracle Linux 7.4]</a>: Configuring Oracle Autostart After Reboot
 
 <br/>
 
@@ -26,16 +18,16 @@ permalink: /database/installation/single-instance/simple/linux/7.4/oracle/12.2/a
 
     orcl12:/u01/oracle/database/12.2:N
 
-заменить на
+replace with
 
     # orcl12:/u01/oracle/database/12.2:N
     orcl12:/u01/oracle/database/12.2:Y
 
 <br/>
 
-### Создание скрипта, стартующего и останавливающего базу данных при старте и перезапуске операционной системы
+### Creating a script to start and stop the database at OS boot and shutdown
 
-<!-- Скрипт следующего содержания мы добавим в автозагрузку (выполнив команды после данного скрипта):
+<!-- The script of the following content will be added to autostart (run the commands after this script):
 
 
 <script src="http://gist-it.appspot.com/https://github.com/oradev/oracle-dba-scripts/blob/master/oracle_12R1_startup_and_shutdown_script">

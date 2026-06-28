@@ -1,112 +1,107 @@
 ---
 layout: page
-title: Oracle RAC 11.2 ISCSI + ASM - Настройка Secure Shell между узлами кластера
+title: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Configuring Secure Shell between cluster nodes
+description: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Configuring Secure Shell between cluster nodes
+keywords: database, installation, distributed, rac, linux, 5.8, oracle, 11.2, Configuring Secure Shell between cluster nodes
 permalink: /database/installation/distributed/rac/linux/5.8/oracle/11.2/secure-shell-between-nodes/
 ---
 
-# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Инсталляция Oracle RAC 11.2 в операционной системе Oracle Linux 5.8 x86_64]</a>: Настройка Secure Shell между узлами кластера
-
+# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Oracle RAC 11.2 Installation on Oracle Linux 5.8 x86_64]</a>: Configuring Secure Shell between cluster nodes
 
 <br/>
 
-Необходимо, чтобы узлы кластера могли обмениваться между собой по протоколу ssh.
-Когда устанавливается Oracle RAC, он устанавливается только на первую ноду,
-на все стальные он просто копируется.
+The cluster nodes need to be able to communicate via ssh.
+When Oracle RAC is installed, it is only installed on the first node,
+it is simply copied to all the others.
 
-
-### Настраиваем secure shell (ssh)
+### Configuring secure shell (ssh)
 
 node1
 
-	# su - oracle11
+    # su - oracle11
 
 <br/>
 
-	$ mkdir ~/.ssh
-	$ chmod 700 ~/.ssh
+    $ mkdir ~/.ssh
+    $ chmod 700 ~/.ssh
 
+Create RSA-type public and private encryption keys. (Just press Enter for all questions)
 
+    $ /usr/bin/ssh-keygen -t rsa
 
-Создаем RSA-type public и private encryption keys. (На все вопросы просто жмем Enter)
+Create DSA-type public and private encryption keys. (Press Enter for all questions)
 
-	$ /usr/bin/ssh-keygen -t rsa
-
-Создаем DSA-type public и private encryption keys.  (На все вопросы жмем Enter)
-
-	$ /usr/bin/ssh-keygen -t dsa
+    $ /usr/bin/ssh-keygen -t dsa
 
 <br/>
 
-	$ cd .ssh/
+    $ cd .ssh/
 
+Add the obtained keys to the authorized key file.
 
-Добавляем полученные ключи в файл authorized key.
-
-	$ cat id_rsa.pub >>authorized_keys
-	$ cat id_dsa.pub >>authorized_keys
-
-<br/>
-
-	$ ssh node2 mkdir /home/oracle11/.ssh/
+    $ cat id_rsa.pub >>authorized_keys
+    $ cat id_dsa.pub >>authorized_keys
 
 <br/>
 
-	$ scp authorized_keys node2:/home/oracle11/.ssh
+    $ ssh node2 mkdir /home/oracle11/.ssh/
 
 <br/>
 
-	$ ssh node2
-
-Повторяем процедуру генерации
-
-	$ /usr/bin/ssh-keygen -t rsa
-	$ /usr/bin/ssh-keygen -t dsa
+    $ scp authorized_keys node2:/home/oracle11/.ssh
 
 <br/>
 
+    $ ssh node2
 
-	$ cd ~/.ssh
-	$ cat id_rsa.pub >> authorized_keys
-	$ cat id_dsa.pub >> authorized_keys
+Repeat the generation procedure
 
-<br/>
-
-	$ chmod 644 authorized_keys
+    $ /usr/bin/ssh-keygen -t rsa
+    $ /usr/bin/ssh-keygen -t dsa
 
 <br/>
 
-	$ scp authorized_keys node1:/home/oracle11/.ssh
+    $ cd ~/.ssh
+    $ cat id_rsa.pub >> authorized_keys
+    $ cat id_dsa.pub >> authorized_keys
 
 <br/>
 
-	$ ssh node1
+    $ chmod 644 authorized_keys
 
 <br/>
 
-	$ exec /usr/bin/ssh-agent $SHELL
-	$ /usr/bin/ssh-add
-
-
-Проверяем, что все работает нормально. Необходимо постараться пройти все возможные варианты подключений между узлами без ввода учетных записей.
-
-	$ ssh node1 date
-	$ ssh node2 date
+    $ scp authorized_keys node1:/home/oracle11/.ssh
 
 <br/>
 
-	$ ssh node1.localdomain date
-	$ ssh node2.localdomain date
+    $ ssh node1
 
 <br/>
 
-	$ ssh node2
+    $ exec /usr/bin/ssh-agent $SHELL
+    $ /usr/bin/ssh-add
+
+Check that everything is working. Try all possible connection options between nodes without entering credentials.
+
+    $ ssh node1 date
+    $ ssh node2 date
 
 <br/>
 
-	$ ssh node1 date
-	$ ssh node2 date
+    $ ssh node1.localdomain date
+    $ ssh node2.localdomain date
 
 <br/>
 
-	$ ssh node1.localdomain date
-	$ ssh node2.localdomain date
+    $ ssh node2
+
+<br/>
+
+    $ ssh node1 date
+    $ ssh node2 date
+
+<br/>
+
+    $ ssh node1.localdomain date
+    $ ssh node2.localdomain date

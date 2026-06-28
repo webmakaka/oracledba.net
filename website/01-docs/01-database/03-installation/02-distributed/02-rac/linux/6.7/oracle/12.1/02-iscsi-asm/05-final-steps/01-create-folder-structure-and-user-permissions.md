@@ -1,13 +1,12 @@
 ---
 layout: page
-title: Oracle RAC 12.1 ISCSI + ASM - Создание структуры каталогов и назначение необходимых прав
+title: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Creating directory structure and assigning necessary permissions
+description: Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM) - Creating directory structure and assigning necessary permissions
+keywords: Oracle DataBase 12.1, Oracle Linux 6.7, RAC, (ISCSI + ASM)
 permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-asm/create-folder-structure-and-user-permissions/
 ---
 
-
-# [Инсталляция Oracle RAC 12.1 ISCSI + ASM]: Создание структуры каталогов и назначение необходимых прав
-
-
+# [Oracle RAC 12.1 Installation on Oracle Linux 6.7 (ISCSI + ASM)]: Creating directory structure and assigning necessary permissions
 
 <table cellpadding="4" cellspacing="2" align="center" border="0" width="100%">
 	<tr>
@@ -16,29 +15,25 @@ permalink: /database/installation/distributed/rac/linux/6.7/oracle/12.1/iscsi-as
 	</tr>
 </table>
 
+Must be performed on each cluster node:
 
-Необходимо выполнить на каждом из узлов кластера:
+The rather inconvenient directory layout is due to the fact that different directories require different sets of permissions. + when making changes, Oracle installation may complain.
 
-Довольно неудобное расположение каталогов, обусловлено тем, что в разных каталогах, необходим
-разный набор прав на каталоги. + при внесении изменений возможна ругань при инсталляции.
-
-
-	# mkdir -p /u01/app/oraInventory
-	# chown -R oracle12:oinstall /u01/app/oraInventory
-	# chmod -R 775 /u01/app/oraInventory
+    # mkdir -p /u01/app/oraInventory
+    # chown -R oracle12:oinstall /u01/app/oraInventory
+    # chmod -R 775 /u01/app/oraInventory
 
 <br/>
 
-	# mkdir -p /u01/app/grid/12.1
-	# chown -R oracle12:oinstall /u01/app/grid/12.1
-	# chmod -R 775 /u01/app/grid/12.1
+    # mkdir -p /u01/app/grid/12.1
+    # chown -R oracle12:oinstall /u01/app/grid/12.1
+    # chmod -R 775 /u01/app/grid/12.1
 
 <br/>
 
-	# mkdir -p /u01/app/oracle/product/rac/12.1
-	# chown -R oracle12:oinstall /u01/app/oracle
-	# chmod -R 775 /u01/app/oracle
-
+    # mkdir -p /u01/app/oracle/product/rac/12.1
+    # chown -R oracle12:oinstall /u01/app/oracle
+    # chmod -R 775 /u01/app/oracle
 
 <!--
 

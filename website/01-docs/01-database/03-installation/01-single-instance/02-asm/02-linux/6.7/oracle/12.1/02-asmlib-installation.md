@@ -1,15 +1,16 @@
 ---
 layout: page
-title: Oracle DataBase Server 12.1 installation on Oracle Linux 6.7 with ASM and GRID - ASMLIB Installation
+title: Инсталляция Oracle DataBase Server 12.1 в Centos 6.7 с использованием ASM и GRID - Инсталляция ASMLIB для работы ASM
+description: Инсталляция Oracle DataBase Server 12.1 в Centos 6.7 с использованием ASM и GRID - Инсталляция ASMLIB для работы ASM
+keywords: Oracle DataBase 12.1, Centos 6.7, ASM, GRID
 permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/asmlib-installation/
 ---
 
-# <a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7 with ASM and GRID]</a>: ASMLIB Installation
+# <a href="/database/installation/single/asm/linux/6.7/oracle/12.1/">[Инсталляция Oracle DataBase Server 12.1 в Centos 6.7 с использованием ASM и GRID]</a>: Инсталляция ASMLIB для работы ASM
 
 <br/>
 
- <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/install-mandatory-packages/">Mandatory packages should be installed</a>
-
+<a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/install-mandatory-packages/">Обязательные для установки Oracle DataBase пакеты должны быть установлены</a>
 
 <br/><br/>
 
@@ -30,21 +31,19 @@ permalink: /database/installation/single/asm/linux/6.7/oracle/12.1/asmlib-instal
 
 <br/>
 
-### Additional packages needs for ASM:
+### Доп пакеты понадобились:
 
     # yum install -y nfs-utils.x86_64
 
-
 <br/>
 
-### Next packages should be installed for ASM:
+### Необходимо установить 3 пакета для ASM:
 
-From Oracle website we need:
+Необходимо с сайта Oracle:
 
 http://www.oracle.com/technetwork/server-storage/linux/asmlib/rhel6-1940776.html
 
-Package: oracleasmlib-*.x86_64.rpm
-
+Скачать: oracleasmlib-\*.x86_64.rpm
 
     # cd /tmp
     # wget http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.4-1.el6.x86_64.rpm
@@ -58,6 +57,6 @@ Package: oracleasmlib-*.x86_64.rpm
 
 <br/>
 
-Check:
+Проверяем инсталлированные пакеты:
 
     # rpm -qa | grep oracleasm

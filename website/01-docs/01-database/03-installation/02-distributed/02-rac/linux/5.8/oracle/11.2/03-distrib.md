@@ -1,34 +1,35 @@
 ---
 layout: page
-title: Oracle RAC 11.2 ISCSI + ASM - Дистрибутивы и дополнительное ПО
+title: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Distributions and additional software
+description: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Distributions and additional software
+keywords: database, installation, distributed, rac, linux, 5.8, oracle, 11.2, Environment description for Oracle RAC installation, Distributions and additional software
 permalink: /database/installation/distributed/rac/linux/5.8/oracle/11.2/distrib/
 ---
 
-# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Инсталляция Oracle RAC 11.2 в операционной системе Oracle Linux 5.8 x86_64]</a>: Дистрибутивы и дополнительное ПО
+# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Oracle RAC 11.2 Installation on Oracle Linux 5.8 x86_64]</a>: Distributions and additional software
 
 <br/>
 
+The latest versions of Oracle DB and critical patch updates are available to commercial subscribers with an active technical support contract. If you have a support contract, you can download database distributions directly from support.oracle.com.
 
-Последние версии БД Oracle и пакеты критических исправлений доступны коммерческим подписчикам  с активным контрактом на техническую поддержку. Если у вас есть контракт на техподдержку, вы можете скачать дистрибутивы базы данных непосредственно с сайта support.oracle.com.
-<br/><br/>
-Если контракта у вас нет, простой регистрации на сайте Oracle будет недостаточно, чтобы скачать последние версии даже для изучения.
-<br/><br/>
-Тем не менее, ссылки на дистрибутивы последних версий приведены чуть ниже.
-<br/><br/>
-Каких-либо ключей для активации нет. Для разработки (development) дистрибутивы можно использовать бесплатно, но для использования по основному их назначению (production), требуется приобрести лицензию.
+If you don't have a contract, simply registering on the Oracle website will not be enough to download the latest versions, even for study.
 
-<br/><br/>
+Nevertheless, links to the latest version distributions are provided below.
 
-<strong>Дистрибутивы операционной системы Oracle Linux 5.8:</strong><br/>
+There are no activation keys required. For development purposes, distributions can be used free of charge, but for production use, a license must be purchased.
+
+<br/>
+
+<strong>Oracle Linux 5.8 operating system distributions:</strong><br/>
 http://rutracker.org/forum/viewtopic.php?t=3971967
 
-<br/><br/>
+<br/>
 
-<strong>Дистрибутивы базы данных Oracle:</strong><br/>
+<strong>Oracle Database distributions:</strong><br/>
 http://rutracker.org/forum/viewtopic.php?t=3749965
 
 <br/><br/>
-<strong>Содержимое архивов:</strong>
+<strong>Archive contents:</strong>
 <br/><br/>
 
 <pre>
@@ -52,23 +53,23 @@ p10098816_112020_Linux-x86-64_6of7.zip
 p10098816_112020_Linux-x86-64_7of7.zip
 </pre>
 
-<br/><br/>
+<br/>
 
 <strong>Putty:</strong><br/>
 http://www.putty.org/
 
-<br/><br/>
+<br/>
 
-<strong>XMing (Необходимо установить XMing и дополнительные шрифты, без них на одном из шагов инсталляции
-при нажатии на кнопку, ничего не происходит:</strong><br/>
+<strong>XMing (Need to install XMing and additional fonts, without them at one of the installation steps
+when clicking a button, nothing happens:</strong><br/>
 http://sourceforge.net/projects/xming/
 
-<br/><br/>
+<br/>
 
 <strong>VirtualBox:</strong><br/>
 http://www.virtualbox.org/wiki/Downloads
 
+<br/>
 
-<br/><br/>
-<strong>Oracle Patches (OPatch и PSU, которые использовались для инсталляции)</strong><br/>
-(патчи удалил)
+<strong>Oracle Patches (OPatch and PSU that were used for installation)</strong><br/>
+(patches removed)

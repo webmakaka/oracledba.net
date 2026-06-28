@@ -1,21 +1,18 @@
 ---
 layout: page
-title: Oracle DataBase 12c - Linux - Enable ARCHIVELOG MODE
+title: Oracle DataBase 12c Installation on Oracle Linux 6.7 - Enable ARCHIVELOG Mode
+description: Oracle DataBase 12c Installation on Oracle Linux 6.7 - Enable ARCHIVELOG Mode
+keywords: Oracle DataBase 12c, Oracle Linux 6.7, Enable ARCHIVELOG
 permalink: /database/installation/single-instance/simple/linux/6.7/oracle/12.1/enable-archivelog-mod/
 ---
 
-# <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 installation on Oracle Linux 6.7]</a>: Enable ARCHIVELOG MODE
+# <a href="/database/installation/single-instance/simple/linux/6.7/oracle/12.1/">[Oracle DataBase Server 12.1 Installation on Oracle Linux 6.7]</a>: Enable ARCHIVELOG Mode
 
-
-<!--
-
-При работе в ARCHIVELOG, после переключения redo-log журналов, копия журнала архивируется и сохраняется на диске. Это позволяет при необходимости откатить базу данных на определенный момент в прошлом (например на конкретное время). При работе в ARCHIVELOG, появляется возможность создавать резервные копии базы данных не останавливая базу данных (горячий бекап). При данном режиме работы, необходимо выделять дополнительные ресурсы сервера, т.е. отнимать ресурсы у других процессов. По умолчанию данная опция отключена.
-
--->
+When operating in ARCHIVELOG mode, after redo-log switching, a copy of the log is archived and saved to disk. This allows you to roll back the database to a specific point in the past (e.g., to a specific time) if necessary. When operating in ARCHIVELOG mode, you can create database backups without stopping the database (hot backup). This mode requires allocating additional server resources, i.e., taking resources away from other processes. By default, this option is disabled.
 
     $ sqlplus / as sysdba
 
-Show log_mode:
+Check the database operating mode:
 
     SQL> select log_mode from v$database;
 
@@ -25,9 +22,9 @@ Show log_mode:
     ------------
     NOARCHIVELOG
 
+<br/>
 
-
-Enable archivelog mode:
+Enable archivelog (if disabled)
 
     SQL> shutdown immediate;
     SQL> startup mount exclusive;
@@ -36,11 +33,7 @@ Enable archivelog mode:
 
 <br/>
 
-<br/>
-
     SQL> select log_mode from v$database;
-
-
 
 <br/>
 
@@ -48,9 +41,7 @@ Enable archivelog mode:
     ------------------------------------
     ARCHIVELOG
 
-
-Show additional information:
-
+Get additional information with the following command:
 
     SQL> ARCHIVE LOG LIST
 
@@ -62,8 +53,6 @@ Show additional information:
     Oldest online log sequence     30
     Next log sequence to archive   32
     Current log sequence           32
-
-
 
 <br/>
 

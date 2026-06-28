@@ -1,37 +1,33 @@
 ---
 layout: page
-title: Oracle RAC 11.2 ISCSI + ASM - Копирование дистрибутивов базы данных на сервер
+title: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Copying database distributions to the server
+description: Oracle RAC 11.2 Installation on Oracle Linux 5.8 (ISCSI + ASM) - Copying database distributions to the server
+keywords: database, installation, distributed, rac, linux, 5.8, oracle, 11.2, Copying database distributions to the server
 permalink: /database/installation/distributed/rac/linux/5.8/oracle/11.2/copy-oracle-distrib-on-server/
 ---
 
-# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Инсталляция Oracle RAC 11.2 в операционной системе Oracle Linux 5.8 x86_64]</a>: Копирование дистрибутивов базы данных на сервер
-
-
-<br/>
-
-
-
-Войдите в систему пользователем, от имени которого будет будет происходить инсталляция базы данных.
-
-	# su - oracle11
-
-
-Скопируйте дистрибутивы Oracle во временный каталог /tmp/oracle/11.2.0.3
-
-	$ cd /tmp/oracle/11.2.0.3
+# <a href="/database/installation/distributed/rac/linux/5.8/oracle/11.2/">[Oracle RAC 11.2 Installation on Oracle Linux 5.8 x86_64]</a>: Copying database distributions to the server
 
 <br/>
 
-	$  ls
-	p10404530_112030_Linux-x86-64_1of7.zip  
-	p10404530_112030_Linux-x86-64_2of7.zip  
-	p10404530_112030_Linux-x86-64_3of7.zip  
+Log in as the user who will perform the database installation.
 
+    # su - oracle11
+
+Copy the Oracle distributions to the temporary directory /tmp/oracle/11.2.0.3
+
+    $ cd /tmp/oracle/11.2.0.3
 
 <br/>
 
-	$ unzip p10404530_112030_Linux-x86-64_1of7.zip; unzip p10404530_112030_Linux-x86-64_2of7.zip; unzip p10404530_112030_Linux-x86-64_3of7.zip
+    $  ls
+    p10404530_112030_Linux-x86-64_1of7.zip
+    p10404530_112030_Linux-x86-64_2of7.zip
+    p10404530_112030_Linux-x86-64_3of7.zip
 
+<br/>
+
+    $ unzip p10404530_112030_Linux-x86-64_1of7.zip; unzip p10404530_112030_Linux-x86-64_2of7.zip; unzip p10404530_112030_Linux-x86-64_3of7.zip
 
 <!--
 
